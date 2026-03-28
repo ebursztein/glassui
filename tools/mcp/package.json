@@ -1,0 +1,14 @@
+{
+  "name": "glassui-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for GlassUI — auto-discovers components from filesystem",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "npx tsx src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "tsx": "^4.0.0"
+  }
+}

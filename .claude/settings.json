@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "glassui": {
+      "command": "npx",
+      "args": ["tsx", "tools/mcp/src/index.ts"],
+      "cwd": "."
+    }
+  }
+}

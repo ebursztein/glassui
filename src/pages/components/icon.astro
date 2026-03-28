@@ -1,0 +1,17 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import IconDemo from '../../components/IconDemo.svelte';
+import { meta } from '../../lib/components/icon/schema';
+---
+
+<Layout title={`${meta.name} — GlassUI`}>
+  <div class="space-y-6">
+    <div>
+      <h1 class="text-3xl font-bold text-white">{meta.name}</h1>
+      <p class="text-white/60 mt-2">{meta.description}</p>
+      <pre class="mt-3 text-sm text-cyan-300 bg-black/30 rounded-xl px-4 py-2 inline-block whitespace-pre-wrap"><code>{meta.import}</code></pre>
+    </div>
+
+    <IconDemo client:load />
+  </div>
+</Layout>
