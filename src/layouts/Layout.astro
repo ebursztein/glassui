@@ -1,0 +1,54 @@
+---
+import '../styles/globals.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = 'GlassUI', description = 'Glass design system — Svelte 5 component library' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen antialiased">
+    <div class="flex min-h-screen">
+      <!-- Sidebar nav -->
+      <nav class="hidden md:flex w-64 flex-col gap-2 p-6 border-r border-white/10">
+        <a href="/" class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+          <span class="w-8 h-8 rounded-lg bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 flex items-center justify-center text-sm font-bold">G</span>
+          GlassUI
+        </a>
+
+        <span class="text-xs font-semibold uppercase tracking-wider text-white/40 mt-4 mb-2">Components</span>
+        <a href="/components/icon" class="text-sm text-white/60 hover:text-white hover:bg-white/10 rounded-lg px-3 py-2 transition-colors">Icon</a>
+        <a href="/components/button" class="text-sm text-white/60 hover:text-white hover:bg-white/10 rounded-lg px-3 py-2 transition-colors">Button</a>
+
+        <span class="text-xs font-semibold uppercase tracking-wider text-white/40 mt-6 mb-2">Foundation</span>
+        <a href="/components/theme" class="text-sm text-white/60 hover:text-white hover:bg-white/10 rounded-lg px-3 py-2 transition-colors">Theme</a>
+      </nav>
+
+      <!-- Main content -->
+      <main class="flex-1 overflow-y-auto">
+        <!-- Mobile header -->
+        <header class="md:hidden flex items-center gap-3 p-4 border-b border-white/10">
+          <a href="/" class="text-lg font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 flex items-center justify-center text-xs font-bold">G</span>
+            GlassUI
+          </a>
+        </header>
+
+        <div class="p-6 md:p-10 max-w-4xl">
+          <slot />
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

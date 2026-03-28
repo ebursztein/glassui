@@ -1,0 +1,99 @@
+/*
+ * GlassUI Design Tokens
+ * Override these CSS custom properties to customize the theme.
+ */
+
+:root {
+  /* Glass surface */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-bg-hover: rgba(255, 255, 255, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-border-hover: rgba(255, 255, 255, 0.4);
+  --glass-blur: 24px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  --glass-highlight: rgba(255, 255, 255, 0.2);
+
+  /* Accent gradient colors */
+  --glass-accent-1: rgba(6, 182, 212, 0.8);
+  --glass-accent-2: rgba(59, 130, 246, 0.8);
+  --glass-accent-3: rgba(168, 85, 247, 0.8);
+
+  /* Glow colors (lower opacity for backgrounds) */
+  --glass-glow-1: rgba(6, 182, 212, 0.3);
+  --glass-glow-2: rgba(59, 130, 246, 0.3);
+  --glass-glow-3: rgba(168, 85, 247, 0.3);
+
+  /* Text colors */
+  --glass-text: white;
+  --glass-text-muted: rgba(255, 255, 255, 0.6);
+  --glass-text-faint: rgba(255, 255, 255, 0.4);
+
+  /* Status colors */
+  --glass-info: rgba(59, 130, 246, 0.8);
+  --glass-success: rgba(34, 197, 94, 0.8);
+  --glass-warning: rgba(234, 179, 8, 0.8);
+  --glass-error: rgba(239, 68, 68, 0.8);
+
+  /* Border radius */
+  --glass-radius-sm: 0.5rem;
+  --glass-radius-md: 0.75rem;
+  --glass-radius-lg: 1rem;
+  --glass-radius-xl: 1.5rem;
+  --glass-radius-full: 9999px;
+
+  /* Background */
+  --glass-page-bg: #0a0a0f;
+  --glass-page-bg-gradient: linear-gradient(135deg, #0a0a0f 0%, #0f0f1a 50%, #0a0a0f 100%);
+}
+
+/* Light mode overrides */
+.light {
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-bg-hover: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-border-hover: rgba(255, 255, 255, 0.7);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --glass-highlight: rgba(255, 255, 255, 0.4);
+  --glass-text: #1a1a2e;
+  --glass-text-muted: rgba(26, 26, 46, 0.6);
+  --glass-text-faint: rgba(26, 26, 46, 0.4);
+  --glass-page-bg: #e8e8f0;
+  --glass-page-bg-gradient: linear-gradient(135deg, #e8e8f0 0%, #d8d8e8 50%, #e8e8f0 100%);
+}
+
+/* Theme presets */
+[data-theme="ocean"] {
+  --glass-accent-1: rgba(6, 182, 212, 0.8);
+  --glass-accent-2: rgba(14, 165, 233, 0.8);
+  --glass-accent-3: rgba(56, 189, 248, 0.8);
+  --glass-glow-1: rgba(6, 182, 212, 0.3);
+  --glass-glow-2: rgba(14, 165, 233, 0.3);
+  --glass-glow-3: rgba(56, 189, 248, 0.3);
+}
+
+[data-theme="ember"] {
+  --glass-accent-1: rgba(239, 68, 68, 0.8);
+  --glass-accent-2: rgba(249, 115, 22, 0.8);
+  --glass-accent-3: rgba(234, 179, 8, 0.8);
+  --glass-glow-1: rgba(239, 68, 68, 0.3);
+  --glass-glow-2: rgba(249, 115, 22, 0.3);
+  --glass-glow-3: rgba(234, 179, 8, 0.3);
+}
+
+[data-theme="violet"] {
+  --glass-accent-1: rgba(168, 85, 247, 0.8);
+  --glass-accent-2: rgba(139, 92, 246, 0.8);
+  --glass-accent-3: rgba(236, 72, 153, 0.8);
+  --glass-glow-1: rgba(168, 85, 247, 0.3);
+  --glass-glow-2: rgba(139, 92, 246, 0.3);
+  --glass-glow-3: rgba(236, 72, 153, 0.3);
+}
+
+[data-theme="mono"] {
+  --glass-accent-1: rgba(255, 255, 255, 0.8);
+  --glass-accent-2: rgba(200, 200, 200, 0.8);
+  --glass-accent-3: rgba(160, 160, 160, 0.8);
+  --glass-glow-1: rgba(255, 255, 255, 0.2);
+  --glass-glow-2: rgba(200, 200, 200, 0.2);
+  --glass-glow-3: rgba(160, 160, 160, 0.2);
+}
