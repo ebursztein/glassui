@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
-  import { hover, focus, glass, gradients } from '$lib/interactions/tokens';
+  import { focus, blurLevels } from '$lib/interactions/tokens';
   import type { Snippet } from 'svelte';
   import type { HTMLButtonAttributes } from 'svelte/elements';
   import type { Variant, Size } from '$lib/types/enums';
@@ -8,7 +8,9 @@
   interface Props extends HTMLButtonAttributes {
     variant?: Variant;
     size?: Size;
-    glowEffect?: boolean;
+    glass?: boolean;
+    blur?: 'sm' | 'md' | 'lg' | 'xl';
+    glow?: boolean;
     children: Snippet;
     class?: string;
   }
@@ -16,31 +18,62 @@
   let {
     variant = 'default',
     size = 'md',
-    glowEffect = false,
+    glass: isGlass = false,
+    blur: blurLevel = 'xl',
+    glow = false,
     disabled = false,
     children,
     class: className,
     ...rest
   }: Props = $props();
 
-  const variantClasses: Record<Variant, string> = {
+  // Solid variant classes (default look, no glass)
+  const solidVariants: Record<Variant, string> = {
     default: cn(
-      'bg-white/20 backdrop-blur-xl border border-white/30 text-[var(--glass-text)]',
+      'bg-neutral-800 border border-neutral-700 text-white',
+      'shadow-sm',
+      'hover:bg-neutral-700 hover:border-neutral-600',
+    ),
+    primary: cn(
+      'bg-gradient-to-r from-[var(--glass-accent-1)] via-[var(--glass-accent-2)] to-[var(--glass-accent-3)]',
+      'border border-white/20 text-white',
+      'shadow-[0_4px_20px_rgba(59,130,246,0.3)]',
+      'hover:shadow-[0_4px_30px_rgba(59,130,246,0.5)]',
+    ),
+    outline: cn(
+      'bg-transparent border-2 border-neutral-600 text-white',
+      'hover:bg-neutral-800 hover:border-neutral-500',
+    ),
+    ghost: cn(
+      'bg-transparent text-neutral-400',
+      'hover:bg-neutral-800 hover:text-white',
+    ),
+    destructive: cn(
+      'bg-red-600 border border-red-500 text-white',
+      'shadow-[0_4px_16px_rgba(239,68,68,0.3)]',
+      'hover:bg-red-700 hover:border-red-600',
+    ),
+  };
+
+  // Glass variant classes (applied when glass prop is true)
+  const glassVariants: Record<Variant, string> = {
+    default: cn(
+      'bg-white/20 border border-white/30 text-[var(--glass-text)]',
       'shadow-[0_4px_16px_rgba(0,0,0,0.2)]',
       'hover:bg-white/30 hover:border-white/40',
-      'before:absolute before:inset-0 before:rounded-xl',
+      'before:absolute before:inset-0 before:rounded-[inherit]',
       'before:bg-gradient-to-b before:from-white/20 before:to-transparent before:pointer-events-none',
     ),
     primary: cn(
       'bg-gradient-to-r from-[var(--glass-accent-1)] via-[var(--glass-accent-2)] to-[var(--glass-accent-3)]',
-      'backdrop-blur-xl border border-white/30 text-white',
+      'border border-white/30 text-white',
       'shadow-[0_4px_20px_rgba(59,130,246,0.4)]',
       'hover:shadow-[0_4px_30px_rgba(59,130,246,0.6)]',
-      'before:absolute before:inset-0 before:rounded-xl',
+      'before:absolute before:inset-0 before:rounded-[inherit]',
       'before:bg-gradient-to-b before:from-white/30 before:to-transparent before:pointer-events-none',
     ),
     outline: cn(
-      'bg-transparent backdrop-blur-sm border-2 border-white/40 text-[var(--glass-text)]',
+      'bg-transparent border-2 border-white/40 text-[var(--glass-text)]',
       'hover:bg-white/10 hover:border-white/60',
     ),
     ghost: cn(
@@ -48,10 +81,10 @@
       'hover:bg-white/10 hover:text-[var(--glass-text)]',
     ),
     destructive: cn(
-      'bg-[var(--glass-error)]/30 backdrop-blur-xl border border-red-400/40 text-red-100',
+      'bg-red-500/30 border border-red-400/40 text-red-100',
       'shadow-[0_4px_16px_rgba(239,68,68,0.3)]',
       'hover:bg-red-500/40 hover:border-red-400/60',
-      'before:absolute before:inset-0 before:rounded-xl',
+      'before:absolute before:inset-0 before:rounded-[inherit]',
       'before:bg-gradient-to-b before:from-white/10 before:to-transparent before:pointer-events-none',
     ),
   };
@@ -73,11 +106,17 @@
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
   );
 
-  const classes = $derived(cn(baseClasses, variantClasses[variant], sizeClasses[size], className));
+  const classes = $derived(cn(
+    baseClasses,
+    isGlass ? glassVariants[variant] : solidVariants[variant],
+    isGlass ? blurLevels[blurLevel] : '',
+    sizeClasses[size],
+    className,
+  ));
 </script>
 
 <div class="relative inline-block">
-  {#if glowEffect}
+  {#if glow}
     <div
       class="absolute -inset-1 rounded-xl bg-gradient-to-r from-[var(--glass-glow-1)] via-[var(--glass-glow-2)] to-[var(--glass-glow-3)] blur-lg opacity-70 transition-opacity hover:opacity-100"
     ></div>

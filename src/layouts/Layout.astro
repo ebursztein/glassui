@@ -1,12 +1,17 @@
 ---
 import '../styles/globals.css';
+import { Background } from '$lib/components/background';
+import { BackgroundSwitcher } from '$lib/components/background';
+import { ThemeSwitcher } from '$lib/components/theme-switcher';
+import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarFooter } from '$lib/components/sidebar';
 
 interface Props {
   title?: string;
   description?: string;
 }
 
-const { title = 'GlassUI', description = 'Glass design system — Svelte 5 component library' } = Astro.props;
+const { title = 'GlassUI', description = 'Glass design system -- Svelte 5 component library' } = Astro.props;
+const path = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -16,27 +21,53 @@ const { title = 'GlassUI', description = 'Glass design system — Svelte 5 compo
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
     <title>{title}</title>
   </head>
   <body class="min-h-screen antialiased">
-    <div class="flex min-h-screen">
-      <!-- Sidebar nav -->
-      <nav class="hidden md:flex w-64 flex-col gap-2 p-6 border-r border-white/10">
-        <a href="/" class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+    <Background client:load />
+
+    <div class="relative flex min-h-screen">
+      <Sidebar client:load>
+        <SidebarHeader>
           <span class="w-8 h-8 rounded-lg bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 flex items-center justify-center text-sm font-bold">G</span>
           GlassUI
-        </a>
+        </SidebarHeader>
 
-        <span class="text-xs font-semibold uppercase tracking-wider text-white/40 mt-4 mb-2">Components</span>
-        <a href="/components/icon" class="text-sm text-white/60 hover:text-white hover:bg-white/10 rounded-lg px-3 py-2 transition-colors">Icon</a>
-        <a href="/components/button" class="text-sm text-white/60 hover:text-white hover:bg-white/10 rounded-lg px-3 py-2 transition-colors">Button</a>
+        <SidebarSection label="Components">
+          <SidebarItem href="/components/icon" active={path.startsWith('/components/icon')}>Icon</SidebarItem>
+          <SidebarItem href="/components/button" active={path.startsWith('/components/button')}>Button</SidebarItem>
+          <SidebarItem href="/components/card" active={path.startsWith('/components/card')}>Card</SidebarItem>
+          <SidebarItem href="/components/badge" active={path.startsWith('/components/badge')}>Badge</SidebarItem>
+          <SidebarItem href="/components/alert" active={path.startsWith('/components/alert')}>Alert</SidebarItem>
+        </SidebarSection>
 
-        <span class="text-xs font-semibold uppercase tracking-wider text-white/40 mt-6 mb-2">Foundation</span>
-        <a href="/components/theme" class="text-sm text-white/60 hover:text-white hover:bg-white/10 rounded-lg px-3 py-2 transition-colors">Theme</a>
-      </nav>
+        <SidebarSection label="Form">
+          <SidebarItem href="/components/input" active={path.startsWith('/components/input')}>Input</SidebarItem>
+          <SidebarItem href="/components/toggle" active={path.startsWith('/components/toggle')}>Toggle</SidebarItem>
+          <SidebarItem href="/components/textarea" active={path.startsWith('/components/textarea')}>Textarea</SidebarItem>
+        </SidebarSection>
+
+        <SidebarSection label="Foundation">
+          <SidebarItem href="/components/theme" active={path.startsWith('/components/theme')}>Theme</SidebarItem>
+        </SidebarSection>
+
+        <SidebarFooter>
+          <div>
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1.5 block">Background</span>
+            <BackgroundSwitcher client:load />
+          </div>
+          <div>
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1.5 block">Theme</span>
+            <ThemeSwitcher client:load showMode={false} />
+          </div>
+        </SidebarFooter>
+      </Sidebar>
 
       <!-- Main content -->
-      <main class="flex-1 overflow-y-auto">
+      <main class="flex-1 overflow-y-auto md:ml-64">
         <!-- Mobile header -->
         <header class="md:hidden flex items-center gap-3 p-4 border-b border-white/10">
           <a href="/" class="text-lg font-bold text-white flex items-center gap-2">

@@ -1,8 +1,16 @@
-# GlassUI — Svelte 5 Component Library
+# GlassUI -- Svelte 5 Component Library
 
 ## Overview
 
-GlassUI is a glassmorphism design system built with Svelte 5, Astro 5, Tailwind CSS v4, and Zod 4. Components are organized by category and use a unified foundation of shared enums, global state, events, animation tokens, and interaction tokens.
+GlassUI is a Preline-equivalent component library for Svelte 5 + Astro. We port Preline's components, CSS system, and accessibility into native Svelte 5, then add opt-in glass and glow effects on top. Light and dark modes are equal citizens. Glass is optional, not the default.
+
+## Sprint Workflow
+
+Development follows `docs/master_plan.md` (10 sprints, 36 components). Each sprint has:
+- `docs/{sprint_name}/plan.md` -- detailed tasks and acceptance criteria
+- `docs/{sprint_name}/tracker.md` -- task checklist with status
+- `docs/{sprint_name}/notes.md` -- decisions and learnings
+- `docs/changelog.md` -- unified changelog (append after each sprint)
 
 ## Quick Start
 
@@ -12,55 +20,88 @@ npm run dev       # Start Astro dev server
 npm run build     # Production build
 ```
 
+## Glass Props
+
+Every visual component supports these optional props:
+
+```svelte
+<Card>solid</Card>
+<Card glass>frosted</Card>
+<Card glass blur="xl" glow>heavy glass + glow</Card>
+<Button variant="primary" glass glow>Glass Button</Button>
+<Input label="Email" glass glow />
+```
+
+| Prop | Type | Effect |
+|------|------|--------|
+| `glass` | boolean | Enables glass surface (backdrop-blur + translucent bg + white border) |
+| `blur` | sm/md/lg/xl | Backdrop-blur amount (requires `glass`) |
+| `glow` | boolean | Gradient glow. Context-aware: persistent on Card/Button, on-focus for Input |
+
 ## Architecture
 
 ```
 src/lib/                    # The component library
-├── types/enums.ts          # Shared Zod enums (Variant, Size, Status, etc.)
-├── state/                  # Global state (theme, notifications, dialogs)
-├── events/bus.svelte.ts    # Global event bus
-├── motion/                 # Animation tokens (springs, durations, easings)
-├── interactions/           # Interaction tokens (hover, focus, glass surfaces)
-├── theme/                  # CSS tokens + presets
-├── utils/cn.ts             # clsx + tailwind-merge
-└── components/             # Components by category
-    ├── icon/               # Icon (wraps phosphor-svelte)
-    ├── button/             # Button
-    └── .../                # Future categories
+  types/enums.ts            # Shared Zod enums (Variant, Size, Status, etc.)
+  state/                    # Global state (theme, notifications, dialogs)
+  events/bus.svelte.ts      # Global event bus
+  motion/                   # Animation tokens (springs, durations, easings)
+  interactions/             # Interaction tokens (hover, focus, glass surfaces)
+  theme/                    # CSS tokens + presets
+  utils/cn.ts               # clsx + tailwind-merge
+  components/               # Components by category
+    icon/                   # Icon (wraps phosphor-svelte)
+    button/                 # Button
+    .../                    # More components
+src/components/             # Showcase demos (PropEditor, *Demo.svelte)
+src/pages/                  # Astro pages
+src/layouts/Layout.astro    # Site layout
 ```
 
 ## Adding a New Component
 
-1. Create a directory: `src/lib/components/{category}/`
-2. Create `schema.ts` with Zod schema + `ComponentMeta` (see existing schemas for format)
-3. Create `{Name}.svelte` using Svelte 5 runes (`$props`, `$state`, `$derived`)
-4. Create `index.ts` barrel export
+1. Read the Preline reference skill for the component's original design
+2. Create `src/lib/components/{name}/` with `{Name}.svelte`, `schema.ts`, `index.ts`
+3. Use Svelte 5 runes (`$props`, `$state`, `$derived`), shared enums, `cn()`, interaction tokens
+4. Add glass/blur/glow props support
 5. Add export to `src/lib/index.ts`
-6. Run `npx tsx scripts/generate.ts` to regenerate skills
-7. Add showcase page in `src/pages/components/{name}.astro`
+6. Create `src/components/{Name}Demo.svelte` with PropEditor integration
+7. Create `src/pages/components/{name}.astro`
 8. Add nav link in `src/layouts/Layout.astro`
+9. Run `npx tsx scripts/generate.ts` to regenerate skills
 
 ## Component Conventions
 
-- **Names are generic**: `Button`, `Card`, `Input` — not `GlassButton`. "Glass" is the theme.
-- **Props use shared enums**: Import `Variant`, `Size`, `Status` from `$lib/types/enums`
-- **Interaction tokens are internal**: Components use `hover`, `focus`, `glass` tokens internally. Users don't need to know about them.
-- **Svelte 5 runes**: Use `$props()`, `$state()`, `$derived()`, snippets for children
-- **Clean user API**: `<Button variant="primary">Save</Button>` — no complexity leaks
+- **Generic names**: `Button`, `Card`, `Input` -- not `GlassButton`
+- **Shared enums**: Import `Variant`, `Size`, `Status` from `$lib/types/enums`
+- **Tokens are internal**: Components use `hover`, `focus`, `glass` tokens internally. Users never see them.
+- **Svelte 5 runes**: `$props()`, `$state()`, `$derived()`, snippets for children
+- **Clean API**: `<Button variant="primary">Save</Button>`
+- **Glass is opt-in**: `glass`, `blur`, `glow` are per-instance props, not a theme switch
+- **Preline-inspired**: Draw from Preline's design and accessibility, build natively in Svelte 5
 
 ## Styling
 
-- Theme is controlled via CSS custom properties in `src/lib/theme/tokens.css`
-- Glass surfaces use `bg-white/10 backdrop-blur-xl border-white/20`
-- Accents use `--glass-accent-{1,2,3}` and `--glass-glow-{1,2,3}` variables
-- Presets: `default`, `ocean`, `ember`, `violet`, `mono` — applied via `data-theme` attribute
+- Theme colors via CSS custom properties in `src/lib/theme/tokens.css`
+- Accents: `--glass-accent-{1,2,3}` and `--glass-glow-{1,2,3}`
+- Presets: `default`, `ocean`, `ember`, `violet`, `mono` via `data-theme` attribute
+- Glass surface classes from `$lib/interactions/tokens` (used internally by components)
+
+## Reference Material
+
+- **Master plan**: `docs/master_plan.md` -- 10-sprint roadmap with component mapping
+- **Changelog**: `docs/changelog.md` -- unified log of all completed work
+- **Preline source**: `preline/` in repo root -- the original component library we port from
+- **Design plan**: `docs/PLAN.md` -- the original design system spec
+- **Skills**: `.claude/skills/glassui-architecture/` -- build conventions + sprint workflow
+- **Skills**: `.claude/skills/preline-reference/` -- Preline component inventory
 
 ## MCP Server
 
-The MCP server at `tools/mcp/` auto-discovers components from `src/lib/components/`. Tools:
-- `list_components(category?)` — list components
-- `get_component(name)` — get source + schema + examples
-- `search_components(query)` — fuzzy search
+At `tools/mcp/` -- auto-discovers components from `src/lib/components/`. Tools:
+- `list_components(category?)` -- list components
+- `get_component(name)` -- get source + schema + examples
+- `search_components(query)` -- fuzzy search
 
 ## Skills
 
@@ -68,9 +109,11 @@ Auto-generated from `schema.ts` files. Run `npx tsx scripts/generate.ts` to rege
 
 ## Dependencies
 
-- **Svelte 5** — runes, snippets
-- **Astro 5** — SSG, `<Image>`, layouts
-- **Tailwind CSS v4** — utility-first styling
-- **Zod 4** — schema validation, `z.infer<>` for types
-- **phosphor-svelte** — icons with adjustable size/weight
-- **clsx + tailwind-merge** — class composition via `cn()`
+- **Svelte 5** -- runes, snippets
+- **Astro 5** -- SSG, layouts
+- **Tailwind CSS v4** -- utility-first styling with @theme system
+- **@tailwindcss/typography** -- prose/heading typography
+- **Zod 4** -- schema validation, `z.infer<>` for types
+- **@iconify/svelte + @iconify-json/ph** -- icons by string name (`<Icon name="house" />`)
+- **@floating-ui/dom** -- dropdown/tooltip/popover positioning
+- **clsx + tailwind-merge** -- class composition via `cn()`

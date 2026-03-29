@@ -49,3 +49,11 @@ export function glassClasses(intensity: GlassIntensity): string {
   const g = glass[intensity];
   return `${g.bg} ${g.blur} ${g.border} ${g.shadow}`;
 }
+
+/** Backdrop blur level presets */
+export const blurLevels: Record<string, string> = {
+  sm: 'backdrop-blur-sm',
+  md: 'backdrop-blur-md',
+  lg: 'backdrop-blur-lg',
+  xl: 'backdrop-blur-xl',
+};

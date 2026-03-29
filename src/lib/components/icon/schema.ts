@@ -1,7 +1,7 @@
 import { z } from 'zod/v4';
 import type { ComponentMeta } from '$lib/theme/types';
 
-/** Icon stroke weight / style */
+/** Icon stroke weight / style (Phosphor icons only) */
 export const IconWeight = z.enum(['thin', 'light', 'regular', 'bold', 'fill', 'duotone']);
 export type IconWeight = z.infer<typeof IconWeight>;
 
@@ -10,10 +10,10 @@ export const IconSize = z.union([z.number(), z.string()]).default(24);
 export type IconSize = z.infer<typeof IconSize>;
 
 export const IconSchema = z.object({
+  name: z.string(),
   size: IconSize,
   weight: IconWeight.default('regular'),
   color: z.string().optional(),
-  mirrored: z.boolean().default(false),
 });
 
 export type IconProps = z.infer<typeof IconSchema>;
@@ -21,20 +21,19 @@ export type IconProps = z.infer<typeof IconSchema>;
 export const meta: ComponentMeta = {
   name: 'Icon',
   category: 'icon',
-  description: 'Wraps Phosphor Icons with validated size and weight. Import specific icons from phosphor-svelte and pass as the icon prop, or use standalone Phosphor components with size/weight props.',
+  description: 'Renders icons by name. Uses Phosphor icons by default -- pass any icon name like "house", "gear", "heart". Supports all Iconify icon sets via prefix (e.g. "mdi:home").',
   since: '0.1.0',
   props: [
-    { name: 'icon', type: 'Component', description: 'Phosphor icon component' },
-    { name: 'size', type: 'number | string', default: '24', description: 'Icon size in pixels or CSS value' },
-    { name: 'weight', type: "'thin' | 'light' | 'regular' | 'bold' | 'fill' | 'duotone'", default: "'regular'", description: 'Icon weight/thickness', options: ['thin', 'light', 'regular', 'bold', 'fill', 'duotone'] },
-    { name: 'color', type: 'string', default: "'currentColor'", description: 'Icon color' },
-    { name: 'mirrored', type: 'boolean', default: 'false', description: 'Mirror the icon horizontally' },
+    { name: 'name', type: 'string', description: 'Icon name: "house", "arrow-right", or full iconify name "mdi:home"' },
+    { name: 'size', type: 'number | string', default: '24', description: 'Icon size in pixels' },
+    { name: 'weight', type: "'thin' | 'light' | 'regular' | 'bold' | 'fill' | 'duotone'", default: "'regular'", description: 'Phosphor weight variant (ph: icons only)', options: ['thin', 'light', 'regular', 'bold', 'fill', 'duotone'] },
+    { name: 'color', type: 'string', description: 'Icon color (CSS value). Defaults to currentColor.' },
   ],
   examples: [
-    { title: 'Default', code: '<Icon icon={House} />' },
-    { title: 'Thin 16px', code: '<Icon icon={Gear} size={16} weight="thin" />' },
-    { title: 'Bold 32px', code: '<Icon icon={Heart} size={32} weight="bold" />' },
-    { title: 'Direct phosphor', code: '<Heart size={24} weight="fill" color="red" />' },
+    { title: 'Default', code: '<Icon name="house" />' },
+    { title: 'Bold 32px', code: '<Icon name="heart" size={32} weight="bold" />' },
+    { title: 'Colored', code: '<Icon name="heart" weight="fill" color="red" />' },
+    { title: 'Other icon set', code: '<Icon name="mdi:home" size={24} />' },
   ],
-  import: "import { Icon } from 'glassui';\nimport { House, Gear, Heart } from 'phosphor-svelte';",
+  import: "import { Icon } from 'glassui';",
 };

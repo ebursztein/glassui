@@ -1,40 +1,45 @@
 <script lang="ts">
-  import type { Component } from 'svelte';
-  import type { IconWeight } from './schema';
+  import IconifyIcon from '@iconify/svelte';
 
   interface Props {
-    /** Phosphor icon component */
-    icon: Component<any>;
-    /** Size in pixels or CSS value */
+    /** Icon name: "house", "arrow-right", or full iconify name "mdi:home" */
+    name: string;
+    /** Size in pixels */
     size?: number | string;
-    /** Icon weight/thickness */
-    weight?: IconWeight;
-    /** Icon color */
+    /** Phosphor weight (only for ph: icons) */
+    weight?: 'thin' | 'light' | 'regular' | 'bold' | 'fill' | 'duotone';
+    /** Icon color (CSS color value) */
     color?: string;
-    /** Mirror horizontally */
-    mirrored?: boolean;
     /** Additional CSS class */
     class?: string;
     [key: string]: unknown;
   }
 
   let {
-    icon,
+    name,
     size = 24,
     weight = 'regular',
-    color = 'currentColor',
-    mirrored = false,
+    color,
     class: className,
     ...rest
   }: Props = $props();
+
+  // Resolve full iconify icon name
+  // "house" -> "ph:house"
+  // "house" + weight="bold" -> "ph:house-bold"
+  // "mdi:home" -> "mdi:home" (pass through, weight ignored)
+  const icon = $derived(
+    name.includes(':')
+      ? name
+      : `ph:${name}${weight !== 'regular' ? `-${weight}` : ''}`
+  );
 </script>
 
-<svelte:component
-  this={icon}
-  {size}
-  {weight}
-  {color}
-  {mirrored}
+<IconifyIcon
+  {icon}
+  width={size}
+  height={size}
+  style={color ? `color: ${color}` : undefined}
   class={className}
   {...rest}
 />

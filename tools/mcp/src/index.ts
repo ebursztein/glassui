@@ -190,6 +190,59 @@ server.tool(
   },
 );
 
+// Icon search: load Phosphor icon names from @iconify-json/ph
+const ICONS_JSON = path.resolve(import.meta.dirname, '../../../node_modules/@iconify-json/ph/icons.json');
+
+function loadIconNames(): string[] {
+  try {
+    const raw = JSON.parse(fs.readFileSync(ICONS_JSON, 'utf-8'));
+    // Icon names include weight suffixes (e.g. "house-bold", "house-fill").
+    // Extract unique base names (without weight suffixes).
+    const weightSuffixes = ['-thin', '-light', '-bold', '-fill', '-duotone'];
+    const baseNames = new Set<string>();
+    for (const name of Object.keys(raw.icons ?? {})) {
+      let base = name;
+      for (const suffix of weightSuffixes) {
+        if (name.endsWith(suffix)) {
+          base = name.slice(0, -suffix.length);
+          break;
+        }
+      }
+      baseNames.add(base);
+    }
+    return [...baseNames].sort();
+  } catch {
+    return [];
+  }
+}
+
+// Tool: search_icons
+server.tool(
+  'search_icons',
+  'Search Phosphor icon names available in GlassUI. Returns matching icon names you can use with <Icon name="..." />',
+  { query: z.string().describe('Search query (e.g. "arrow", "user", "chart")') },
+  async ({ query }) => {
+    const names = loadIconNames();
+    const q = query.toLowerCase();
+    const results = names.filter((n) => n.includes(q));
+    const limited = results.slice(0, 50);
+
+    const response = {
+      total: results.length,
+      showing: limited.length,
+      icons: limited.map((name) => ({
+        name,
+        usage: `<Icon name="${name}" />`,
+        weights: ['thin', 'light', 'regular', 'bold', 'fill', 'duotone'],
+      })),
+    };
+
+    return {
+      content: [{ type: 'text' as const, text: JSON.stringify(response, null, 2) }],
+    };
+  },
+);
+
 // Start the server
 async function main() {
   const transport = new StdioServerTransport();

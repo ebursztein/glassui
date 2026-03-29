@@ -25,3 +25,13 @@ export const SpringConfig = z.object({
   bounce: z.number().optional(),
 });
 export type SpringConfig = z.infer<typeof SpringConfig>;
+
+/** Motion configuration for any animated component */
+export const MotionConfig = z.object({
+  spring: SpringPreset.or(SpringConfig).default('snappy'),
+  duration: Duration.default('normal'),
+  easing: Easing.default('default'),
+  enter: TransitionPreset.optional(),
+  exit: TransitionPreset.optional(),
+});
+export type MotionConfig = z.infer<typeof MotionConfig>;
