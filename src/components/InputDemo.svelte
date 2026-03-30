@@ -1,92 +1,127 @@
 <script lang="ts">
   import { Input } from '$lib/components/input';
-  import { Card, CardContent } from '$lib/components/card';
   import { meta } from '$lib/components/input/schema';
   import PropEditor from './PropEditor.svelte';
+  import DemoSection from './DemoSection.svelte';
+  import TableOfContents from './TableOfContents.svelte';
 
   let size = $state<string>('md');
+  let status = $state<string>('');
   let glass = $state(false);
   let glow = $state(false);
   let disabled = $state(false);
 
-  const values = $derived({ size, glass, glow, disabled });
+  const values = $derived({ size, status, glass, glow, disabled });
+
+
+  function enumOrFalse(v: any): string | false {
+    return v === 'false' || v === false ? false : v;
+  }
 
   function handleChange(key: string, value: any) {
     if (key === 'size') size = value;
-    if (key === 'glass') glass = value;
-    if (key === 'glow') glow = value;
+    if (key === 'status') status = value;
+    if (key === 'glass') glass = enumOrFalse(value);
+    if (key === 'glow') glow = enumOrFalse(value);
     if (key === 'disabled') disabled = value;
   }
+
+  const codeSnippet = $derived(() => {
+    const props: string[] = [];
+    if (size !== 'md') props.push(`size="${size}"`);
+    if (status) props.push(`status="${status}"`);
+    if (glass) props.push('glass');
+    if (glow) props.push('glow');
+    if (disabled) props.push('disabled');
+    const propsStr = props.length > 0 ? ' ' + props.join(' ') : '';
+    return `<Input label="Email"${propsStr} placeholder="you@example.com" />`;
+  });
+
+  const sections = [
+    { id: 'playground', label: 'Playground' },
+    { id: 'status-colors', label: 'Status Colors' },
+    { id: 'error-message', label: 'Error Message' },
+    { id: 'helper-text', label: 'Helper Text' },
+    { id: 'sizes', label: 'Sizes' },
+    { id: 'glass', label: 'Glass' },
+  ];
 </script>
 
-<div class="space-y-8">
-  <Card bg="gradient">
-    {#snippet children()}
-      <CardContent>
-        {#snippet children()}
-          <div class="max-w-md mx-auto">
-            <Input label="Email" placeholder="you@example.com" size={size as any} {glass} {glow} {disabled} />
-          </div>
-        {/snippet}
-      </CardContent>
-    {/snippet}
-  </Card>
+<div class="flex gap-10">
+  <div class="flex-1 min-w-0 space-y-12">
 
-  <Card>
-    {#snippet children()}
-      <CardContent>
-        {#snippet children()}
-          <h3 class="text-sm font-semibold text-white mb-4">Props</h3>
-          <PropEditor props={meta.props} {values} onchange={handleChange} />
-        {/snippet}
-      </CardContent>
-    {/snippet}
-  </Card>
+    <!-- Interactive Playground -->
+    <section id="playground" class="scroll-mt-24">
+      <h2 class="text-lg font-semibold text-foreground">Playground</h2>
+      <p class="mt-1 text-sm text-muted-foreground">Explore all input props interactively.</p>
 
-  <Card bg="gradient">
-    {#snippet children()}
-      <CardContent>
-        {#snippet children()}
-          <h3 class="text-sm font-semibold text-white mb-4">Solid vs Glass</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
-            <Input label="Solid" placeholder="Default input" />
-            <Input label="Glass + Glow" placeholder="Frosted input" glass glow />
-          </div>
-        {/snippet}
-      </CardContent>
-    {/snippet}
-  </Card>
+      <!-- Live preview -->
+      <div class="mt-4 rounded-lg border border-border p-8 flex items-center justify-center min-h-[100px] bg-background">
+        <div class="w-full max-w-sm">
+          <Input
+            label="Email"
+            placeholder="you@example.com"
+            size={size as any}
+            status={status ? status as any : undefined}
+            {glass} {glow} {disabled}
+          />
+        </div>
+      </div>
 
-  <Card>
-    {#snippet children()}
-      <CardContent>
-        {#snippet children()}
-          <h3 class="text-sm font-semibold text-white mb-4">Status</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
-            <Input label="Info" status="info" placeholder="Info state" />
-            <Input label="Success" status="success" placeholder="Valid" />
-            <Input label="Warning" status="warning" placeholder="Check this" />
-            <Input label="Error" status="error" placeholder="Invalid email" />
-          </div>
-        {/snippet}
-      </CardContent>
-    {/snippet}
-  </Card>
+<!-- Code -->
+      <pre class="mt-4 text-sm text-primary bg-primary/5 border border-primary/10 rounded-lg p-4 overflow-x-auto"><code>{codeSnippet()}</code></pre>
 
-  <Card>
-    {#snippet children()}
-      <CardContent>
-        {#snippet children()}
-          <h3 class="text-sm font-semibold text-white mb-4">Sizes</h3>
-          <div class="space-y-3 max-w-md">
-            <Input size="xs" placeholder="XS input" />
-            <Input size="sm" placeholder="SM input" />
-            <Input size="md" placeholder="MD input" />
-            <Input size="lg" placeholder="LG input" />
-            <Input size="xl" placeholder="XL input" />
-          </div>
-        {/snippet}
-      </CardContent>
-    {/snippet}
-  </Card>
+      <!-- Props -->
+      <div class="mt-4 rounded-lg border border-border p-5">
+        <h3 class="text-sm font-semibold text-foreground mb-4">Props</h3>
+        <PropEditor props={meta.props} {values} onchange={handleChange} />
+      </div>
+    </section>
+
+    <!-- Status Colors -->
+    <DemoSection id="status-colors" title="Status Colors" description="Colored borders to indicate input state.">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
+        <Input label="Info" status="info" placeholder="Informational" />
+        <Input label="Success" status="success" placeholder="Looks good" />
+        <Input label="Warning" status="warning" placeholder="Check this" />
+        <Input label="Error" status="error" placeholder="Invalid value" />
+      </div>
+    </DemoSection>
+
+    <!-- Error Message -->
+    <DemoSection id="error-message" title="Error Message" description="The error prop sets the status to error and displays a message below the input.">
+      <div class="w-full max-w-sm">
+        <Input label="Email" placeholder="you@example.com" error="Please enter a valid email address." />
+      </div>
+    </DemoSection>
+
+    <!-- Helper Text -->
+    <DemoSection id="helper-text" title="Helper Text" description="Supportive text below the input for additional context.">
+      <div class="w-full max-w-sm">
+        <Input label="Username" placeholder="johndoe" helperText="Must be 3-20 characters, letters and numbers only." />
+      </div>
+    </DemoSection>
+
+    <!-- Sizes -->
+    <DemoSection id="sizes" title="Sizes" description="Five size variants from extra-small to extra-large.">
+      <div class="space-y-3 w-full max-w-md">
+        <Input size="xs" placeholder="Extra small (xs)" />
+        <Input size="sm" placeholder="Small (sm)" />
+        <Input size="md" placeholder="Medium (md)" />
+        <Input size="lg" placeholder="Large (lg)" />
+        <Input size="xl" placeholder="Extra large (xl)" />
+      </div>
+    </DemoSection>
+
+    <!-- Glass -->
+    <DemoSection id="glass" title="Glass" description="Optional glass surface with backdrop blur and glow on focus. Shown on a dark background." glass>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
+        <Input label="Glass" placeholder="Frosted input" glass />
+        <Input label="Glass + Glow" placeholder="Focus to see glow" glass glow />
+      </div>
+    </DemoSection>
+
+  </div>
+
+  <TableOfContents {sections} />
 </div>

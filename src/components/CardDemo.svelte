@@ -62,11 +62,8 @@
       <p class="mt-1 text-sm text-muted-foreground">Explore all card props interactively.</p>
 
       <!-- Live preview -->
-      <div class="mt-4 rounded-lg border border-border p-8 flex items-center justify-center min-h-[280px] relative overflow-hidden {glassbg ? 'glass-bg' : 'bg-background'}">
-        {#if glassbg}
-          <GlassBackdrop />
-        {/if}
-        <div class="relative z-10 w-full max-w-md">
+      <div class="mt-4 rounded-lg border border-border p-8 flex items-center justify-center min-h-[280px] bg-background">
+        <div class="w-full max-w-md">
           <Card
             glass={glass || false}
             {glassbg}
