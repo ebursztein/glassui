@@ -49,10 +49,12 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* Neutral glass surface -- for elements with no color of their own */
-.glass-bg-subtle { background: rgba(255, 255, 255, 0.5); }
-.glass-bg-frosted { background: rgba(255, 255, 255, 0.6); }
-.glass-bg-heavy { background: rgba(255, 255, 255, 0.7); }
+/* Neutral glass surface -- for elements with no color of their own.
+   Light: cool gray tint so glass is visible on white pages.
+   Dark: translucent white shimmer on dark backgrounds. */
+.glass-bg-subtle { background: rgba(180, 195, 220, 0.2); }
+.glass-bg-frosted { background: rgba(180, 195, 220, 0.3); }
+.glass-bg-heavy { background: rgba(180, 195, 220, 0.4); }
 
 .dark .glass-bg-subtle { background: rgba(255, 255, 255, 0.08); }
 .dark .glass-bg-frosted { background: rgba(255, 255, 255, 0.12); }
