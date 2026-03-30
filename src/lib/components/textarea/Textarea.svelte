@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
-  import { getGlassClass, resolveGlass, bumpGlass, getParentGlass } from '$lib/interactions/glass';
+  import { getGlassClass, getGlassBgClass, resolveGlass, bumpGlass, getParentGlass } from '$lib/interactions/glass';
   import { getGlowClass, type GlowIntensity } from '$lib/interactions/glow';
   import { GlassBackdrop } from '$lib/components/glass';
   import type { HTMLTextareaAttributes } from 'svelte/elements';
@@ -46,6 +46,7 @@
   const inherited = $derived(parentGlass());
   const effectiveGlass = $derived(resolveGlass(glass) || (inherited ? bumpGlass(inherited) : false));
   const glassClass = $derived(getGlassClass(effectiveGlass));
+  const glassBgClass = $derived(getGlassBgClass(effectiveGlass));
   const glowClass = $derived(getGlowClass(glow));
 
   const sizePadding: Record<Size, string> = {
@@ -84,7 +85,7 @@
     'relative flex w-full transition-all duration-300',
     'focus:outline-none',
     'disabled:cursor-not-allowed disabled:opacity-50',
-    glassClass ? cn(glassClass, glassInteraction) : solidClasses,
+    glassClass ? cn(glassClass, glassBgClass, glassInteraction) : solidClasses,
     effectiveStatus ? statusBorders[effectiveStatus] : '',
     sizePadding[size],
     resizeClasses[resize],

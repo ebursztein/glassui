@@ -1,7 +1,6 @@
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
-  import { getGlassClass, type GlassEffect } from '$lib/interactions/glass';
-  import { GlassBackdrop } from '$lib/components/glass';
+  import { getGlassClass, getGlassBgClass, type GlassEffect } from '$lib/interactions/glass';
   import type { Snippet } from 'svelte';
   import type { Variant, Size, Status } from '$lib/types/enums';
 
@@ -11,7 +10,6 @@
     status?: Status;
     dot?: boolean;
     glass?: GlassEffect | boolean;
-    glassbg?: boolean;
     children: Snippet;
     class?: string;
     [key: string]: unknown;
@@ -23,7 +21,6 @@
     status,
     dot = false,
     glass = false,
-    glassbg = false,
     children,
     class: className,
     ...rest
@@ -55,12 +52,13 @@
     xl: 'px-5 py-2 text-base',
   };
 
-  const glassInteraction = 'border-white/20';
+  const glassBgClass = $derived(getGlassBgClass(glass));
 
+  // Glass is additive: keep variant/status color, layer frost on top
   const variantClass = $derived(() => {
-    if (glassClass) return cn(glassClass, glassInteraction);
-    if (status) return solidStatus[status];
-    return solidVariants[variant];
+    const base = status ? solidStatus[status] : solidVariants[variant];
+    if (glassClass) return cn(base, glassClass, !status && (variant === 'default' || variant === 'outline' || variant === 'ghost') ? glassBgClass : '');
+    return base;
   });
 
   const dotColors: Record<Status, string> = {
@@ -78,14 +76,9 @@
   ));
 </script>
 
-<div class="relative inline-block {glassbg ? 'glass-bg rounded-full' : ''}">
-  {#if glassbg}
-    <GlassBackdrop />
+<span class={classes} {...rest}>
+  {#if dot}
+    <span class={cn('inline-block w-1.5 h-1.5 rounded-full shrink-0', status ? dotColors[status] : 'bg-current')}></span>
   {/if}
-  <span class={classes} {...rest}>
-    {#if dot}
-      <span class={cn('inline-block w-1.5 h-1.5 rounded-full shrink-0', status ? dotColors[status] : 'bg-current')}></span>
-    {/if}
-    {@render children()}
-  </span>
-</div>
+  {@render children()}
+</span>

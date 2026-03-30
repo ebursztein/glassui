@@ -46,11 +46,18 @@ export function getParentGlass(): () => GlassEffect | false {
   }
 }
 
-/** Map glass effect to CSS class. */
+/** Map glass effect to frost CSS class (blur + border + shadow, no background). */
 export function getGlassClass(glass: GlassEffect | boolean | undefined): string {
   const effect = resolveGlass(glass);
   if (!effect) return '';
   return `glass-${effect}`;
+}
+
+/** Neutral translucent white background for glass elements with no color of their own. */
+export function getGlassBgClass(glass: GlassEffect | boolean | undefined): string {
+  const effect = resolveGlass(glass);
+  if (!effect) return '';
+  return `glass-bg-${effect}`;
 }
 
 /** Gradient orb definitions for GlassBackdrop. Uses CSS var references so they follow the theme. */

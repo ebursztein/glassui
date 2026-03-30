@@ -1,7 +1,7 @@
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
   import { focus } from '$lib/interactions/tokens';
-  import { getGlassClass, type GlassEffect } from '$lib/interactions/glass';
+  import { getGlassClass, getGlassBgClass, type GlassEffect } from '$lib/interactions/glass';
   import { getGlowClass, type GlowIntensity } from '$lib/interactions/glow';
   import { GlassBackdrop } from '$lib/components/glass';
   import type { Size } from '$lib/types/enums';
@@ -43,6 +43,7 @@
   const config = $derived(sizeConfig[size] || sizeConfig.md);
 
   const glassClass = $derived(getGlassClass(glass));
+  const glassBgClass = $derived(getGlassBgClass(glass));
   const glowClass = $derived(getGlowClass(glow));
 
   const solidUnchecked = 'bg-surface border-surface-line';
@@ -54,8 +55,8 @@
     focus.ring,
     config.track,
     checked
-      ? (glassClass || solidChecked)
-      : (glassClass || solidUnchecked),
+      ? cn(solidChecked, glassClass)
+      : cn(glassClass ? cn(glassClass, glassBgClass) : solidUnchecked),
     className,
   ));
 
