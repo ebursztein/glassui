@@ -77,8 +77,8 @@
   };
 
   const glassInteraction = cn(
-    'placeholder:text-white/40',
-    'focus:border-white/40 focus:ring-2 focus:ring-white/20',
+    'placeholder:text-foreground/40',
+    'focus:border-primary/40 focus:ring-2 focus:ring-primary/20',
   );
 
   const textareaClasses = $derived(cn(

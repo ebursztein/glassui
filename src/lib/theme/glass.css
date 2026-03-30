@@ -10,34 +10,53 @@
  */
 
 /* ================================================
-   Glass Frost Effect
-   Additive: blur + border + shadow + text color.
-   Does NOT set background -- components keep their
-   own colors and the frost layers on top.
+   Glass Frost Effect (light mode defaults)
+   Additive: blur + border + shadow.
+   Adapts to light/dark via .dark selector.
    ================================================ */
 
 .glass-subtle {
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .glass-frosted {
   backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .glass-heavy {
   backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Dark mode frost */
+.dark .glass-subtle {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.dark .glass-frosted {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.dark .glass-heavy {
+  border-color: rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* Neutral glass background -- for elements with no color of their own */
-.glass-bg-subtle { background: rgba(255, 255, 255, 0.08); }
-.glass-bg-frosted { background: rgba(255, 255, 255, 0.12); }
-.glass-bg-heavy { background: rgba(255, 255, 255, 0.22); }
+/* Neutral glass surface -- for elements with no color of their own */
+.glass-bg-subtle { background: rgba(255, 255, 255, 0.5); }
+.glass-bg-frosted { background: rgba(255, 255, 255, 0.6); }
+.glass-bg-heavy { background: rgba(255, 255, 255, 0.7); }
+
+.dark .glass-bg-subtle { background: rgba(255, 255, 255, 0.08); }
+.dark .glass-bg-frosted { background: rgba(255, 255, 255, 0.12); }
+.dark .glass-bg-heavy { background: rgba(255, 255, 255, 0.22); }
 
 /* ================================================
    Glass Background
