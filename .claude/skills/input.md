@@ -1,3 +1,56 @@
+# Input
+
+Text input with size variants, status colors, label, helper text, error messages, and optional glass surface with glow on focus.
+
+## Import
+
+```ts
+import { Input } from 'glassui';
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| size | `xs | sm | md | lg | xl` | `md` | Input size |
+| status | `info | success | warning | error` | — | Status border color |
+| label | `string` | — | Label text above input |
+| error | `string` | — | Error message (sets status to error) |
+| helperText | `string` | — | Helper text below input |
+| glass | `subtle | frosted | heavy` | `false` | Glass translucency level |
+| glassbg | `boolean` | `false` | Themed gradient backdrop |
+| glow | `sm | md | lg` | `false` | Glow intensity |
+| disabled | `boolean` | `false` | Disabled state |
+
+## Examples
+
+### Default
+
+```svelte
+<Input placeholder="Enter text" />
+```
+
+### With label
+
+```svelte
+<Input label="Email" placeholder="you@example.com" />
+```
+
+### Glass + glow
+
+```svelte
+<Input label="Name" glass glow placeholder="John" />
+```
+
+### Error status
+
+```svelte
+<Input label="Email" status="error" placeholder="Invalid" />
+```
+
+## Full Source
+
+```svelte
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
   import { getGlassClass, resolveGlass, bumpGlass, getParentGlass } from '$lib/interactions/glass';
@@ -101,3 +154,4 @@
     <p id="{inputId}-hint" class="mt-1.5 text-xs text-muted-foreground">{helperText}</p>
   {/if}
 </div>
+```

@@ -1,3 +1,53 @@
+# Toggle
+
+Switch toggle with size variants, label, and optional glass surface. Keyboard accessible.
+
+## Import
+
+```ts
+import { Toggle } from 'glassui';
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| size | `xs | sm | md | lg | xl` | `md` | Toggle size |
+| checked | `boolean` | `false` | Toggle state (bindable) |
+| disabled | `boolean` | `false` | Disabled state |
+| label | `string` | — | Label text beside toggle |
+| glass | `subtle | frosted | heavy` | `false` | Glass translucency level |
+| glassbg | `boolean` | `false` | Themed gradient backdrop |
+
+## Examples
+
+### Default
+
+```svelte
+<Toggle />
+```
+
+### With label
+
+```svelte
+<Toggle label="Notifications" />
+```
+
+### Glass
+
+```svelte
+<Toggle glass label="Dark mode" />
+```
+
+### Checked
+
+```svelte
+<Toggle checked label="Active" />
+```
+
+## Full Source
+
+```svelte
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
   import { focus } from '$lib/interactions/tokens';
@@ -95,3 +145,4 @@
     <span class="text-sm text-foreground">{label}</span>
   {/if}
 </div>
+```

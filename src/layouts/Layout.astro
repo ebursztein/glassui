@@ -1,21 +1,19 @@
 ---
 import '../styles/globals.css';
-import { Background } from '$lib/components/background';
-import { BackgroundSwitcher } from '$lib/components/background';
-import { ThemeSwitcher } from '$lib/components/theme-switcher';
 import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarFooter } from '$lib/components/sidebar';
+import { ThemeSwitcher } from '$lib/components/theme-switcher';
 
 interface Props {
   title?: string;
   description?: string;
 }
 
-const { title = 'GlassUI', description = 'Glass design system -- Svelte 5 component library' } = Astro.props;
+const { title = 'GlassUI', description = 'Svelte 5 component library with glass effects' } = Astro.props;
 const path = Astro.url.pathname;
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -26,60 +24,58 @@ const path = Astro.url.pathname;
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
     <title>{title}</title>
   </head>
-  <body class="min-h-screen antialiased">
-    <Background client:load />
+  <body class="min-h-screen antialiased bg-background text-foreground">
 
-    <div class="relative flex min-h-screen">
-      <Sidebar client:load>
-        <SidebarHeader>
-          <span class="w-8 h-8 rounded-lg bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 flex items-center justify-center text-sm font-bold">G</span>
-          GlassUI
-        </SidebarHeader>
+    <!-- Top Navbar -->
+    <header class="sticky top-0 z-50 flex items-center justify-between h-16 px-6 border-b border-border bg-background/95 backdrop-blur-sm">
+      <a href="/" class="flex items-center gap-2.5 font-semibold text-foreground">
+        <span class="w-7 h-7 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 flex items-center justify-center text-xs font-bold text-white">G</span>
+        GlassUI
+      </a>
+      <ThemeSwitcher client:load />
+    </header>
 
-        <SidebarSection label="Components">
-          <SidebarItem href="/components/icon" active={path.startsWith('/components/icon')}>Icon</SidebarItem>
-          <SidebarItem href="/components/button" active={path.startsWith('/components/button')}>Button</SidebarItem>
-          <SidebarItem href="/components/card" active={path.startsWith('/components/card')}>Card</SidebarItem>
-          <SidebarItem href="/components/badge" active={path.startsWith('/components/badge')}>Badge</SidebarItem>
-          <SidebarItem href="/components/alert" active={path.startsWith('/components/alert')}>Alert</SidebarItem>
-        </SidebarSection>
-
-        <SidebarSection label="Form">
-          <SidebarItem href="/components/input" active={path.startsWith('/components/input')}>Input</SidebarItem>
-          <SidebarItem href="/components/toggle" active={path.startsWith('/components/toggle')}>Toggle</SidebarItem>
-          <SidebarItem href="/components/textarea" active={path.startsWith('/components/textarea')}>Textarea</SidebarItem>
-        </SidebarSection>
-
-        <SidebarSection label="Foundation">
-          <SidebarItem href="/components/theme" active={path.startsWith('/components/theme')}>Theme</SidebarItem>
-        </SidebarSection>
-
-        <SidebarFooter>
+    <div class="flex min-h-[calc(100vh-4rem)]">
+      <!-- Left Sidebar -->
+      <aside class="hidden md:block w-64 shrink-0 border-r border-border bg-background overflow-y-auto sticky top-16 h-[calc(100vh-4rem)]">
+        <nav class="p-4 space-y-6">
           <div>
-            <span class="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1.5 block">Background</span>
-            <BackgroundSwitcher client:load />
+            <h3 class="px-2 mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Components</h3>
+            <ul class="space-y-0.5">
+              <li><a href="/components/icon" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/icon') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Icon</a></li>
+              <li><a href="/components/button" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/button') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Button</a></li>
+              <li><a href="/components/card" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/card') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Card</a></li>
+              <li><a href="/components/badge" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/badge') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Badge</a></li>
+              <li><a href="/components/alert" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/alert') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Alert</a></li>
+            </ul>
           </div>
           <div>
-            <span class="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1.5 block">Theme</span>
-            <ThemeSwitcher client:load showMode={false} />
+            <h3 class="px-2 mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Form</h3>
+            <ul class="space-y-0.5">
+              <li><a href="/components/input" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/input') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Input</a></li>
+              <li><a href="/components/toggle" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/toggle') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Toggle</a></li>
+              <li><a href="/components/textarea" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/textarea') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Textarea</a></li>
+            </ul>
           </div>
-        </SidebarFooter>
-      </Sidebar>
+          <div>
+            <h3 class="px-2 mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Foundation</h3>
+            <ul class="space-y-0.5">
+              <li><a href="/components/theme" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/theme') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Theme</a></li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
 
-      <!-- Main content -->
-      <main class="flex-1 overflow-y-auto md:ml-64">
-        <!-- Mobile header -->
-        <header class="md:hidden flex items-center gap-3 p-4 border-b border-white/10">
-          <a href="/" class="text-lg font-bold text-white flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 flex items-center justify-center text-xs font-bold">G</span>
-            GlassUI
-          </a>
-        </header>
-
-        <div class="p-6 md:p-10 max-w-4xl">
-          <slot />
+      <!-- Main Content -->
+      <main class="flex-1 min-w-0">
+        <div class="max-w-[1200px] mx-auto px-6 lg:px-10 py-8 flex gap-10">
+          <div class="flex-1 min-w-0">
+            <slot />
+          </div>
+          <!-- Right TOC slot -- injected per page via named slot or component -->
         </div>
       </main>
     </div>
+
   </body>
 </html>

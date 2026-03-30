@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "../lib/theme/tokens.css";
+@import "../lib/theme/glass.css";
 
 @plugin "@tailwindcss/typography";
 
@@ -53,13 +54,6 @@
 
 /* Glass utility classes */
 @layer components {
-  .glass-surface {
-    background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
-  }
-
   .glass-glow {
     position: absolute;
     inset: -4px;

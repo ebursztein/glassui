@@ -1,3 +1,52 @@
+# Textarea
+
+Multi-line text input with size, status, label, and optional glass surface with glow on focus.
+
+## Import
+
+```ts
+import { Textarea } from 'glassui';
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| size | `xs | sm | md | lg | xl` | `md` | Text size and padding |
+| status | `info | success | warning | error` | — | Status border color |
+| label | `string` | — | Label text above textarea |
+| error | `string` | — | Error message (sets status to error) |
+| helperText | `string` | — | Helper text below textarea |
+| glass | `subtle | frosted | heavy` | `false` | Glass translucency level |
+| glassbg | `boolean` | `false` | Themed gradient backdrop |
+| glow | `sm | md | lg` | `false` | Glow intensity |
+| rows | `number` | `4` | Number of visible rows |
+| resize | `none | vertical | both` | `vertical` | Resize behavior |
+| disabled | `boolean` | `false` | Disabled state |
+
+## Examples
+
+### Default
+
+```svelte
+<Textarea placeholder="Write something..." />
+```
+
+### With label
+
+```svelte
+<Textarea label="Message" placeholder="Your message" />
+```
+
+### Glass + glow
+
+```svelte
+<Textarea label="Bio" glass glow placeholder="Tell us about yourself" />
+```
+
+## Full Source
+
+```svelte
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
   import { getGlassClass, resolveGlass, bumpGlass, getParentGlass } from '$lib/interactions/glass';
@@ -111,3 +160,4 @@
     <p id="{textareaId}-hint" class="mt-1.5 text-xs text-muted-foreground">{helperText}</p>
   {/if}
 </div>
+```

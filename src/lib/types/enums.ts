@@ -1,16 +1,12 @@
 import { z } from 'zod/v4';
 
 /** Visual variant — every styled component uses these */
-export const Variant = z.enum(['default', 'primary', 'outline', 'ghost', 'destructive']);
+export const Variant = z.enum(['default', 'primary', 'secondary', 'outline', 'ghost', 'destructive']);
 export type Variant = z.infer<typeof Variant>;
 
 /** Component size */
 export const Size = z.enum(['xs', 'sm', 'md', 'lg', 'xl']);
 export type Size = z.infer<typeof Size>;
-
-/** Glass surface intensity — controls blur, opacity, border */
-export const GlassIntensity = z.enum(['subtle', 'medium', 'strong']);
-export type GlassIntensity = z.infer<typeof GlassIntensity>;
 
 /** Layout orientation */
 export const Orientation = z.enum(['horizontal', 'vertical']);

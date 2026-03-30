@@ -1,3 +1,53 @@
+# Badge
+
+Inline label with variant colors or status colors. Optional glass surface.
+
+## Import
+
+```ts
+import { Badge } from 'glassui';
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| variant | `default | primary | secondary | outline | ghost | destructive` | `default` | Visual style |
+| size | `xs | sm | md | lg | xl` | `sm` | Badge size |
+| status | `info | success | warning | error` | — | Status color (overrides variant) |
+| dot | `boolean` | `false` | Show dot indicator before text |
+| glass | `subtle | frosted | heavy` | `false` | Glass translucency level |
+| glassbg | `boolean` | `false` | Themed gradient backdrop |
+
+## Examples
+
+### Default
+
+```svelte
+<Badge>Label</Badge>
+```
+
+### Primary
+
+```svelte
+<Badge variant="primary">New</Badge>
+```
+
+### Status
+
+```svelte
+<Badge status="success">Active</Badge>
+```
+
+### Glass
+
+```svelte
+<Badge glass status="info">Info</Badge>
+```
+
+## Full Source
+
+```svelte
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
   import { getGlassClass, type GlassEffect } from '$lib/interactions/glass';
@@ -89,3 +139,4 @@
     {@render children()}
   </span>
 </div>
+```

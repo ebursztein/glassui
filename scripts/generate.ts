@@ -33,16 +33,15 @@ interface ComponentMeta {
 
 /** Extract a string value after a key in the source */
 function extractString(source: string, key: string): string | undefined {
-  // Match key: "value" or key: 'value' — handling nested quotes by using
-  // the outermost delimiter
-  const dqRegex = new RegExp(`${key}:\\s*"([^"]*(?:"[^"]*)*)"`, 's');
+  // Try single quotes first (meta values typically use single quotes)
   const sqRegex = new RegExp(`${key}:\\s*'([^']*)'`);
-
-  const dqMatch = source.match(dqRegex);
-  if (dqMatch) return dqMatch[1];
-
   const sqMatch = source.match(sqRegex);
   if (sqMatch) return sqMatch[1];
+
+  // Fall back to double quotes
+  const dqRegex = new RegExp(`${key}:\\s*"([^"]*)"`);
+  const dqMatch = source.match(dqRegex);
+  if (dqMatch) return dqMatch[1];
 
   return undefined;
 }

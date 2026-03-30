@@ -1,0 +1,125 @@
+/*
+ * Glass & Glow CSS Mixins
+ *
+ * Glass = translucent frosted surface (3 intensities)
+ * Glow  = outer gradient shine (3 intensities)
+ * GlassBg = themed gradient orb backdrop
+ *
+ * Glass and Glow are independent concerns.
+ * Colors come from theme presets via --glass-accent-* and --glass-glow-* vars.
+ */
+
+/* ================================================
+   Glass Surface
+   Translucency + blur bundled per intensity level
+   ================================================ */
+
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: var(--glass-text);
+}
+
+.glass-frosted {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  color: var(--glass-text);
+}
+
+.glass-heavy {
+  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(40px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  color: var(--glass-text);
+}
+
+/* ================================================
+   Glass Background
+   Themed gradient backdrop using accent colors.
+   Apply to a container -- glass children become visible.
+   ================================================ */
+
+.glass-bg {
+  position: relative;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  overflow: hidden;
+  /*
+   * Force dark semantic tokens so all children render correctly
+   * on the dark gradient. This is the glass context cascade.
+   */
+  --foreground: var(--color-neutral-200);
+  --foreground-inverse: var(--color-neutral-800);
+  --muted-foreground: var(--color-neutral-400);
+  --muted-foreground-1: var(--color-neutral-400);
+  --muted-foreground-2: var(--color-neutral-300);
+  --background: var(--color-neutral-800);
+  --border: var(--color-neutral-700);
+  --border-line-1: var(--color-neutral-800);
+  --border-line-2: var(--color-neutral-700);
+  --border-line-3: var(--color-neutral-600);
+  --surface: var(--color-neutral-700);
+  --surface-line: transparent;
+  --surface-foreground: var(--color-neutral-200);
+  --surface-hover: var(--color-neutral-600);
+  --layer: var(--color-neutral-800);
+  --layer-hover: var(--color-neutral-700);
+  --card: var(--color-neutral-800);
+  --card-line: var(--color-neutral-700);
+  color: var(--color-neutral-200);
+}
+
+/* ================================================
+   Glow
+   Outer gradient shine using glow colors.
+   Apply to a wrapper div positioned around the element.
+   ================================================ */
+
+.glow-sm {
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    to right,
+    var(--glass-glow-1),
+    var(--glass-glow-2),
+    var(--glass-glow-3)
+  );
+  filter: blur(8px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.glow-md {
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: linear-gradient(
+    to right,
+    var(--glass-glow-1),
+    var(--glass-glow-2),
+    var(--glass-glow-3)
+  );
+  filter: blur(16px);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.glow-lg {
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  background: linear-gradient(
+    to right,
+    var(--glass-glow-1),
+    var(--glass-glow-2),
+    var(--glass-glow-3)
+  );
+  filter: blur(24px);
+  opacity: 0.8;
+  pointer-events: none;
+}
