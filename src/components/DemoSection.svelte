@@ -27,7 +27,7 @@
   {/if}
   {#if glass}
     <div
-      class="mt-4 rounded-lg border border-border p-6 flex flex-wrap items-center justify-center gap-4 relative overflow-hidden {className ?? ''}"
+      class="mt-4 rounded-lg border border-border p-6 flex flex-wrap items-center justify-center gap-4 relative overflow-hidden glass-bg {className ?? ''}"
       style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);"
     >
       <!-- Gradient orbs to show glass effect -->
