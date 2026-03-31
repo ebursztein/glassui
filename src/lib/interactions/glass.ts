@@ -60,6 +60,40 @@ export function getGlassBgClass(glass: GlassEffect | boolean | undefined): strin
   return `glass-bg-${effect}`;
 }
 
+/* ================================================
+   Centralized glass class composition
+   One call replaces the 3-function dance per component.
+   ================================================ */
+
+export type GlassRole = 'container' | 'field' | 'action' | 'inline';
+
+/** Role-specific interaction classes, defined once. */
+export const glassInteractions: Record<string, string> = {
+  field: 'placeholder:text-foreground/40 focus:border-primary/40 focus:ring-2 focus:ring-primary/20',
+  action: 'hover:brightness-125 active:brightness-90 transition-all duration-200',
+};
+
+/**
+ * Get the full glass class string for a component.
+ * Returns frost + neutral bg (when applicable) + role interaction.
+ * Returns '' when glass is off.
+ */
+export function getGlassClasses(
+  glass: GlassEffect | boolean | undefined,
+  role: GlassRole,
+  options?: { neutralBg?: boolean },
+): string {
+  const effect = resolveGlass(glass);
+  if (!effect) return '';
+
+  const frost = `glass-${effect}`;
+  const includeNeutralBg = options?.neutralBg ?? (role === 'container' || role === 'field');
+  const bg = includeNeutralBg ? `glass-bg-${effect}` : '';
+  const interaction = glassInteractions[role] ?? '';
+
+  return [frost, bg, interaction].filter(Boolean).join(' ');
+}
+
 /** Gradient orb definitions for GlassBackdrop. Uses CSS var references so they follow the theme. */
 export const glassBgOrbs = [
   { x: '20%', y: '20%', size: '12rem', color: 'var(--glass-accent-1)' },

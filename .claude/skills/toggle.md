@@ -51,7 +51,7 @@ import { Toggle } from 'glassui';
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
   import { focus } from '$lib/interactions/tokens';
-  import { getGlassClass, type GlassEffect } from '$lib/interactions/glass';
+  import { getGlassClasses, type GlassEffect } from '$lib/interactions/glass';
   import { getGlowClass, type GlowIntensity } from '$lib/interactions/glow';
   import { GlassBackdrop } from '$lib/components/glass';
   import type { Size } from '$lib/types/enums';
@@ -92,11 +92,14 @@ import { Toggle } from 'glassui';
 
   const config = $derived(sizeConfig[size] || sizeConfig.md);
 
-  const glassClass = $derived(getGlassClass(glass));
   const glowClass = $derived(getGlowClass(glow));
 
   const solidUnchecked = 'bg-surface border-surface-line';
   const solidChecked = 'bg-gradient-to-r from-[var(--glass-accent-1)] to-[var(--glass-accent-2)] border-[var(--glass-accent-2)]';
+
+  // Checked: frost only (gradient shows through). Unchecked: frost + neutral bg.
+  const glassFrost = $derived(getGlassClasses(glass, 'inline'));
+  const glassWithBg = $derived(getGlassClasses(glass, 'inline', { neutralBg: true }));
 
   const trackClasses = $derived(cn(
     'relative inline-flex items-center rounded-full border cursor-pointer transition-all duration-300',
@@ -104,8 +107,8 @@ import { Toggle } from 'glassui';
     focus.ring,
     config.track,
     checked
-      ? (glassClass || solidChecked)
-      : (glassClass || solidUnchecked),
+      ? cn(solidChecked, glassFrost)
+      : (glassWithBg || solidUnchecked),
     className,
   ));
 

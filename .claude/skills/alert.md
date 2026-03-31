@@ -63,7 +63,7 @@ import { Alert } from 'glassui';
 ```svelte
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
-  import { getGlassClass, type GlassEffect } from '$lib/interactions/glass';
+  import { getGlassClasses, type GlassEffect } from '$lib/interactions/glass';
   import { getGlowClass, type GlowIntensity } from '$lib/interactions/glow';
   import { GlassBackdrop } from '$lib/components/glass';
   import { Icon } from '$lib/components/icon';
@@ -99,7 +99,7 @@ import { Alert } from 'glassui';
 
   let dismissed = $state(false);
 
-  const glassClass = $derived(getGlassClass(glass));
+  const allGlassClasses = $derived(getGlassClasses(glass, 'inline'));
   const glowClass = $derived(getGlowClass(glow));
 
   const iconNames: Record<Status, string> = {
@@ -125,8 +125,8 @@ import { Alert } from 'glassui';
     error: { accent: 'border-l-red-400', iconColor: 'text-red-400', titleColor: 'text-status-error-foreground', bodyColor: 'text-[var(--glass-text-muted)]' },
   };
 
-  const config = $derived(glassClass ? {
-    bg: glassClass,
+  const config = $derived(allGlassClasses ? {
+    bg: allGlassClasses,
     ...glassAccentConfig[status],
   } : solidConfig[status]);
 

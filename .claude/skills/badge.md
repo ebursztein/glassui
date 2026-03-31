@@ -17,7 +17,6 @@ import { Badge } from 'glassui';
 | status | `info | success | warning | error` | — | Status color (overrides variant) |
 | dot | `boolean` | `false` | Show dot indicator before text |
 | glass | `subtle | frosted | heavy` | `false` | Glass translucency level |
-| glassbg | `boolean` | `false` | Themed gradient backdrop |
 
 ## Examples
 
@@ -50,8 +49,7 @@ import { Badge } from 'glassui';
 ```svelte
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
-  import { getGlassClass, type GlassEffect } from '$lib/interactions/glass';
-  import { GlassBackdrop } from '$lib/components/glass';
+  import { getGlassClasses, type GlassEffect } from '$lib/interactions/glass';
   import type { Snippet } from 'svelte';
   import type { Variant, Size, Status } from '$lib/types/enums';
 
@@ -61,7 +59,6 @@ import { Badge } from 'glassui';
     status?: Status;
     dot?: boolean;
     glass?: GlassEffect | boolean;
-    glassbg?: boolean;
     children: Snippet;
     class?: string;
     [key: string]: unknown;
@@ -73,13 +70,13 @@ import { Badge } from 'glassui';
     status,
     dot = false,
     glass = false,
-    glassbg = false,
     children,
     class: className,
     ...rest
   }: Props = $props();
 
-  const glassClass = $derived(getGlassClass(glass));
+  const neutralVariant = !status && (variant === 'default' || variant === 'outline' || variant === 'ghost');
+  const allGlassClasses = $derived(getGlassClasses(glass, 'inline', { neutralBg: neutralVariant }));
 
   const solidVariants: Record<Variant, string> = {
     default: 'bg-surface border-surface-line text-surface-foreground',
@@ -105,12 +102,11 @@ import { Badge } from 'glassui';
     xl: 'px-5 py-2 text-base',
   };
 
-  const glassInteraction = 'border-white/20';
-
+  // Glass is additive: keep variant/status color, layer frost on top
   const variantClass = $derived(() => {
-    if (glassClass) return cn(glassClass, glassInteraction);
-    if (status) return solidStatus[status];
-    return solidVariants[variant];
+    const base = status ? solidStatus[status] : solidVariants[variant];
+    if (allGlassClasses) return cn(base, allGlassClasses);
+    return base;
   });
 
   const dotColors: Record<Status, string> = {
@@ -128,15 +124,10 @@ import { Badge } from 'glassui';
   ));
 </script>
 
-<div class="relative inline-block {glassbg ? 'glass-bg rounded-full' : ''}">
-  {#if glassbg}
-    <GlassBackdrop />
+<span class={classes} {...rest}>
+  {#if dot}
+    <span class={cn('inline-block w-1.5 h-1.5 rounded-full shrink-0', status ? dotColors[status] : 'bg-current')}></span>
   {/if}
-  <span class={classes} {...rest}>
-    {#if dot}
-      <span class={cn('inline-block w-1.5 h-1.5 rounded-full shrink-0', status ? dotColors[status] : 'bg-current')}></span>
-    {/if}
-    {@render children()}
-  </span>
-</div>
+  {@render children()}
+</span>
 ```

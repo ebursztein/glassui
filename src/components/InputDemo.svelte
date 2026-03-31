@@ -1,41 +1,9 @@
 <script lang="ts">
   import { Input } from '$lib/components/input';
   import { meta } from '$lib/components/input/schema';
-  import PropEditor from './PropEditor.svelte';
+  import Playground from './Playground.svelte';
   import DemoSection from './DemoSection.svelte';
   import TableOfContents from './TableOfContents.svelte';
-
-  let size = $state<string>('md');
-  let status = $state<string>('');
-  let glass = $state(false);
-  let glow = $state(false);
-  let disabled = $state(false);
-
-  const values = $derived({ size, status, glass, glow, disabled });
-
-
-  function enumOrFalse(v: any): string | false {
-    return v === 'false' || v === false ? false : v;
-  }
-
-  function handleChange(key: string, value: any) {
-    if (key === 'size') size = value;
-    if (key === 'status') status = value;
-    if (key === 'glass') glass = enumOrFalse(value);
-    if (key === 'glow') glow = enumOrFalse(value);
-    if (key === 'disabled') disabled = value;
-  }
-
-  const codeSnippet = $derived(() => {
-    const props: string[] = [];
-    if (size !== 'md') props.push(`size="${size}"`);
-    if (status) props.push(`status="${status}"`);
-    if (glass) props.push('glass');
-    if (glow) props.push('glow');
-    if (disabled) props.push('disabled');
-    const propsStr = props.length > 0 ? ' ' + props.join(' ') : '';
-    return `<Input label="Email"${propsStr} placeholder="you@example.com" />`;
-  });
 
   const sections = [
     { id: 'playground', label: 'Playground' },
@@ -50,33 +18,13 @@
 <div class="flex gap-10">
   <div class="flex-1 min-w-0 space-y-12">
 
-    <!-- Interactive Playground -->
-    <section id="playground" class="scroll-mt-24">
-      <h2 class="text-lg font-semibold text-foreground">Playground</h2>
-      <p class="mt-1 text-sm text-muted-foreground">Explore all input props interactively.</p>
-
-      <!-- Live preview -->
-      <div class="mt-4 rounded-lg border border-border p-8 flex items-center justify-center min-h-[100px] bg-background">
+    <Playground {meta}>
+      {#snippet preview(props)}
         <div class="w-full max-w-sm">
-          <Input
-            label="Email"
-            placeholder="you@example.com"
-            size={size as any}
-            status={status ? status as any : undefined}
-            {glass} {glow} {disabled}
-          />
+          <Input label="Email" placeholder="you@example.com" {...props} />
         </div>
-      </div>
-
-<!-- Code -->
-      <pre class="mt-4 text-sm text-primary bg-primary/5 border border-primary/10 rounded-lg p-4 overflow-x-auto"><code>{codeSnippet()}</code></pre>
-
-      <!-- Props -->
-      <div class="mt-4 rounded-lg border border-border p-5">
-        <h3 class="text-sm font-semibold text-foreground mb-4">Props</h3>
-        <PropEditor props={meta.props} {values} onchange={handleChange} />
-      </div>
-    </section>
+      {/snippet}
+    </Playground>
 
     <!-- Status Colors -->
     <DemoSection id="status-colors" title="Status Colors" description="Colored borders to indicate input state.">

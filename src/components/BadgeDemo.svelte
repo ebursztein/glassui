@@ -1,41 +1,9 @@
 <script lang="ts">
   import { Badge } from '$lib/components/badge';
   import { meta } from '$lib/components/badge/schema';
-  import PropEditor from './PropEditor.svelte';
+  import Playground from './Playground.svelte';
   import DemoSection from './DemoSection.svelte';
   import TableOfContents from './TableOfContents.svelte';
-
-  let variant = $state<string>('default');
-  let size = $state<string>('sm');
-  let status = $state<string>('');
-  let dot = $state(false);
-  let glass = $state(false);
-
-  const values = $derived({ variant, size, status, dot, glass });
-
-
-  function enumOrFalse(v: any): string | false {
-    return v === 'false' || v === false ? false : v;
-  }
-
-  function handleChange(key: string, value: any) {
-    if (key === 'variant') variant = value;
-    if (key === 'size') size = value;
-    if (key === 'status') status = value;
-    if (key === 'dot') dot = value;
-    if (key === 'glass') glass = enumOrFalse(value);
-  }
-
-  const codeSnippet = $derived(() => {
-    const props: string[] = [];
-    if (variant !== 'default') props.push(`variant="${variant}"`);
-    if (size !== 'sm') props.push(`size="${size}"`);
-    if (status) props.push(`status="${status}"`);
-    if (dot) props.push('dot');
-    if (glass) props.push('glass');
-    const propsStr = props.length > 0 ? ' ' + props.join(' ') : '';
-    return `<Badge${propsStr}>Label</Badge>`;
-  });
 
   const sections = [
     { id: 'playground', label: 'Playground' },
@@ -48,33 +16,11 @@
 <div class="flex gap-10">
   <div class="flex-1 min-w-0 space-y-12">
 
-    <!-- Interactive Playground -->
-    <section id="playground" class="scroll-mt-24">
-      <h2 class="text-lg font-semibold text-foreground">Playground</h2>
-      <p class="mt-1 text-sm text-muted-foreground">Explore all badge props interactively.</p>
-
-      <!-- Live preview -->
-      <div class="mt-4 rounded-lg border border-border p-8 flex items-center justify-center min-h-[100px] bg-background">
-        <Badge
-          variant={variant as any}
-          size={size as any}
-          status={status ? status as any : undefined}
-          {dot}
-          glass={glass}
-        >
-          {#snippet children()}Label{/snippet}
-        </Badge>
-      </div>
-
-<!-- Code -->
-      <pre class="mt-4 text-sm text-primary bg-primary/5 border border-primary/10 rounded-lg p-4 overflow-x-auto"><code>{codeSnippet()}</code></pre>
-
-      <!-- Props -->
-      <div class="mt-4 rounded-lg border border-border p-5">
-        <h3 class="text-sm font-semibold text-foreground mb-4">Props</h3>
-        <PropEditor props={meta.props} {values} onchange={handleChange} />
-      </div>
-    </section>
+    <Playground {meta}>
+      {#snippet preview(props)}
+        <Badge {...props}>{#snippet children()}Label{/snippet}</Badge>
+      {/snippet}
+    </Playground>
 
     <!-- Status -->
     <DemoSection id="status" title="Status" description="Status-colored badges for contextual information. Status overrides the variant color.">

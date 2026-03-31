@@ -2,7 +2,7 @@
   import { cn } from '$lib/utils/cn';
   import { hover as hoverTokens } from '$lib/interactions/tokens';
   import { setContext } from 'svelte';
-  import { getGlassClass, getGlassBgClass, resolveGlass, GLASS_CONTEXT_KEY, type GlassEffect } from '$lib/interactions/glass';
+  import { getGlassClasses, resolveGlass, GLASS_CONTEXT_KEY, type GlassEffect } from '$lib/interactions/glass';
   import { getGlowClass, type GlowIntensity } from '$lib/interactions/glow';
   import { GlassBackdrop } from '$lib/components/glass';
   import type { Snippet } from 'svelte';
@@ -30,16 +30,14 @@
 
   const glassEffect = $derived(resolveGlass(glass));
   try { setContext(GLASS_CONTEXT_KEY, () => glassEffect); } catch {}
-  const glassClass = $derived(getGlassClass(glass));
+  const allGlassClasses = $derived(getGlassClasses(glass, 'container'));
   const glowClass = $derived(getGlowClass(glow));
 
   const solidClasses = 'bg-card border border-card-line';
 
-  const glassBgClass = $derived(getGlassBgClass(glass));
-
   const classes = $derived(cn(
     'relative rounded-2xl transition-all duration-300 overflow-hidden',
-    glassClass ? cn(glassClass, glassBgClass) : solidClasses,
+    allGlassClasses || solidClasses,
     hoverTokens[hoverEffect],
     className,
   ));

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
   import { focus } from '$lib/interactions/tokens';
-  import { getGlassClass, getGlassBgClass, resolveGlass, getParentGlass } from '$lib/interactions/glass';
+  import { getGlassClasses, getGlassBgClass, resolveGlass, getParentGlass, type GlassEffect } from '$lib/interactions/glass';
   import { getGlowClass, type GlowIntensity } from '$lib/interactions/glow';
   import { GlassBackdrop } from '$lib/components/glass';
   import type { Snippet } from 'svelte';
@@ -35,7 +35,7 @@
   const isDisabled = $derived(disabled || loading);
   const parentGlass = getParentGlass();
   const effectiveGlass = $derived(resolveGlass(glass) || parentGlass());
-  const glassClass = $derived(getGlassClass(effectiveGlass));
+  const allGlassClasses = $derived(getGlassClasses(effectiveGlass, 'action'));
   const glowClass = $derived(getGlowClass(glow));
 
   const solidVariants: Record<Variant, string> = {
@@ -63,9 +63,7 @@
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
   );
 
-  const glassInteraction = 'hover:brightness-125 active:brightness-90 transition-all duration-200';
-
-  // Glass buttons with color keep their color; neutral ones get translucent white bg
+  // Glass buttons with color keep their color; neutral ones get translucent bg
   const glassVariants: Record<Variant, string> = {
     default: getGlassBgClass(true),
     primary: 'bg-primary/60 text-primary-foreground',
@@ -77,7 +75,7 @@
 
   const classes = $derived(cn(
     baseClasses,
-    glassClass ? cn(glassClass, glassVariants[variant], glassInteraction) : solidVariants[variant],
+    allGlassClasses ? cn(allGlassClasses, glassVariants[variant]) : solidVariants[variant],
     sizeClasses[size],
     className,
   ));

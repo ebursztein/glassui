@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
-  import { getGlassClass, getGlassBgClass, type GlassEffect } from '$lib/interactions/glass';
+  import { getGlassClasses, type GlassEffect } from '$lib/interactions/glass';
   import type { Snippet } from 'svelte';
   import type { Variant, Size, Status } from '$lib/types/enums';
 
@@ -26,7 +26,8 @@
     ...rest
   }: Props = $props();
 
-  const glassClass = $derived(getGlassClass(glass));
+  const neutralVariant = !status && (variant === 'default' || variant === 'outline' || variant === 'ghost');
+  const allGlassClasses = $derived(getGlassClasses(glass, 'inline', { neutralBg: neutralVariant }));
 
   const solidVariants: Record<Variant, string> = {
     default: 'bg-surface border-surface-line text-surface-foreground',
@@ -52,12 +53,10 @@
     xl: 'px-5 py-2 text-base',
   };
 
-  const glassBgClass = $derived(getGlassBgClass(glass));
-
   // Glass is additive: keep variant/status color, layer frost on top
   const variantClass = $derived(() => {
     const base = status ? solidStatus[status] : solidVariants[variant];
-    if (glassClass) return cn(base, glassClass, !status && (variant === 'default' || variant === 'outline' || variant === 'ghost') ? glassBgClass : '');
+    if (allGlassClasses) return cn(base, allGlassClasses);
     return base;
   });
 

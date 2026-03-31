@@ -1,44 +1,9 @@
 <script lang="ts">
   import { Alert } from '$lib/components/alert';
   import { meta } from '$lib/components/alert/schema';
-  import PropEditor from './PropEditor.svelte';
+  import Playground from './Playground.svelte';
   import DemoSection from './DemoSection.svelte';
   import TableOfContents from './TableOfContents.svelte';
-
-  let status = $state<string>('info');
-  let title = $state<string>('Heads up');
-  let dismissible = $state(false);
-  let icon = $state(true);
-  let glass = $state(false);
-  let glow = $state(false);
-
-  const values = $derived({ status, title, dismissible, icon, glass, glow });
-
-
-  function enumOrFalse(v: any): string | false {
-    return v === 'false' || v === false ? false : v;
-  }
-
-  function handleChange(key: string, value: any) {
-    if (key === 'status') status = value;
-    if (key === 'title') title = value;
-    if (key === 'dismissible') dismissible = value;
-    if (key === 'icon') icon = value;
-    if (key === 'glass') glass = enumOrFalse(value);
-    if (key === 'glow') glow = enumOrFalse(value);
-  }
-
-  const codeSnippet = $derived(() => {
-    const props: string[] = [];
-    if (status !== 'info') props.push(`status="${status}"`);
-    if (title) props.push(`title="${title}"`);
-    if (dismissible) props.push('dismissible');
-    if (!icon) props.push('icon={false}');
-    if (glass) props.push('glass');
-    if (glow) props.push('glow');
-    const propsStr = props.length > 0 ? ' ' + props.join(' ') : '';
-    return `<Alert${propsStr}>Alert message here.</Alert>`;
-  });
 
   const sections = [
     { id: 'playground', label: 'Playground' },
@@ -53,36 +18,13 @@
 <div class="flex gap-10">
   <div class="flex-1 min-w-0 space-y-12">
 
-    <!-- Interactive Playground -->
-    <section id="playground" class="scroll-mt-24">
-      <h2 class="text-lg font-semibold text-foreground">Playground</h2>
-      <p class="mt-1 text-sm text-muted-foreground">Explore all alert props interactively.</p>
-
-      <!-- Live preview -->
-      <div class="mt-4 rounded-lg border border-border p-8 flex items-center justify-center min-h-[100px] bg-background">
+    <Playground {meta}>
+      {#snippet preview(props)}
         <div class="w-full max-w-lg">
-          <Alert
-            status={status as any}
-            title={title || undefined}
-            {dismissible}
-            {icon}
-            {glass}
-            {glow}
-          >
-            {#snippet children()}This is an alert message. You can customize it with the props below.{/snippet}
-          </Alert>
+          <Alert title="Heads up" {...props}>{#snippet children()}This is an alert message. You can customize it with the props below.{/snippet}</Alert>
         </div>
-      </div>
-
-<!-- Code -->
-      <pre class="mt-4 text-sm text-primary bg-primary/5 border border-primary/10 rounded-lg p-4 overflow-x-auto"><code>{codeSnippet()}</code></pre>
-
-      <!-- Props -->
-      <div class="mt-4 rounded-lg border border-border p-5">
-        <h3 class="text-sm font-semibold text-foreground mb-4">Props</h3>
-        <PropEditor props={meta.props} {values} onchange={handleChange} />
-      </div>
-    </section>
+      {/snippet}
+    </Playground>
 
     <!-- All Statuses -->
     <DemoSection id="all-statuses" title="All Statuses" description="All four status types with default styling.">

@@ -49,7 +49,7 @@ import { Textarea } from 'glassui';
 ```svelte
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
-  import { getGlassClass, resolveGlass, bumpGlass, getParentGlass } from '$lib/interactions/glass';
+  import { getGlassClasses, resolveGlass, bumpGlass, getParentGlass, type GlassEffect } from '$lib/interactions/glass';
   import { getGlowClass, type GlowIntensity } from '$lib/interactions/glow';
   import { GlassBackdrop } from '$lib/components/glass';
   import type { HTMLTextareaAttributes } from 'svelte/elements';
@@ -94,7 +94,7 @@ import { Textarea } from 'glassui';
   const parentGlass = getParentGlass();
   const inherited = $derived(parentGlass());
   const effectiveGlass = $derived(resolveGlass(glass) || (inherited ? bumpGlass(inherited) : false));
-  const glassClass = $derived(getGlassClass(effectiveGlass));
+  const allGlassClasses = $derived(getGlassClasses(effectiveGlass, 'field'));
   const glowClass = $derived(getGlowClass(glow));
 
   const sizePadding: Record<Size, string> = {
@@ -124,16 +124,11 @@ import { Textarea } from 'glassui';
     both: 'resize',
   };
 
-  const glassInteraction = cn(
-    'placeholder:text-white/40',
-    'focus:border-white/40 focus:ring-2 focus:ring-white/20',
-  );
-
   const textareaClasses = $derived(cn(
     'relative flex w-full transition-all duration-300',
     'focus:outline-none',
     'disabled:cursor-not-allowed disabled:opacity-50',
-    glassClass ? cn(glassClass, glassInteraction) : solidClasses,
+    allGlassClasses || solidClasses,
     effectiveStatus ? statusBorders[effectiveStatus] : '',
     sizePadding[size],
     resizeClasses[resize],

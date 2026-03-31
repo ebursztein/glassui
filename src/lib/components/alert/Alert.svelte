@@ -1,7 +1,10 @@
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
-  import { blurLevels } from '$lib/interactions/tokens';
+  import { getGlassClasses, type GlassEffect } from '$lib/interactions/glass';
+  import { getGlowClass, type GlowIntensity } from '$lib/interactions/glow';
+  import { GlassBackdrop } from '$lib/components/glass';
   import { Icon } from '$lib/components/icon';
+  import { slide } from 'svelte/transition';
   import type { Snippet } from 'svelte';
   import type { Status } from '$lib/types/enums';
 
@@ -10,8 +13,9 @@
     title?: string;
     dismissible?: boolean;
     icon?: boolean;
-    glass?: boolean;
-    glow?: boolean;
+    glass?: GlassEffect | boolean;
+    glassbg?: boolean;
+    glow?: GlowIntensity | boolean;
     children?: Snippet;
     class?: string;
     [key: string]: unknown;
@@ -22,7 +26,8 @@
     title,
     dismissible = false,
     icon: showIcon = true,
-    glass: isGlass = false,
+    glass = false,
+    glassbg = false,
     glow = false,
     children,
     class: className,
@@ -31,6 +36,9 @@
 
   let dismissed = $state(false);
 
+  const allGlassClasses = $derived(getGlassClasses(glass, 'inline'));
+  const glowClass = $derived(getGlowClass(glow));
+
   const iconNames: Record<Status, string> = {
     info: 'info',
     success: 'check-circle',
@@ -38,48 +46,54 @@
     error: 'x-circle',
   };
 
-  const solidConfig: Record<Status, { bg: string; border: string; iconBg: string; iconColor: string }> = {
-    info: { bg: 'bg-cyan-950', border: 'border-cyan-800', iconBg: 'bg-cyan-900', iconColor: 'text-cyan-400' },
-    success: { bg: 'bg-emerald-950', border: 'border-emerald-800', iconBg: 'bg-emerald-900', iconColor: 'text-emerald-400' },
-    warning: { bg: 'bg-amber-950', border: 'border-amber-800', iconBg: 'bg-amber-900', iconColor: 'text-amber-400' },
-    error: { bg: 'bg-red-950', border: 'border-red-800', iconBg: 'bg-red-900', iconColor: 'text-red-400' },
+  interface StatusConfig { bg: string; accent: string; iconColor: string; titleColor: string; bodyColor: string }
+
+  const solidConfig: Record<Status, StatusConfig> = {
+    info: { bg: 'bg-status-info', accent: 'border-l-status-info-foreground', iconColor: 'text-status-info-foreground', titleColor: 'text-status-info-foreground', bodyColor: 'text-foreground/80' },
+    success: { bg: 'bg-status-success', accent: 'border-l-status-success-foreground', iconColor: 'text-status-success-foreground', titleColor: 'text-status-success-foreground', bodyColor: 'text-foreground/80' },
+    warning: { bg: 'bg-status-warning', accent: 'border-l-status-warning-foreground', iconColor: 'text-status-warning-foreground', titleColor: 'text-status-warning-foreground', bodyColor: 'text-foreground/80' },
+    error: { bg: 'bg-status-error', accent: 'border-l-status-error-foreground', iconColor: 'text-status-error-foreground', titleColor: 'text-status-error-foreground', bodyColor: 'text-foreground/80' },
   };
 
-  const glassConfig: Record<Status, { bg: string; border: string; iconBg: string; iconColor: string }> = {
-    info: { bg: 'bg-cyan-500/10 backdrop-blur-xl', border: 'border-cyan-400/30', iconBg: 'bg-cyan-500/20', iconColor: 'text-cyan-400' },
-    success: { bg: 'bg-emerald-500/10 backdrop-blur-xl', border: 'border-emerald-400/30', iconBg: 'bg-emerald-500/20', iconColor: 'text-emerald-400' },
-    warning: { bg: 'bg-amber-500/10 backdrop-blur-xl', border: 'border-amber-400/30', iconBg: 'bg-amber-500/20', iconColor: 'text-amber-400' },
-    error: { bg: 'bg-red-500/10 backdrop-blur-xl', border: 'border-red-400/30', iconBg: 'bg-red-500/20', iconColor: 'text-red-400' },
+  const glassAccentConfig: Record<Status, { accent: string; iconColor: string; titleColor: string; bodyColor: string }> = {
+    info: { accent: 'border-l-cyan-400', iconColor: 'text-cyan-400', titleColor: 'text-status-info-foreground', bodyColor: 'text-[var(--glass-text-muted)]' },
+    success: { accent: 'border-l-emerald-400', iconColor: 'text-emerald-400', titleColor: 'text-status-success-foreground', bodyColor: 'text-[var(--glass-text-muted)]' },
+    warning: { accent: 'border-l-amber-400', iconColor: 'text-amber-400', titleColor: 'text-status-warning-foreground', bodyColor: 'text-[var(--glass-text-muted)]' },
+    error: { accent: 'border-l-red-400', iconColor: 'text-red-400', titleColor: 'text-status-error-foreground', bodyColor: 'text-[var(--glass-text-muted)]' },
   };
 
-  const config = $derived(isGlass ? glassConfig[status] : solidConfig[status]);
+  const config = $derived(allGlassClasses ? {
+    bg: allGlassClasses,
+    ...glassAccentConfig[status],
+  } : solidConfig[status]);
 
   const classes = $derived(cn(
-    'relative rounded-xl border p-4 transition-all duration-300',
+    'relative rounded-lg border-l-4 p-4 transition-all duration-300',
     config.bg,
-    config.border,
+    config.accent,
     className,
   ));
 </script>
 
 {#if !dismissed}
-  <div class="relative">
-    {#if glow}
-      <div class="absolute -inset-1.5 rounded-xl bg-gradient-to-r from-[var(--glass-glow-1)] via-[var(--glass-glow-2)] to-[var(--glass-glow-3)] blur-xl opacity-40"></div>
+  <div class="relative {glassbg ? 'glass-bg rounded-lg' : ''}" transition:slide={{ duration: 200 }}>
+    {#if glassbg}
+      <GlassBackdrop />
     {/if}
-    <div class={classes} role="alert" {...rest}>
+    {#if glowClass}
+      <div class={glowClass}></div>
+    {/if}
+    <div class={classes} role="alert" aria-live="assertive" {...rest}>
       <div class="relative z-10 flex items-start gap-3">
         {#if showIcon}
-          <div class={cn('flex items-center justify-center w-8 h-8 rounded-lg shrink-0 border border-white/10', config.iconBg)}>
-            <Icon name={iconNames[status]} size={20} weight="bold" class={config.iconColor} />
-          </div>
+          <Icon name={iconNames[status]} size={20} weight="bold" class={cn('shrink-0 mt-0.5', config.iconColor)} />
         {/if}
         <div class="flex-1 min-w-0">
           {#if title}
-            <h4 class="font-medium text-white">{title}</h4>
+            <h3 class={cn('text-sm font-semibold', config.titleColor)}>{title}</h3>
           {/if}
           {#if children}
-            <div class={cn('text-sm text-white/60', title ? 'mt-1' : '')}>
+            <div class={cn('text-sm', config.bodyColor, title ? 'mt-1' : '')}>
               {@render children()}
             </div>
           {/if}
@@ -87,7 +101,7 @@
         {#if dismissible}
           <button
             onclick={() => dismissed = true}
-            class="shrink-0 p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors"
+            class="shrink-0 p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-layer-hover transition-colors"
             aria-label="Dismiss"
           >
             <Icon name="x" size={16} />
