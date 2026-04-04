@@ -99,8 +99,8 @@ import { Button } from 'glassui';
     style: renderStyle = 'solid',
     variant,
     size = 'md',
-    glass = false,
-    frosted = false,
+    glass,
+    frosted,
     colored = false,
     raised = false,
     reactive = false,
@@ -133,6 +133,7 @@ import { Button } from 'glassui';
     'disabled:pointer-events-none disabled:opacity-50',
     focus.ring,
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
+    'active:scale-[0.98]',
   );
 
   const classes = $derived(cn(

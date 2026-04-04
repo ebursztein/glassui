@@ -1,5 +1,53 @@
 # GlassUI Changelog
 
+## Unified Color System + Glass CSS Overhaul (2026-04-04)
+
+### Unified ThemeColor enum
+- Removed `Status` enum (`info | success | warning | error`) -- merged into `ThemeColor`
+- `ThemeColor` now: `primary | secondary | accent | destructive | neutral | gradient | info | success | warning | error`
+- Renamed `theme` color to `gradient` (clearer intent: multi-color gradient surface)
+- Removed `status` prop from `BaseUIPropsSchema` and all components
+- Alert: `status` prop replaced by `color` prop (default `'info'`), role changed from `container` to `alert`
+- Badge: removed `status` prop entirely; use `color="success"` etc.
+- Input/Textarea: `status` prop replaced by `color` prop
+- Icon: integrated with `useUI`, accepts `ThemeColor` for color and `Size` enum for size
+
+### Glass density lookup table
+- Replaced exponential formula in `computeDensity()` with hand-tuned lookup table
+- Depth range clamped to -2..4 (previously unbounded with diminishing returns)
+- Each density x depth combo is explicitly tuned for smooth, predictable stepping
+- Cap raised from 0.85 to 0.96 (ultra-thick at max depth approaches solid)
+
+### Glass CSS overhaul (`glass.css`)
+- `glass-pane` border: hardcoded rgba replaced with `color-mix(in oklch, var(--comp-border) ...)` -- borders now inherit component color
+- `glass-surface.glass-neutral`: uses `color-mix(in oklch, var(--surface) ...)` instead of raw `rgba(180, 195, 220, ...)`
+- `glass-surface.glass-theme` renamed to `glass-surface.glass-gradient`
+- `glass-action`: now uses `color-mix(in oklch, var(--comp-bg) ...)` with density scaling + border
+- New `.glass-interactive` class: hover/active states using `--comp-hover`, replaces inline `hover:brightness` on glass actions
+
+### Styles engine (`styles.ts`)
+- Merged `statusColors` map into `themeColors` (single 10-entry map)
+- `solidActionMap`: expanded from 15 to 30 entries (10 colors x 3 styles), all with `active:` press states and `transition-all`
+- `solidInlineMap`: expanded similarly, all entries now include explicit `border` class
+- Removed `solidStatusClasses`, `solidContainerClasses` (absorbed into unified maps)
+- Extended `solidAlertStatus` with fallbacks for non-status colors (primary, secondary, accent, etc.)
+- Glass action interaction changed from `hover:brightness-125 active:brightness-90` to `glass-interactive` CSS class
+- `isThemeColor()` renamed to `isGradientColor()`
+- Removed `status` parameter from `ComponentStyleConfig`
+
+### Button press feedback
+- Added `active:scale-[0.98]` to Button base classes for tactile press feel
+
+### useUI cleanup
+- Removed `status` from `UIOutput` and `UIContext` interfaces
+- `gradient` color propagation: now allowed for both `container` and `alert` roles (was `container` only for `theme`)
+
+### Tests
+- Updated `computeDensity` tests for LUT values (exact values instead of range checks)
+- Updated glass action test: `hover:brightness` -> `glass-interactive`
+- Updated solid mode tests for unified color system
+- Removed `status` from integration chain tests
+
 ## useUI Refactor: Context-Driven State Machine (2026-04-04)
 
 ### New: useUI rune

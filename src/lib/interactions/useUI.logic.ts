@@ -144,14 +144,13 @@ export function computeUIOutput(input: UIInput, parent: UIContext): UIOutput {
   const effectiveGlass = resolveGlassTriState(input.glass, parent);
 
   // 2. Merge props with parent fallback
-  // 'theme' is a container-only concept (multi-color glass surface) -- non-containers
+  // 'gradient' is a container-only concept (multi-color glass surface) -- non-containers
   // can't render it, so they fall back to their role default instead of inheriting it.
   const roleDefault: ThemeColor = input.role === 'action' ? 'primary' : 'neutral';
-  const inheritedColor = (parent.color === 'theme' && input.role !== 'container') ? undefined : parent.color;
+  const inheritedColor = (parent.color === 'gradient' && input.role !== 'container' && input.role !== 'alert') ? undefined : parent.color;
   const color: ThemeColor = input.color ?? inheritedColor ?? roleDefault;
   const style: RenderStyle = input.style ?? parent.style ?? 'solid';
   const size: Size = input.size ?? parent.size ?? 'md';
-  const status: Status | undefined = input.status; // no inheritance
   const disabled = (input.disabled ?? false) || parent.disabled; // sticky OR
 
   // 3. Depth
@@ -163,7 +162,6 @@ export function computeUIOutput(input: UIInput, parent: UIContext): UIOutput {
   // 5. Styles via existing engine
   const componentStyles = getComponentStyles({
     ...(input.variant ? { variant: input.variant } : { color, style }),
-    status,
     glass: effectiveGlass,
     ...(frosted ? { frosted } : {}),
     tint: input.tint,
@@ -184,7 +182,6 @@ export function computeUIOutput(input: UIInput, parent: UIContext): UIOutput {
     color,
     style,
     size,
-    status,
     disabled,
     glass: effectiveGlass,
     frosted: frosted || (effectiveGlass ? densityToFrost(effectiveGlass) : false),

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { GlassBackdrop } from '$lib/components/glass';
   import { onMount } from 'svelte';
   import type { Snippet } from 'svelte';
+  import PreviewBox from './PreviewBox.svelte';
 
   interface Props {
     id: string;
@@ -110,16 +110,9 @@
     </div>
   {/if}
 
-  {#if glass}
-    <div bind:this={containerRef} class="mt-4 rounded-lg border border-border p-6 flex flex-wrap items-center justify-center gap-4 relative overflow-hidden {className ?? ''}">
-      <GlassBackdrop />
-      <div class="relative z-10 flex flex-wrap items-center justify-center gap-4 w-full">
-        {@render children()}
-      </div>
-    </div>
-  {:else}
-    <div class="mt-4 rounded-lg border border-border p-6 flex flex-wrap items-center justify-center gap-4 bg-background {className ?? ''}">
+  <div class="mt-4" bind:this={containerRef}>
+    <PreviewBox {glass} class={className}>
       {@render children()}
-    </div>
-  {/if}
+    </PreviewBox>
+  </div>
 </section>

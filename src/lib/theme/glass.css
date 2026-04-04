@@ -29,7 +29,7 @@
    ================================================ */
 
 .glass-pane {
-  border: 1px solid rgba(0, 0, 0, calc(0.06 + var(--glass-density) * 0.15));
+  border: 1px solid color-mix(in oklch, var(--comp-border, rgba(0, 0, 0, 0.5)) calc((0.15 + var(--glass-density) * 0.3) * 100%), transparent);
   box-shadow:
     /* Fresnel top highlight */
     inset 0 1px 0 rgba(255, 255, 255, calc(0.65 - var(--glass-density) * 0.4)),
@@ -42,7 +42,7 @@
 }
 
 .dark .glass-pane {
-  border-color: rgba(255, 255, 255, calc(0.08 + var(--glass-density) * 0.35));
+  border-color: color-mix(in oklch, var(--comp-border, rgba(255, 255, 255, 0.5)) calc((0.2 + var(--glass-density) * 0.4) * 100%), transparent);
   box-shadow:
     /* Fresnel top highlight (subtler in dark) */
     inset 0 1px 0 rgba(255, 255, 255, calc(0.05 + var(--glass-density) * 0.25)),
@@ -68,16 +68,16 @@
 /* Neutral variant -- cool gray / white shimmer (intentionally theme-independent).
    Use the `color` prop on components for theme-responsive glass. */
 .glass-surface.glass-neutral {
-  background: rgba(180, 195, 220, var(--glass-density));
+  background: color-mix(in oklch, var(--surface) calc((0.15 + var(--glass-density) * 0.6) * 100%), transparent);
 }
 
 .dark .glass-surface.glass-neutral {
-  background: rgba(255, 255, 255, calc(var(--glass-density) * 0.55));
+  background: color-mix(in oklch, var(--surface) calc((0.20 + var(--glass-density) * 0.6) * 100%), transparent);
 }
 
-/* Theme variant -- gradient surface using all three theme palette colors.
+/* Gradient variant -- gradient surface using all three theme palette colors.
    Uses oklch color space for vibrant interpolation (no grey dead zone). */
-.glass-surface.glass-theme {
+.glass-surface.glass-gradient {
   background: linear-gradient(
     135deg,
     oklch(from var(--theme-primary) l c h / calc(var(--glass-density) * var(--glass-tint, 1))) 0%,
@@ -87,19 +87,45 @@
 }
 
 /* ================================================
-   Glass Action -- minimal treatment for buttons/badges inside glass.
-   No border, no frost, no surface pane. Just a subtle translucent
-   overlay so the action is distinguishable from the glass surface
-   without looking like a separate card.
+   Glass Action -- dynamic treatment for buttons/badges inside glass.
+   Scales opacity via --glass-density and inherits --comp-bg.
    ================================================ */
 
 .glass-action {
-  background: rgba(255, 255, 255, 0.12);
-  border: none;
+  background: color-mix(in oklch, var(--comp-bg, #ffffff) calc((0.12 + var(--glass-density) * 0.4) * var(--glass-tint, 1) * 100%), transparent);
+  border: 1px solid color-mix(in oklch, var(--comp-border, #ffffff) calc((0.2 + var(--glass-density) * 0.3) * 100%), transparent);
 }
 
 .dark .glass-action {
-  background: rgba(255, 255, 255, 0.08);
+  background: color-mix(in oklch, var(--comp-bg, #ffffff) calc((0.15 + var(--glass-density) * 0.4) * var(--glass-tint, 1) * 100%), transparent);
+  border-color: color-mix(in oklch, var(--comp-border, #ffffff) calc((0.25 + var(--glass-density) * 0.3) * 100%), transparent);
+}
+
+/* ================================================
+   Glass Interactive -- distinct hover/active states using --comp-hover
+   Applied to clickable glass components (like buttons).
+   ================================================ */
+
+.glass-interactive {
+  transition: all 0.2s ease-out;
+}
+
+.glass-interactive:hover {
+  background: color-mix(in oklch, var(--comp-hover, #ffffff) calc((0.25 + var(--glass-density) * 0.5) * var(--glass-tint, 1) * 100%), transparent);
+  border-color: color-mix(in oklch, var(--comp-border, #ffffff) calc((0.35 + var(--glass-density) * 0.4) * 100%), transparent);
+}
+
+.glass-interactive:active {
+  background: color-mix(in oklch, var(--comp-bg, #ffffff) calc((0.15 + var(--glass-density) * 0.45) * var(--glass-tint, 1) * 100%), transparent);
+}
+
+.dark .glass-interactive:hover {
+  background: color-mix(in oklch, var(--comp-hover, #ffffff) calc((0.30 + var(--glass-density) * 0.5) * var(--glass-tint, 1) * 100%), transparent);
+  border-color: color-mix(in oklch, var(--comp-border, #ffffff) calc((0.40 + var(--glass-density) * 0.4) * 100%), transparent);
+}
+
+.dark .glass-interactive:active {
+  background: color-mix(in oklch, var(--comp-bg, #ffffff) calc((0.20 + var(--glass-density) * 0.45) * var(--glass-tint, 1) * 100%), transparent);
 }
 
 /* ================================================

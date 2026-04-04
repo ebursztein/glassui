@@ -146,7 +146,7 @@ Every visual component supports 4 independent, composable effect props. They are
 
 | Prop | Type | What it does |
 |------|------|-------------|
-| `glass` | `'subtle' \| 'frosted' \| 'heavy' \| boolean` | Frosted translucent surface (backdrop-blur + border + inset highlight). Internal only, no bleed. |
+| `glass` | `'ultra-thin' \| 'thin' \| 'normal' \| 'thick' \| 'ultra-thick' \| boolean` | Frosted translucent surface (backdrop-blur + border + inset highlight). 5-level density scale. |
 | `raised` | `boolean` | Elevated with box-shadow (depth/3D effect) |
 | `glow` | `'sm' \| 'md' \| 'lg' \| boolean` | Outer gradient shine using theme accent colors |
 | `colored` | `boolean` | Themed accent orbs behind content (GlassBackdrop) |
@@ -157,9 +157,9 @@ Every visual component supports 4 independent, composable effect props. They are
 
 All components use `getComponentStyles()` from `src/lib/interactions/styles.ts`. No per-component variant maps. The function handles solid mode (Tailwind semantic classes) and glass mode (frost + `color-mix()` translucent background via `--comp-bg` CSS custom property).
 
-### Glass context inheritance
+### Glass context inheritance via useUI
 
-Components inside a `<Card glass>` auto-inherit the glass effect via Svelte context. All child components must call `getParentGlass()` at init time. Tests enforce this.
+Components inside a `<Card glass>` auto-inherit the glass effect via Svelte context. All components call `useUI()` which internally reads `getParentUI()` for context propagation. Color, size, style, disabled, and glass density all flow from parent to children automatically.
 
 ### Template pattern
 
@@ -169,7 +169,7 @@ Use `{#snippet}` to DRY up glow wrapper branches. See Button/Card/Badge for refe
 
 ```
 src/lib/                          # THE LIBRARY
-  types/enums.ts                  # Shared Zod enums (Variant, Size, Status, etc.)
+  types/enums.ts                  # Shared Zod enums (Variant, Size, ThemeColor, etc.)
   state/                          # Global state (theme, notifications, dialogs)
   events/bus.svelte.ts            # Global event bus
   motion/                         # Animation tokens (springs, durations, easings)
@@ -211,66 +211,82 @@ docs/                             # Planning and tracking
 ```svelte
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
-  import { hover, focus, glass, gradients } from '$lib/interactions/tokens';
+  import { useUI } from '$lib/interactions/useUI.svelte';
+  import { GlassBackdrop } from '$lib/components/glass';
   import type { Snippet } from 'svelte';
-  import type { Variant, Size } from '$lib/types/enums';
+  import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
+  import type { GlowIntensity } from '$lib/interactions/glow';
+  import type { ThemeColor, RenderStyle, Size } from '$lib/types/enums';
 
   interface Props {
-    variant?: Variant;
+    color?: ThemeColor;
+    style?: RenderStyle;
     size?: Size;
-    glass?: boolean;
-    blur?: 'sm' | 'md' | 'lg' | 'xl';
-    glow?: boolean;
+    glass?: GlassDensity | boolean;
+    frosted?: FrostedLevel | boolean;
+    colored?: boolean;
+    raised?: boolean;
+    glow?: GlowIntensity | boolean;
     children: Snippet;
     class?: string;
+    [key: string]: unknown;
   }
 
   let {
-    variant = 'default',
+    color,
+    style: renderStyle = 'solid',
     size = 'md',
-    glass: isGlass = false,
-    blur: blurLevel = 'md',
+    glass,
+    frosted,
+    colored = false,
+    raised = false,
     glow = false,
     children,
     class: className,
     ...rest
   }: Props = $props();
 
-  // Use Record<EnumType, string> for variant/size class maps
-  const variantClasses: Record<Variant, string> = { ... };
-  const sizeClasses: Record<Size, string> = { ... };
+  const ui = useUI({
+    props: () => ({ color, style: renderStyle, size, glass, frosted, colored, raised, glow }),
+    role: 'action', // or 'container', 'field', 'inline', 'alert'
+  });
 
-  // Compute classes with $derived
-  const classes = $derived(cn(baseClasses, variantClasses[variant], sizeClasses[size], className));
+  const sizeClasses: Record<Size, string> = { ... };
+  const classes = $derived(cn(baseClasses, ui.className, sizeClasses[ui.size], className));
 </script>
 
-<button class={classes} {...rest}>
-  {@render children()}
-</button>
+<div class={classes} style={ui.styles} {...rest}>
+  {#if ui.showBackdrop}
+    <GlassBackdrop />
+  {/if}
+  <span class="relative z-10">{@render children()}</span>
+</div>
 ```
 
 Key conventions:
 - Use `$props()` rune, destructure with defaults
-- Use `Record<EnumType, string>` lookup tables for variant/size classes
-- Use `$derived()` for computed classes
-- Use `cn()` for class merging
+- Use `useUI()` with a role (`container`, `action`, `field`, `inline`, `alert`) -- handles all glass/solid styling
+- Use `ui.className` for classes, `ui.styles` for CSS custom properties, `ui.size`/`ui.disabled` for resolved context
+- Use `Record<EnumType, string>` lookup tables for size classes
+- Use `$derived()` for computed classes, `cn()` for merging
 - Accept `children: Snippet`, render with `{@render children()}`
 - Accept `class?: string` and spread `...rest`
-- Import interaction tokens internally -- users never see them
 - Use **semantic color tokens** (`bg-primary`, `text-foreground`, `border-line-2`) not raw colors
+- Use `{#snippet}` to DRY up conditional wrappers (glow, reactive)
 
 ### 2. Schema file: `src/lib/components/{name}/schema.ts`
 
 ```typescript
 import { z } from 'zod/v4';
-import { Variant, Size } from '$lib/types/enums';
+import { ThemeColor, RenderStyle, Size } from '$lib/types/enums';
+import { BaseUIPropsSchema } from '$lib/types/base';
 import type { ComponentMeta } from '$lib/theme/types';
 
-export const ButtonSchema = z.object({
-  variant: Variant.default('default'),
+export const ButtonSchema = BaseUIPropsSchema.extend({
+  color: ThemeColor.default('primary'),
+  style: RenderStyle.default('solid'),
   size: Size.default('md'),
-  glass: z.boolean().default(false),
-  glow: z.boolean().default(false),
+  loading: z.boolean().default(false),
   disabled: z.boolean().default(false),
 });
 
@@ -279,8 +295,8 @@ export type ButtonProps = z.infer<typeof ButtonSchema>;
 export const meta: ComponentMeta = {
   name: 'Button',
   category: 'button',
-  description: 'Button with 5 variants, 5 sizes. Optional glass surface and glow.',
-  since: '0.1.0',
+  description: 'Button with theme colors, render styles, and composable visual effects.',
+  since: '0.2.0',
   props: [ ... ],
   examples: [ ... ],
   import: "import { Button } from 'glassui';",
@@ -307,13 +323,12 @@ All in `src/lib/types/enums.ts`:
 
 | Enum | Values | Use for |
 |------|--------|---------|
-| Variant | default, primary, outline, ghost, destructive | styled components |
+| ThemeColor | primary, secondary, accent, destructive, neutral, gradient, info, success, warning, error | color prop on all components |
+| RenderStyle | solid, outline, ghost | style prop on actionable/inline components |
+| Variant | default, primary, secondary, outline, ghost, destructive | legacy (deprecated, maps to color+style) |
 | Size | xs, sm, md, lg, xl | sizeable components |
-| GlassIntensity | subtle, medium, strong | internal glass token lookup |
-| Status | info, success, warning, error | alerts, badges, notifications |
 | Position | top, right, bottom, left | popovers, tooltips |
 | Orientation | horizontal, vertical | layout components |
-| Radius | none, sm, md, lg, xl, full | border radius |
 
 ## Interaction Tokens
 
@@ -358,13 +373,13 @@ Tests run with `npm test` (vitest). TDD: write/update tests before implementing.
 
 ### Test files
 
-- `src/lib/interactions/styles.test.ts` -- tests `getComponentStyles()`, `getAlertStyles()`, `getFieldStatusOverrides()` for all variant/glass/role/raised combinations
+- `src/lib/interactions/styles.test.ts` -- tests `getComponentStyles()` for all color/style/glass/role/raised combinations
+- `src/lib/interactions/useUI.test.ts` -- tests `computeUIOutput()` for context propagation, color/size/style inheritance, glass tri-state, disabled stickiness
 - `src/lib/components/props.test.ts` -- enforces prop consistency across all visual components:
   - Every component has all 4 effect props (glass, raised, glow, colored) in Props interface, $props destructuring, Zod schema, and meta
-  - Every component uses `getComponentStyles` or `getAlertStyles`
-  - Every component passes `raised` to the style function
+  - Every component uses `useUI` for styling
+  - Every component uses `BaseUIPropsSchema.extend()` in schema
   - No hardcoded color classes (cyan/emerald/amber)
-  - All child components inherit parent glass via `getParentGlass`
   - Components with `colored` prop import `GlassBackdrop`
 
 ### When to run tests

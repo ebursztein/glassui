@@ -66,8 +66,8 @@ import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarFooter } fr
   }
 
   let {
-    glass = false,
-    frosted = false,
+    glass,
+    frosted,
     colored = false,
     raised = false,
     glow = false,

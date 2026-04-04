@@ -47,7 +47,7 @@ All styling flows through `getComponentStyles()` in `src/lib/interactions/styles
 
 ```
 src/lib/                    # The component library
-  types/enums.ts            # Shared Zod enums (Variant, Size, Status, etc.)
+  types/enums.ts            # Shared Zod enums (Variant, Size, ThemeColor, etc.)
   state/                    # Global state (theme, notifications, dialogs)
   events/bus.svelte.ts      # Global event bus
   motion/                   # Animation tokens (springs, durations, easings)
@@ -78,7 +78,7 @@ src/layouts/Layout.astro    # Site layout
 ## Component Conventions
 
 - **Generic names**: `Button`, `Card`, `Input` -- not `GlassButton`
-- **Shared enums**: Import `Variant`, `Size`, `Status` from `$lib/types/enums`
+- **Shared enums**: Import `Variant`, `Size`, `ThemeColor` from `$lib/types/enums`
 - **Tokens are internal**: Components use `hover`, `focus`, `glass` tokens internally. Users never see them.
 - **Svelte 5 runes**: `$props()`, `$state()`, `$derived()`, snippets for children
 - **Clean API**: `<Button variant="primary">Save</Button>`

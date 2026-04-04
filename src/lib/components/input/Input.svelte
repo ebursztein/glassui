@@ -3,18 +3,20 @@
   import { useUI } from '$lib/interactions/useUI.svelte';
   import { GlassBackdrop } from '$lib/components/glass';
   import type { HTMLInputAttributes } from 'svelte/elements';
+  import type { Snippet } from 'svelte';
   import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
   import type { GlowIntensity } from '$lib/interactions/glow';
-  import type { Size, Status } from '$lib/types/enums';
+  import type { Size, ThemeColor } from '$lib/types/enums';
 
   let inputCounter = 0;
 
-  interface Props extends HTMLInputAttributes {
+  interface Props extends Omit<HTMLInputAttributes, 'size'> {
+    value?: any;
     size?: Size;
-    status?: Status;
-    label?: string;
-    error?: string;
-    helperText?: string;
+    color?: ThemeColor;
+    label?: string | Snippet;
+    error?: string | Snippet;
+    helperText?: string | Snippet;
     glass?: GlassDensity | boolean;
     frosted?: FrostedLevel | boolean;
     raised?: boolean;
@@ -25,8 +27,9 @@
 
   let {
     id,
+    value = $bindable(),
     size = 'md',
-    status,
+    color,
     label,
     error,
     helperText,
@@ -40,12 +43,12 @@
     ...rest
   }: Props = $props();
 
-  const effectiveStatus = $derived(error ? 'error' as const : status);
+  const effectiveColor = $derived(error ? 'error' as const : color);
 
   const inputId = id || `glass-input-${inputCounter++}`;
 
   const ui = useUI({
-    props: () => ({ size, status: effectiveStatus, glass, frosted, raised, colored, glow, disabled }),
+    props: () => ({ size, color: effectiveColor, glass, frosted, raised, colored, glow, disabled }),
     role: 'field',
   });
 
@@ -69,7 +72,13 @@
 
 <div class="w-full" style={ui.styles}>
   {#if label}
-    <label for={inputId} class="block text-sm font-medium mb-2 text-[var(--comp-text)]">{label}</label>
+    <label for={inputId} class="block text-sm font-medium mb-2 text-[var(--comp-text)]">
+      {#if typeof label === 'string'}
+        {label}
+      {:else}
+        {@render label()}
+      {/if}
+    </label>
   {/if}
   <div class="relative group {colored ? 'overflow-hidden rounded-xl' : ''}">
     {#if ui.showBackdrop}
@@ -78,11 +87,23 @@
     {#if ui.glowClass}
       <div class={ui.glowClass}></div>
     {/if}
-    <input id={inputId} class={inputClasses} disabled={ui.disabled} aria-describedby={error || helperText ? `${inputId}-hint` : undefined} aria-invalid={error ? true : undefined} {...rest} />
+    <input id={inputId} class={inputClasses} bind:value disabled={ui.disabled} aria-describedby={error || helperText ? `${inputId}-hint` : undefined} aria-invalid={error ? true : undefined} {...rest} />
   </div>
   {#if error}
-    <p id="{inputId}-hint" class="mt-1.5 text-xs text-status-error-foreground">{error}</p>
+    <p id="{inputId}-hint" class="mt-1.5 text-xs text-error-foreground">
+      {#if typeof error === 'string'}
+        {error}
+      {:else}
+        {@render error()}
+      {/if}
+    </p>
   {:else if helperText}
-    <p id="{inputId}-hint" class="mt-1.5 text-xs text-[var(--comp-text)]/60">{helperText}</p>
+    <p id="{inputId}-hint" class="mt-1.5 text-xs text-[var(--comp-text)]/60">
+      {#if typeof helperText === 'string'}
+        {helperText}
+      {:else}
+        {@render helperText()}
+      {/if}
+    </p>
   {/if}
 </div>

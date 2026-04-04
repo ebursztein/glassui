@@ -1,6 +1,6 @@
 # Textarea
 
-Multi-line text input with size, status, label, and optional glass surface with glow on focus.
+Multi-line text input with size, color, label, and optional glass surface with glow on focus.
 
 ## Import
 
@@ -13,9 +13,9 @@ import { Textarea } from 'glassui';
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | size | `xs | sm | md | lg | xl` | `md` | Text size and padding |
-| status | `info | success | warning | error` | — | Status border color |
+| color | `primary | secondary | accent | destructive | neutral | gradient | info | success | warning | error` | — | Color/status border theme |
 | label | `string` | — | Label text above textarea |
-| error | `string` | — | Error message (sets status to error) |
+| error | `string` | — | Error message (sets color to error) |
 | helperText | `string` | — | Helper text below textarea |
 | glass | `ultra-thin | thin | normal | thick | ultra-thick` | `false` | Glass surface density |
 | frosted | `light | medium | heavy` | `false` | Backdrop blur intensity |
@@ -56,13 +56,13 @@ import { Textarea } from 'glassui';
   import type { HTMLTextareaAttributes } from 'svelte/elements';
   import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
   import type { GlowIntensity } from '$lib/interactions/glow';
-  import type { Size, Status } from '$lib/types/enums';
+  import type { Size, ThemeColor } from '$lib/types/enums';
 
   let textareaCounter = 0;
 
   interface Props extends HTMLTextareaAttributes {
     size?: Size;
-    status?: Status;
+    color?: ThemeColor;
     label?: string;
     error?: string;
     helperText?: string;
@@ -78,12 +78,12 @@ import { Textarea } from 'glassui';
   let {
     id,
     size = 'md',
-    status,
+    color,
     label,
     error,
     helperText,
-    glass = false,
-    frosted = false,
+    glass,
+    frosted,
     raised = false,
     colored = false,
     glow = false,
@@ -94,12 +94,12 @@ import { Textarea } from 'glassui';
     ...rest
   }: Props = $props();
 
-  const effectiveStatus = $derived(error ? 'error' as const : status);
+  const effectiveColor = $derived(error ? 'error' as const : color);
 
   const textareaId = id || `glass-textarea-${textareaCounter++}`;
 
   const ui = useUI({
-    props: () => ({ size, status: effectiveStatus, glass, frosted, raised, colored, glow, disabled }),
+    props: () => ({ size, color: effectiveColor, glass, frosted, raised, colored, glow, disabled }),
     role: 'field',
   });
 
@@ -142,7 +142,7 @@ import { Textarea } from 'glassui';
     <textarea id={textareaId} class={textareaClasses} {rows} disabled={ui.disabled} aria-describedby={error || helperText ? `${textareaId}-hint` : undefined} aria-invalid={error ? true : undefined} {...rest}></textarea>
   </div>
   {#if error}
-    <p id="{textareaId}-hint" class="mt-1.5 text-xs text-status-error-foreground">{error}</p>
+    <p id="{textareaId}-hint" class="mt-1.5 text-xs text-error-foreground">{error}</p>
   {:else if helperText}
     <p id="{textareaId}-hint" class="mt-1.5 text-xs text-[var(--comp-text)]/60">{helperText}</p>
   {/if}

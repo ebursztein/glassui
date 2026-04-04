@@ -18,7 +18,7 @@
 <div class="flex gap-10">
   <div class="flex-1 min-w-0 space-y-12">
 
-    <Playground {meta} class="min-h-[280px]">
+    <Playground {meta} class="min-h-[280px]" childrenCode="...content...">
       {#snippet preview(props)}
         <div class="w-full max-w-md">
           <Card {...props}>

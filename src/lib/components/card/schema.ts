@@ -14,7 +14,7 @@ export const meta: ComponentMeta = {
   description: 'Container with optional glass surface, glow, and hover effects. Compose with CardHeader, CardTitle, CardDescription, CardContent, CardFooter.',
   since: '0.2.0',
   props: [
-    { name: 'color', type: 'primary | secondary | accent | destructive | neutral | theme', default: 'neutral', description: 'Theme color tint for glass surface', options: ['neutral', 'primary', 'secondary', 'accent', 'destructive', 'theme'] },
+    { name: 'color', type: 'primary | secondary | accent | destructive | neutral | gradient', default: 'neutral', description: 'Theme color tint for glass surface', options: ['neutral', 'primary', 'secondary', 'accent', 'destructive', 'gradient'] },
     { name: 'glass', type: 'ultra-thin | thin | normal | thick | ultra-thick', default: 'false', description: 'Glass surface density', options: ['false', 'ultra-thin', 'thin', 'true', 'thick', 'ultra-thick'] },
     { name: 'frosted', type: 'light | medium | heavy', default: 'false', description: 'Backdrop blur intensity', options: ['false', 'light', 'true', 'heavy'] },
     { name: 'raised', type: 'boolean', default: 'false', description: 'Elevated with shadow' },

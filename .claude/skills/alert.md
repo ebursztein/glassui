@@ -1,6 +1,6 @@
 # Alert
 
-Status-based alert with icon, title, body, and optional dismiss. Glass and glow support.
+Color-based alert with icon, title, body, and optional dismiss. Glass and glow support.
 
 ## Import
 
@@ -12,7 +12,7 @@ import { Alert } from 'glassui';
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| status | `info | success | warning | error` | `info` | Alert status |
+| color | `ThemeColor` | `info` | Alert color |
 | title | `string` | — | Alert title |
 | dismissible | `boolean` | `false` | Show dismiss button |
 | icon | `boolean` | `true` | Show status icon |
@@ -27,37 +27,37 @@ import { Alert } from 'glassui';
 ### Info
 
 ```svelte
-<Alert status="info" title="Note">Something to know.</Alert>
+<Alert color="info" title="Note">Something to know.</Alert>
 ```
 
 ### Success
 
 ```svelte
-<Alert status="success" title="Saved">Changes saved.</Alert>
+<Alert color="success" title="Saved">Changes saved.</Alert>
 ```
 
 ### Warning
 
 ```svelte
-<Alert status="warning" title="Careful">This is destructive.</Alert>
+<Alert color="warning" title="Careful">This is destructive.</Alert>
 ```
 
 ### Error
 
 ```svelte
-<Alert status="error" title="Failed">Something went wrong.</Alert>
+<Alert color="error" title="Failed">Something went wrong.</Alert>
 ```
 
 ### Glass
 
 ```svelte
-<Alert status="info" glass title="Glass Alert">Frosted.</Alert>
+<Alert color="info" glass title="Glass Alert">Frosted.</Alert>
 ```
 
 ### Dismissible
 
 ```svelte
-<Alert status="success" dismissible title="Done">Click X to close.</Alert>
+<Alert color="success" dismissible title="Done">Click X to close.</Alert>
 ```
 
 ## Full Source
@@ -72,10 +72,10 @@ import { Alert } from 'glassui';
   import type { Snippet } from 'svelte';
   import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
   import type { GlowIntensity } from '$lib/interactions/glow';
-  import type { Status } from '$lib/types/enums';
+  import type { ThemeColor } from '$lib/types/enums';
 
   interface Props {
-    status?: Status;
+    color?: ThemeColor;
     title?: string;
     dismissible?: boolean;
     icon?: boolean;
@@ -90,12 +90,12 @@ import { Alert } from 'glassui';
   }
 
   let {
-    status = 'info',
+    color = 'info',
     title,
     dismissible = false,
     icon: showIcon = true,
-    glass = false,
-    frosted = false,
+    glass,
+    frosted,
     colored = false,
     raised = false,
     glow = false,
@@ -107,20 +107,21 @@ import { Alert } from 'glassui';
   let dismissed = $state(false);
 
   const ui = useUI({
-    props: () => ({ status, glass, frosted, colored, raised, glow }),
-    role: 'container',
+    props: () => ({ color, glass, frosted, colored, raised, glow }),
+    role: 'alert',
   });
 
-  const iconNames: Record<Status, string> = {
+  const iconNames: Record<string, string> = {
     info: 'info',
     success: 'check-circle',
     warning: 'warning',
     error: 'x-circle',
   };
 
+  const currentIcon = $derived(iconNames[color as string] || 'info');
+
   const classes = $derived(cn(
-    'relative rounded-lg border-l-4 p-4 transition-all duration-300',
-    'border-l-[var(--comp-accent)]',
+    'relative rounded-lg p-4 transition-all duration-300',
     ui.className,
     className,
   ));
@@ -130,7 +131,7 @@ import { Alert } from 'glassui';
   <div class={classes} style={ui.styles} role="alert" aria-live="assertive" {...rest}>
     <div class="relative z-10 flex items-start gap-3">
       {#if showIcon}
-        <Icon name={iconNames[status]} size={20} weight="bold" class="shrink-0 mt-0.5 text-[var(--comp-accent)]" />
+        <Icon name={currentIcon} size={20} weight="bold" class="shrink-0 mt-0.5 text-[var(--comp-accent)]" />
       {/if}
       <div class="flex-1 min-w-0">
         {#if title}

@@ -596,6 +596,211 @@
 }
 
 /* ================================================
+   .preview-light / .preview-dark -- Scoped mode overrides
+   Used by PreviewBox to force light or dark tokens
+   on the preview area independent of the page mode.
+   ================================================ */
+
+.preview-light {
+  --background: var(--color-white);
+  --background-1: var(--color-gray-50);
+  --background-2: var(--color-gray-100);
+  --background-plain: var(--color-white);
+  --foreground: var(--color-gray-800);
+  --foreground-inverse: var(--color-white);
+  --inverse: var(--color-gray-800);
+  --border: var(--color-gray-200);
+  --border-line-inverse: var(--color-white);
+  --border-line-1: var(--color-gray-100);
+  --border-line-2: var(--color-gray-200);
+  --border-line-3: var(--color-gray-300);
+  --border-line-4: var(--color-gray-400);
+  --border-line-5: var(--color-gray-500);
+  --border-line-6: var(--color-gray-600);
+  --border-line-7: var(--color-gray-700);
+  --border-line-8: var(--color-gray-800);
+  --primary: var(--color-primary-600);
+  --primary-line: transparent;
+  --primary-foreground: var(--color-white);
+  --primary-hover: var(--color-primary-700);
+  --primary-focus: var(--color-primary-700);
+  --primary-active: var(--color-primary-700);
+  --primary-checked: var(--color-primary-600);
+  --secondary: var(--color-secondary-600);
+  --secondary-line: transparent;
+  --secondary-foreground: var(--color-white);
+  --secondary-hover: var(--color-secondary-700);
+  --secondary-focus: var(--color-secondary-700);
+  --secondary-active: var(--color-secondary-700);
+  --accent: var(--color-accent-600);
+  --accent-line: transparent;
+  --accent-foreground: var(--color-white);
+  --accent-hover: var(--color-accent-700);
+  --accent-focus: var(--color-accent-700);
+  --accent-active: var(--color-accent-700);
+  --layer: var(--color-white);
+  --layer-line: var(--color-gray-200);
+  --layer-foreground: var(--color-gray-800);
+  --layer-hover: var(--color-gray-50);
+  --layer-focus: var(--color-gray-50);
+  --layer-active: var(--color-gray-50);
+  --surface: var(--color-gray-100);
+  --surface-1: var(--color-gray-200);
+  --surface-2: var(--color-gray-300);
+  --surface-3: var(--color-gray-400);
+  --surface-4: var(--color-gray-500);
+  --surface-5: var(--color-gray-600);
+  --surface-line: transparent;
+  --surface-foreground: var(--color-gray-800);
+  --surface-hover: var(--color-gray-200);
+  --surface-focus: var(--color-gray-200);
+  --surface-active: var(--color-gray-200);
+  --muted: var(--color-gray-50);
+  --muted-foreground: var(--color-gray-400);
+  --muted-foreground-1: var(--color-gray-500);
+  --muted-foreground-2: var(--color-gray-600);
+  --muted-hover: var(--color-gray-100);
+  --muted-focus: var(--color-gray-100);
+  --muted-active: var(--color-gray-100);
+  --destructive: var(--color-red-500);
+  --destructive-foreground: var(--color-white);
+  --destructive-hover: var(--color-red-600);
+  --destructive-focus: var(--color-red-600);
+  --card: var(--color-white);
+  --card-line: var(--color-gray-200);
+  --card-divider: var(--color-gray-200);
+  --card-header: var(--color-gray-200);
+  --card-footer: var(--color-gray-200);
+  --card-inverse: var(--color-gray-900);
+  --status-info: var(--color-blue-50);
+  --status-info-border: var(--color-blue-200);
+  --status-info-highlight: var(--color-blue-100);
+  --status-info-foreground: var(--color-blue-600);
+  --status-success: var(--color-emerald-50);
+  --status-success-border: var(--color-emerald-200);
+  --status-success-highlight: var(--color-emerald-100);
+  --status-success-foreground: var(--color-emerald-600);
+  --status-warning: var(--color-amber-50);
+  --status-warning-border: var(--color-amber-200);
+  --status-warning-highlight: var(--color-amber-100);
+  --status-warning-foreground: var(--color-amber-600);
+  --status-error: var(--color-red-50);
+  --status-error-border: var(--color-red-200);
+  --status-error-highlight: var(--color-red-100);
+  --status-error-foreground: var(--color-red-600);
+  /* Glass light-mode tokens */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-bg-hover: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-border-hover: rgba(255, 255, 255, 0.7);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --glass-highlight: rgba(255, 255, 255, 0.4);
+  --glass-text: rgba(0, 0, 0, 0.88);
+  --glass-text-muted: rgba(0, 0, 0, 0.55);
+  --glass-text-faint: rgba(0, 0, 0, 0.35);
+  --glass-page-bg: #e8e8f0;
+  --glass-page-bg-gradient: linear-gradient(135deg, #e8e8f0 0%, #d8d8e8 50%, #e8e8f0 100%);
+}
+
+.preview-dark {
+  --background: var(--color-neutral-800);
+  --background-1: var(--color-neutral-900);
+  --background-2: var(--color-neutral-900);
+  --foreground: var(--color-neutral-200);
+  --inverse: var(--color-neutral-950);
+  --border: var(--color-neutral-700);
+  --border-line-1: var(--color-neutral-800);
+  --border-line-2: var(--color-neutral-700);
+  --border-line-3: var(--color-neutral-600);
+  --border-line-4: var(--color-neutral-500);
+  --border-line-5: var(--color-neutral-400);
+  --border-line-6: var(--color-neutral-300);
+  --border-line-7: var(--color-neutral-200);
+  --border-line-8: var(--color-neutral-100);
+  --primary: var(--color-primary-500);
+  --primary-line: transparent;
+  --primary-foreground: var(--color-white);
+  --primary-hover: var(--color-primary-600);
+  --primary-focus: var(--color-primary-600);
+  --primary-active: var(--color-primary-600);
+  --primary-checked: var(--color-primary-500);
+  --secondary: var(--color-secondary-500);
+  --secondary-line: transparent;
+  --secondary-foreground: var(--color-white);
+  --secondary-hover: var(--color-secondary-600);
+  --secondary-focus: var(--color-secondary-600);
+  --secondary-active: var(--color-secondary-600);
+  --accent: var(--color-accent-500);
+  --accent-line: transparent;
+  --accent-foreground: var(--color-white);
+  --accent-hover: var(--color-accent-600);
+  --accent-focus: var(--color-accent-600);
+  --accent-active: var(--color-accent-600);
+  --layer: var(--color-neutral-800);
+  --layer-line: var(--color-neutral-700);
+  --layer-foreground: var(--color-white);
+  --layer-hover: var(--color-neutral-700);
+  --layer-focus: var(--color-neutral-700);
+  --layer-active: var(--color-neutral-700);
+  --surface: var(--color-neutral-700);
+  --surface-1: var(--color-neutral-600);
+  --surface-2: var(--color-neutral-500);
+  --surface-3: var(--color-neutral-600);
+  --surface-4: var(--color-neutral-500);
+  --surface-5: var(--color-neutral-400);
+  --surface-line: transparent;
+  --surface-foreground: var(--color-neutral-200);
+  --surface-hover: var(--color-neutral-600);
+  --surface-focus: var(--color-neutral-600);
+  --surface-active: var(--color-neutral-600);
+  --muted: var(--color-neutral-800);
+  --muted-foreground: var(--color-neutral-500);
+  --muted-foreground-1: var(--color-neutral-400);
+  --muted-foreground-2: var(--color-neutral-300);
+  --muted-hover: var(--color-neutral-700);
+  --muted-focus: var(--color-neutral-700);
+  --muted-active: var(--color-neutral-700);
+  --destructive: var(--color-red-500);
+  --destructive-foreground: var(--color-white);
+  --destructive-hover: var(--color-red-600);
+  --destructive-focus: var(--color-red-600);
+  --card: var(--color-neutral-800);
+  --card-line: var(--color-neutral-700);
+  --card-divider: var(--color-neutral-700);
+  --card-header: var(--color-neutral-700);
+  --card-footer: var(--color-neutral-700);
+  --card-inverse: var(--color-neutral-900);
+  --status-info: var(--color-blue-900);
+  --status-info-border: var(--color-blue-700);
+  --status-info-highlight: var(--color-blue-800);
+  --status-info-foreground: var(--color-blue-400);
+  --status-success: var(--color-emerald-900);
+  --status-success-border: var(--color-emerald-700);
+  --status-success-highlight: var(--color-emerald-800);
+  --status-success-foreground: var(--color-emerald-400);
+  --status-warning: var(--color-amber-900);
+  --status-warning-border: var(--color-amber-700);
+  --status-warning-highlight: var(--color-amber-800);
+  --status-warning-foreground: var(--color-amber-400);
+  --status-error: var(--color-red-900);
+  --status-error-border: var(--color-red-700);
+  --status-error-highlight: var(--color-red-800);
+  --status-error-foreground: var(--color-red-400);
+  /* Glass dark-mode tokens */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-bg-hover: rgba(255, 255, 255, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-border-hover: rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  --glass-highlight: rgba(255, 255, 255, 0.2);
+  --glass-text: rgba(255, 255, 255, 0.9);
+  --glass-text-muted: rgba(255, 255, 255, 0.55);
+  --glass-text-faint: rgba(255, 255, 255, 0.35);
+  --glass-page-bg: #0a0a0f;
+  --glass-page-bg-gradient: linear-gradient(135deg, #0a0a0f 0%, #0f0f1a 50%, #0a0a0f 100%);
+}
+
+/* ================================================
    Theme Presets
    Override both glass accents and Preline primary scale
    ================================================ */

@@ -42,35 +42,38 @@ export function resolveFrosted(frosted: FrostedLevel | boolean | undefined): Fro
   if (frosted === true) return 'medium';
   return frosted;
 }
-
 // ---------------------------------------------------------------------------
-// Density computation
+// Density computation (Lookup Table)
 // ---------------------------------------------------------------------------
 
-const densityBase: Record<GlassDensity, number> = {
-  'ultra-thin': 0.08,
-  'thin':       0.15,
-  'normal':     0.25,
-  'thick':      0.40,
-  'ultra-thick': 0.55,
+/**
+ * Hand-tuned lookup table for glass density scaling.
+ * Rather than an arbitrary exponential math formula, this guarantees that:
+ * 1. Densities step up smoothly and predictably.
+ * 2. Ultra-thin remains delicate even when stacked.
+ * 3. Each positive depth layer roughly equals the next base density
+ *    (e.g., thin at depth 1 ~= normal at depth 0).
+ */
+const densityScale: Record<GlassDensity, Record<number, number>> = {
+  // ultra-thin: very delicate. Good for minimal dividers or subtle panels.
+  'ultra-thin':  { '-2': 0.02, '-1': 0.06, '0': 0.12, '1': 0.20, '2': 0.28, '3': 0.36, '4': 0.42 },
+  // thin: standard for floating UI.
+  'thin':        { '-2': 0.05, '-1': 0.12, '0': 0.20, '1': 0.30, '2': 0.40, '3': 0.48, '4': 0.55 },
+  // normal: sturdy, good contrast.
+  'normal':      { '-2': 0.08, '-1': 0.18, '0': 0.30, '1': 0.42, '2': 0.52, '3': 0.60, '4': 0.68 },
+  // thick: high legibility.
+  'thick':       { '-2': 0.15, '-1': 0.30, '0': 0.45, '1': 0.58, '2': 0.68, '3': 0.76, '4': 0.82 },
+  // ultra-thick: approaches solid.
+  'ultra-thick': { '-2': 0.30, '-1': 0.45, '0': 0.60, '1': 0.75, '2': 0.85, '3': 0.92, '4': 0.96 },
 };
 
 /**
  * Compute the effective density (0..1) for a glass component at a given depth.
- *
- * Positive depth: exponential curve adds ~15-20% per level, diminishing.
- * Negative depth (recessed fields): halves density per level, floor at 5%.
- * Cap at 0.85 so glass never becomes fully opaque.
  */
 export function computeDensity(baseDensity: GlassDensity, depth: number): number {
-  const base = densityBase[baseDensity];
-  if (depth < 0) {
-    const scale = Math.pow(0.5, Math.abs(depth));
-    return Math.max(base * scale, 0.05);
-  }
-  const increment = 0.50;
-  const compounded = base + increment * (1 - Math.exp(-depth * 0.5));
-  return Math.min(compounded, 0.85);
+  const scale = densityScale[baseDensity];
+  const clampedDepth = Math.max(-2, Math.min(depth, 4));
+  return scale[clampedDepth] || 0.25;
 }
 
 // ---------------------------------------------------------------------------

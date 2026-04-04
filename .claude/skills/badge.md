@@ -1,6 +1,6 @@
 # Badge
 
-Inline label with theme colors or status colors.
+Inline label with theme colors.
 
 ## Import
 
@@ -12,10 +12,9 @@ import { Badge } from 'glassui';
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| color | `primary | secondary | accent | destructive | neutral` | `neutral` | Theme color |
+| color | `ThemeColor` | `neutral` | Theme color |
 | style | `solid | outline | ghost` | `solid` | Render style |
 | size | `xs | sm | md | lg | xl` | `sm` | Badge size |
-| status | `info | success | warning | error` | — | Status color (overrides color) |
 | dot | `boolean` | `false` | Show dot indicator before text |
 | glass | `ultra-thin | thin | normal | thick | ultra-thick` | `false` | Glass surface density |
 | frosted | `light | medium | heavy` | `false` | Backdrop blur intensity |
@@ -40,13 +39,13 @@ import { Badge } from 'glassui';
 ### Status
 
 ```svelte
-<Badge status="success">Active</Badge>
+<Badge color="success">Active</Badge>
 ```
 
 ### Glass
 
 ```svelte
-<Badge glass status="info">Info</Badge>
+<Badge glass color="info">Info</Badge>
 ```
 
 ## Full Source
@@ -59,7 +58,7 @@ import { Badge } from 'glassui';
   import type { Snippet } from 'svelte';
   import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
   import type { GlowIntensity } from '$lib/interactions/glow';
-  import type { ThemeColor, RenderStyle, Variant, Size, Status } from '$lib/types/enums';
+  import type { ThemeColor, RenderStyle, Variant, Size } from '$lib/types/enums';
 
   interface Props {
     color?: ThemeColor;
@@ -67,7 +66,6 @@ import { Badge } from 'glassui';
     /** @deprecated Use color + style instead. */
     variant?: Variant;
     size?: Size;
-    status?: Status;
     dot?: boolean;
     glass?: GlassDensity | boolean;
     frosted?: FrostedLevel | boolean;
@@ -84,10 +82,9 @@ import { Badge } from 'glassui';
     style: renderStyle = 'solid',
     variant,
     size = 'sm',
-    status,
     dot = false,
-    glass = false,
-    frosted = false,
+    glass,
+    frosted,
     colored = false,
     raised = false,
     glow = false,
@@ -97,7 +94,7 @@ import { Badge } from 'glassui';
   }: Props = $props();
 
   const ui = useUI({
-    props: () => ({ color, style: renderStyle, variant, size, status, glass, frosted, colored, raised, glow }),
+    props: () => ({ color, style: renderStyle, variant, size, glass, frosted, colored, raised, glow }),
     role: 'inline',
   });
 
@@ -109,15 +106,9 @@ import { Badge } from 'glassui';
     xl: 'px-5 py-2 text-base',
   };
 
-  const dotColors: Record<Status, string> = {
-    info: 'bg-status-info-foreground',
-    success: 'bg-status-success-foreground',
-    warning: 'bg-status-warning-foreground',
-    error: 'bg-status-error-foreground',
-  };
-
   const classes = $derived(cn(
-    'inline-flex items-center gap-1.5 rounded-full border font-medium transition-all duration-200',
+    'inline-flex items-center gap-1.5 rounded-full font-medium transition-all duration-200',
+    !ui.className.includes('text-') && 'text-[var(--comp-text)]',
     ui.className,
     sizeClasses[ui.size],
     className,
@@ -130,7 +121,7 @@ import { Badge } from 'glassui';
       <GlassBackdrop />
     {/if}
     {#if dot}
-      <span class={cn('relative z-10 inline-block w-1.5 h-1.5 rounded-full shrink-0', status ? dotColors[status] : 'bg-current')}></span>
+      <span class="relative z-10 inline-block w-1.5 h-1.5 rounded-full shrink-0 bg-current"></span>
     {/if}
     <span class="relative z-10">{@render children()}</span>
   </span>

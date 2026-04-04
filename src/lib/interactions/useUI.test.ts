@@ -102,7 +102,7 @@ describe('computeUIOutput - prop resolution', () => {
   });
 
   it('does not inherit theme color for non-container roles', () => {
-    const parent: UIContext = { ...inactiveParent, color: 'theme' };
+    const parent: UIContext = { ...inactiveParent, color: 'gradient' };
     const action = computeUIOutput({ role: 'action' }, parent);
     expect(action.color).toBe('primary'); // falls back to action default
     const field = computeUIOutput({ role: 'field' }, parent);
@@ -111,7 +111,7 @@ describe('computeUIOutput - prop resolution', () => {
     expect(inline.color).toBe('neutral');
     // but containers CAN inherit theme
     const container = computeUIOutput({ role: 'container' }, parent);
-    expect(container.color).toBe('theme');
+    expect(container.color).toBe('gradient');
   });
 
   it('inherits color from parent when not set locally', () => {
@@ -220,7 +220,6 @@ describe('computeUIOutput - integration', () => {
     expect(output).toHaveProperty('color');
     expect(output).toHaveProperty('style');
     expect(output).toHaveProperty('size');
-    expect(output).toHaveProperty('status');
     expect(output).toHaveProperty('disabled');
     expect(output).toHaveProperty('glass');
     expect(output).toHaveProperty('frosted');
@@ -241,9 +240,9 @@ describe('computeUIOutput - integration', () => {
     expect(output.styles).toContain('--comp-bg');
   });
 
-  it('solid mode produces empty style string', () => {
+  it('solid mode produces style string with CSS variables', () => {
     const output = computeUIOutput({ role: 'container' }, INACTIVE_UI_CONTEXT);
-    expect(output.styles).toBe('');
+    expect(output.styles).toContain('--comp-bg:');
   });
 
   it('reactive=true with glass=false produces reactive=false', () => {
@@ -373,13 +372,12 @@ describe('context chain integration', () => {
     expect(input.disabled).toBe(true);
   });
 
-  it('Card(color=primary) > Input(status=error) -- status is local, color inherited', () => {
+  it('Card(color=primary) > Input(color=error) -- local color overrides inherited color', () => {
     const [, input] = chain([
       { role: 'container', props: { color: 'primary', glass: 'normal' } },
-      { role: 'field', props: { status: 'error' } },
+      { role: 'field', props: { color: 'error' } },
     ]);
-    expect(input.color).toBe('primary'); // inherited
-    expect(input.status).toBe('error'); // local
+    expect(input.color).toBe('error'); // local overrides inherited
   });
 
   it('Card(size=lg) > Button -- Button inherits lg size', () => {

@@ -12,7 +12,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| color | `primary | secondary | accent | destructive | neutral | theme` | `neutral` | Theme color tint for glass surface |
+| color | `primary | secondary | accent | destructive | neutral | gradient` | `neutral` | Theme color tint for glass surface |
 | glass | `ultra-thin | thin | normal | thick | ultra-thick` | `false` | Glass surface density |
 | frosted | `light | medium | heavy` | `false` | Backdrop blur intensity |
 | raised | `boolean` | `false` | Elevated with shadow |
@@ -93,8 +93,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
   let {
     color,
     tint,
-    glass = false,
-    frosted = false,
+    glass,
+    frosted,
     colored = false,
     raised = false,
     reactive = false,

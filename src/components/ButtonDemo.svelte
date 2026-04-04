@@ -20,7 +20,7 @@
 <div class="flex gap-10">
   <div class="flex-1 min-w-0 space-y-12">
 
-    <Playground {meta}>
+    <Playground {meta} childrenCode="Click me">
       {#snippet preview(props)}
         <Button {...props}>{#snippet children()}Click me{/snippet}</Button>
       {/snippet}

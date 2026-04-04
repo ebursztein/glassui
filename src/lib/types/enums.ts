@@ -4,8 +4,8 @@ import { z } from 'zod/v4';
 export const Variant = z.enum(['default', 'primary', 'secondary', 'outline', 'ghost', 'destructive']);
 export type Variant = z.infer<typeof Variant>;
 
-/** Theme color — which color from the theme palette. 'theme' uses all three palette colors. */
-export const ThemeColor = z.enum(['primary', 'secondary', 'accent', 'destructive', 'neutral', 'theme']);
+/** Theme color — which color from the theme palette. 'gradient' uses all three palette colors. */
+export const ThemeColor = z.enum(['primary', 'secondary', 'accent', 'destructive', 'neutral', 'gradient', 'info', 'success', 'warning', 'error']);
 export type ThemeColor = z.infer<typeof ThemeColor>;
 
 /** Component render style — how the color is applied */
@@ -19,10 +19,6 @@ export type Size = z.infer<typeof Size>;
 /** Layout orientation */
 export const Orientation = z.enum(['horizontal', 'vertical']);
 export type Orientation = z.infer<typeof Orientation>;
-
-/** Status — for badges, notifications, alerts */
-export const Status = z.enum(['info', 'success', 'warning', 'error']);
-export type Status = z.infer<typeof Status>;
 
 /** Positioning */
 export const Position = z.enum(['top', 'right', 'bottom', 'left']);

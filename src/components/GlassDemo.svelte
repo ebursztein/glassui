@@ -136,14 +136,14 @@
         </Card>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mt-4">
-        <Card glass color="theme">
+        <Card glass color="gradient">
           {#snippet children()}
-            <CardContent>{#snippet children()}<p class="text-sm font-medium">Theme Gradient</p><p class="text-xs opacity-70 mt-1">glass color="theme"</p>{/snippet}</CardContent>
+            <CardContent>{#snippet children()}<p class="text-sm font-medium">Theme Gradient</p><p class="text-xs opacity-70 mt-1">glass color="gradient"</p>{/snippet}</CardContent>
           {/snippet}
         </Card>
-        <Card glass color="theme" colored>
+        <Card glass color="gradient" colored>
           {#snippet children()}
-            <CardContent>{#snippet children()}<p class="text-sm font-medium">Theme + Colored</p><p class="text-xs opacity-70 mt-1">glass color="theme" colored</p>{/snippet}</CardContent>
+            <CardContent>{#snippet children()}<p class="text-sm font-medium">Theme + Colored</p><p class="text-xs opacity-70 mt-1">glass color="gradient" colored</p>{/snippet}</CardContent>
           {/snippet}
         </Card>
       </div>
@@ -152,17 +152,17 @@
     <!-- Tint Strength -->
     <DemoSection id="tint" title="Tint Strength" description="The tint prop controls how saturated the glass color is. Subtle for backgrounds, vivid for emphasis." glass>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-        <Card glass color="theme" tint="subtle">
+        <Card glass color="gradient" tint="subtle">
           {#snippet children()}
             <CardContent>{#snippet children()}<p class="text-sm font-medium">Subtle</p><p class="text-xs opacity-70 mt-1">tint="subtle" (35%)</p>{/snippet}</CardContent>
           {/snippet}
         </Card>
-        <Card glass color="theme" tint="medium">
+        <Card glass color="gradient" tint="medium">
           {#snippet children()}
             <CardContent>{#snippet children()}<p class="text-sm font-medium">Medium</p><p class="text-xs opacity-70 mt-1">tint="medium" (65%)</p>{/snippet}</CardContent>
           {/snippet}
         </Card>
-        <Card glass color="theme">
+        <Card glass color="gradient">
           {#snippet children()}
             <CardContent>{#snippet children()}<p class="text-sm font-medium">Vivid (default)</p><p class="text-xs opacity-70 mt-1">no tint (100%)</p>{/snippet}</CardContent>
           {/snippet}
@@ -173,7 +173,7 @@
     <!-- Depth Stacking -->
     <DemoSection id="carved-fields" title="Depth Stacking" description="Card-in-card with controls at each level. Inputs carve in, buttons rise above. Inner card inherits theme color." glass>
       <div class="w-full max-w-2xl">
-        <Card glass color="theme" tint="medium">
+        <Card glass color="gradient" tint="medium">
           {#snippet children()}
             <CardContent>
               {#snippet children()}

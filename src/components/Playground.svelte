@@ -1,14 +1,17 @@
 <script lang="ts">
   import type { ComponentMeta, PropMeta } from '$lib/theme/types';
   import type { Snippet } from 'svelte';
+  import PreviewBox from './PreviewBox.svelte';
 
   interface Props {
     meta: ComponentMeta;
     preview: Snippet<[Record<string, any>]>;
+    /** Text shown between tags in the code snippet (e.g. "Click me"). */
+    childrenCode?: string;
     class?: string;
   }
 
-  let { meta, preview, class: className }: Props = $props();
+  let { meta, preview, childrenCode = '', class: className }: Props = $props();
 
   /** Parse a default string from PropMeta into a typed value. */
   function parseDefault(prop: PropMeta): any {
@@ -31,11 +34,12 @@
   }
 
   // Build reactive state from meta.props
-  const initial: Record<string, any> = {};
-  for (const prop of meta.props) {
-    initial[prop.name] = parseDefault(prop);
-  }
-  let values = $state({ ...initial });
+  let values = $state(
+    meta.props.reduce((acc, prop) => {
+      acc[prop.name] = parseDefault(prop);
+      return acc;
+    }, {} as Record<string, any>)
+  );
 
   function handleChange(key: string, value: any) {
     const prop = meta.props.find(p => p.name === key);
@@ -55,7 +59,10 @@
       parts.push(`${prop.name}="${val}"`);
     }
     const propsStr = parts.length > 0 ? ' ' + parts.join(' ') : '';
-    return `<${meta.name}${propsStr}>...</${meta.name}>`;
+    if (childrenCode) {
+      return `<${meta.name}${propsStr}>${childrenCode}</${meta.name}>`;
+    }
+    return `<${meta.name}${propsStr} />`;
   });
 </script>
 
@@ -63,13 +70,12 @@
   <h2 class="text-lg font-semibold text-foreground">Playground</h2>
   <p class="mt-1 text-sm text-muted-foreground">Explore all {meta.name.toLowerCase()} props interactively.</p>
 
-  <!-- Live preview -->
-  <div class="mt-4 rounded-lg border border-border p-8 flex items-center justify-center min-h-[100px] bg-background {className ?? ''}">
-    {@render preview(values)}
+  <!-- Live preview with toolbar -->
+  <div class="mt-4">
+    <PreviewBox code={codeSnippet()} class={className}>
+      {@render preview(values)}
+    </PreviewBox>
   </div>
-
-  <!-- Code snippet -->
-  <pre class="mt-3 text-sm text-primary bg-primary/5 border border-primary/10 rounded-lg p-4 overflow-x-auto"><code>{codeSnippet()}</code></pre>
 
   <!-- Props -->
   <div class="mt-3 rounded-lg border border-border p-5">

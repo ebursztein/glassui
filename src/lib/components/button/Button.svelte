@@ -66,6 +66,7 @@
     'disabled:pointer-events-none disabled:opacity-50',
     focus.ring,
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
+    'active:scale-[0.98]',
   );
 
   const classes = $derived(cn(

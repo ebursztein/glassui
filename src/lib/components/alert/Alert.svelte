@@ -7,10 +7,10 @@
   import type { Snippet } from 'svelte';
   import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
   import type { GlowIntensity } from '$lib/interactions/glow';
-  import type { Status } from '$lib/types/enums';
+  import type { ThemeColor } from '$lib/types/enums';
 
   interface Props {
-    status?: Status;
+    color?: ThemeColor;
     title?: string;
     dismissible?: boolean;
     icon?: boolean;
@@ -25,7 +25,7 @@
   }
 
   let {
-    status = 'info',
+    color = 'info',
     title,
     dismissible = false,
     icon: showIcon = true,
@@ -42,20 +42,21 @@
   let dismissed = $state(false);
 
   const ui = useUI({
-    props: () => ({ status, glass, frosted, colored, raised, glow }),
-    role: 'container',
+    props: () => ({ color, glass, frosted, colored, raised, glow }),
+    role: 'alert',
   });
 
-  const iconNames: Record<Status, string> = {
+  const iconNames: Record<string, string> = {
     info: 'info',
     success: 'check-circle',
     warning: 'warning',
     error: 'x-circle',
   };
 
+  const currentIcon = $derived(iconNames[color as string] || 'info');
+
   const classes = $derived(cn(
-    'relative rounded-lg border-l-4 p-4 transition-all duration-300',
-    'border-l-[var(--comp-accent)]',
+    'relative rounded-lg p-4 transition-all duration-300',
     ui.className,
     className,
   ));
@@ -65,7 +66,7 @@
   <div class={classes} style={ui.styles} role="alert" aria-live="assertive" {...rest}>
     <div class="relative z-10 flex items-start gap-3">
       {#if showIcon}
-        <Icon name={iconNames[status]} size={20} weight="bold" class="shrink-0 mt-0.5 text-[var(--comp-accent)]" />
+        <Icon name={currentIcon} size={20} weight="bold" class="shrink-0 mt-0.5 text-[var(--comp-accent)]" />
       {/if}
       <div class="flex-1 min-w-0">
         {#if title}

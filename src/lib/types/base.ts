@@ -6,7 +6,7 @@
  */
 
 import { z } from 'zod/v4';
-import { ThemeColor, RenderStyle, Size, Status } from '$lib/types/enums';
+import { ThemeColor, RenderStyle, Size } from '$lib/types/enums';
 import { GlassDensity, FrostedLevel, GlowIntensity } from '$lib/interactions/schema';
 
 // ---------------------------------------------------------------------------
@@ -30,7 +30,6 @@ export const BaseUIPropsSchema = z.object({
   color: ThemeColor.optional(),
   style: RenderStyle.optional(),
   size: Size.optional(),
-  status: Status.optional(),
   glass: GlassField,
   frosted: FrostedField,
   glow: GlowField,

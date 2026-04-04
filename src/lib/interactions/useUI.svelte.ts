@@ -95,7 +95,6 @@ export function useUI(config: UseUIConfig) {
     get color() { return output.color; },
     get style() { return output.style; },
     get size() { return output.size; },
-    get status() { return output.status; },
     get disabled() { return output.disabled; },
     get glass() { return output.glass; },
     get frosted() { return output.frosted; },

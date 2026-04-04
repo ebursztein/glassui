@@ -1,11 +1,11 @@
 import { z } from 'zod/v4';
-import { Size, Status } from '$lib/types/enums';
+import { Size, ThemeColor } from '$lib/types/enums';
 import { BaseUIPropsSchema } from '$lib/types/base';
 import type { ComponentMeta } from '$lib/theme/types';
 
 export const TextareaSchema = BaseUIPropsSchema.extend({
   size: Size.default('md'),
-  status: Status.optional(),
+  color: ThemeColor.optional(),
   label: z.string().optional(),
   error: z.string().optional(),
   helperText: z.string().optional(),
@@ -18,13 +18,13 @@ export type TextareaProps = z.infer<typeof TextareaSchema>;
 export const meta: ComponentMeta = {
   name: 'Textarea',
   category: 'textarea',
-  description: 'Multi-line text input with size, status, label, and optional glass surface with glow on focus.',
+  description: 'Multi-line text input with size, color, label, and optional glass surface with glow on focus.',
   since: '0.2.0',
   props: [
     { name: 'size', type: "xs | sm | md | lg | xl", default: 'md', description: 'Text size and padding', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
-    { name: 'status', type: "info | success | warning | error", description: 'Status border color', options: ['info', 'success', 'warning', 'error'] },
+    { name: 'color', type: "primary | secondary | accent | destructive | neutral | gradient | info | success | warning | error", description: 'Color/status border theme', options: ['primary', 'secondary', 'accent', 'destructive', 'neutral', 'gradient', 'info', 'success', 'warning', 'error'] },
     { name: 'label', type: 'string', description: 'Label text above textarea' },
-    { name: 'error', type: 'string', description: 'Error message (sets status to error)' },
+    { name: 'error', type: 'string', description: 'Error message (sets color to error)' },
     { name: 'helperText', type: 'string', description: 'Helper text below textarea' },
     { name: 'glass', type: 'ultra-thin | thin | normal | thick | ultra-thick', default: 'false', description: 'Glass surface density', options: ['false', 'ultra-thin', 'thin', 'true', 'thick', 'ultra-thick'] },
     { name: 'frosted', type: 'light | medium | heavy', default: 'false', description: 'Backdrop blur intensity', options: ['false', 'light', 'true', 'heavy'] },
