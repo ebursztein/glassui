@@ -46,9 +46,9 @@
     <!-- Glass -->
     <DemoSection id="glass" title="Glass" description="Glass surface toggle with translucent track and glow on check. Best on dark backgrounds." glass>
       <div class="flex flex-col gap-4">
-        <Toggle glass label="Glass toggle" />
-        <Toggle glass label="Glass checked" checked={true} />
-        <Toggle glass label="Glass disabled" disabled />
+        <Toggle glass frosted label="Glass toggle" />
+        <Toggle glass frosted label="Glass checked" checked={true} />
+        <Toggle glass frosted label="Glass disabled" disabled />
       </div>
     </DemoSection>
 

@@ -82,43 +82,33 @@
     </DemoSection>
 
     <!-- Glass -->
-    <DemoSection id="glass" title="Glass" description="Frosted glass surface with backdrop blur. Shown on a dark background." glass>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+    <DemoSection id="glass" title="Glass" description="Glass surface with carved input and raised button. See the Glass foundation page for the full system." glass>
+      <div class="w-full max-w-md">
         <Card glass>
           {#snippet children()}
             <CardHeader>
               {#snippet children()}
                 <CardTitle>{#snippet children()}Glass Card{/snippet}</CardTitle>
-                <CardDescription>{#snippet children()}Frosted glass surface{/snippet}</CardDescription>
+                <CardDescription>{#snippet children()}Input carved in, button raised{/snippet}</CardDescription>
               {/snippet}
             </CardHeader>
             <CardContent>
               {#snippet children()}
-                <p class="text-sm text-muted-foreground-2">Translucent with backdrop blur.</p>
+                <Input placeholder="Carved into glass..." />
               {/snippet}
             </CardContent>
-          {/snippet}
-        </Card>
-        <Card glass="subtle">
-          {#snippet children()}
-            <CardHeader>
+            <CardFooter>
               {#snippet children()}
-                <CardTitle>{#snippet children()}Subtle Glass{/snippet}</CardTitle>
-                <CardDescription>{#snippet children()}glass="subtle"{/snippet}</CardDescription>
+                <Button size="sm">{#snippet children()}Save{/snippet}</Button>
               {/snippet}
-            </CardHeader>
-            <CardContent>
-              {#snippet children()}
-                <p class="text-sm text-muted-foreground-2">Light frosted glass.</p>
-              {/snippet}
-            </CardContent>
+            </CardFooter>
           {/snippet}
         </Card>
       </div>
     </DemoSection>
 
     <!-- Glow -->
-    <DemoSection id="glow" title="Glow" description="Gradient glow behind the card. Combine with glass for the full effect." glass>
+    <DemoSection id="glow" title="Glow" description="Gradient glow behind the card." glass>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <Card glow>
           {#snippet children()}
@@ -134,8 +124,8 @@
           {#snippet children()}
             <CardContent>
               {#snippet children()}
-                <p class="text-sm font-medium text-foreground">Glass + Glow</p>
-                <p class="text-xs text-muted-foreground mt-1">glass glow</p>
+                <p class="text-sm font-medium">Glass + Glow</p>
+                <p class="text-xs opacity-70 mt-1">glass glow</p>
               {/snippet}
             </CardContent>
           {/snippet}

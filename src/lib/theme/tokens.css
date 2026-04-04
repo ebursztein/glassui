@@ -53,12 +53,43 @@
   --color-primary-active: var(--primary-active);
   --color-primary-checked: var(--primary-checked);
 
+  --color-secondary-50: var(--secondary-50);
+  --color-secondary-100: var(--secondary-100);
+  --color-secondary-200: var(--secondary-200);
+  --color-secondary-300: var(--secondary-300);
+  --color-secondary-400: var(--secondary-400);
+  --color-secondary-500: var(--secondary-500);
+  --color-secondary-600: var(--secondary-600);
+  --color-secondary-700: var(--secondary-700);
+  --color-secondary-800: var(--secondary-800);
+  --color-secondary-900: var(--secondary-900);
+  --color-secondary-950: var(--secondary-950);
+
   --color-secondary: var(--secondary);
   --color-secondary-line: var(--secondary-line);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary-hover: var(--secondary-hover);
   --color-secondary-focus: var(--secondary-focus);
   --color-secondary-active: var(--secondary-active);
+
+  --color-accent-50: var(--accent-50);
+  --color-accent-100: var(--accent-100);
+  --color-accent-200: var(--accent-200);
+  --color-accent-300: var(--accent-300);
+  --color-accent-400: var(--accent-400);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
+  --color-accent-800: var(--accent-800);
+  --color-accent-900: var(--accent-900);
+  --color-accent-950: var(--accent-950);
+
+  --color-accent: var(--accent);
+  --color-accent-line: var(--accent-line);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-focus: var(--accent-focus);
+  --color-accent-active: var(--accent-active);
 
   --color-layer: var(--layer);
   --color-layer-line: var(--layer-line);
@@ -137,6 +168,27 @@
   --color-table-line: var(--table-line);
 
   --color-switch: var(--switch);
+
+  /* Status semantic colors (info, success, warning, error) */
+  --color-status-info: var(--status-info);
+  --color-status-info-border: var(--status-info-border);
+  --color-status-info-highlight: var(--status-info-highlight);
+  --color-status-info-foreground: var(--status-info-foreground);
+
+  --color-status-success: var(--status-success);
+  --color-status-success-border: var(--status-success-border);
+  --color-status-success-highlight: var(--status-success-highlight);
+  --color-status-success-foreground: var(--status-success-foreground);
+
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-border: var(--status-warning-border);
+  --color-status-warning-highlight: var(--status-warning-highlight);
+  --color-status-warning-foreground: var(--status-warning-foreground);
+
+  --color-status-error: var(--status-error);
+  --color-status-error-border: var(--status-error-border);
+  --color-status-error-highlight: var(--status-error-highlight);
+  --color-status-error-foreground: var(--status-error-foreground);
 }
 
 /* ================================================
@@ -184,12 +236,43 @@
   --primary-active: var(--color-primary-700);
   --primary-checked: var(--color-primary-600);
 
-  --secondary: var(--color-gray-900);
+  --secondary-50: var(--color-cyan-50);
+  --secondary-100: var(--color-cyan-100);
+  --secondary-200: var(--color-cyan-200);
+  --secondary-300: var(--color-cyan-300);
+  --secondary-400: var(--color-cyan-400);
+  --secondary-500: var(--color-cyan-500);
+  --secondary-600: var(--color-cyan-600);
+  --secondary-700: var(--color-cyan-700);
+  --secondary-800: var(--color-cyan-800);
+  --secondary-900: var(--color-cyan-900);
+  --secondary-950: var(--color-cyan-950);
+
+  --secondary: var(--color-secondary-600);
   --secondary-line: transparent;
   --secondary-foreground: var(--color-white);
-  --secondary-hover: var(--color-gray-800);
-  --secondary-focus: var(--color-gray-800);
-  --secondary-active: var(--color-gray-800);
+  --secondary-hover: var(--color-secondary-700);
+  --secondary-focus: var(--color-secondary-700);
+  --secondary-active: var(--color-secondary-700);
+
+  --accent-50: var(--color-purple-50);
+  --accent-100: var(--color-purple-100);
+  --accent-200: var(--color-purple-200);
+  --accent-300: var(--color-purple-300);
+  --accent-400: var(--color-purple-400);
+  --accent-500: var(--color-purple-500);
+  --accent-600: var(--color-purple-600);
+  --accent-700: var(--color-purple-700);
+  --accent-800: var(--color-purple-800);
+  --accent-900: var(--color-purple-900);
+  --accent-950: var(--color-purple-950);
+
+  --accent: var(--color-accent-600);
+  --accent-line: transparent;
+  --accent-foreground: var(--color-white);
+  --accent-hover: var(--color-accent-700);
+  --accent-focus: var(--color-accent-700);
+  --accent-active: var(--color-accent-700);
 
   --layer: var(--color-white);
   --layer-line: var(--color-gray-200);
@@ -268,6 +351,27 @@
   --table-line: var(--color-gray-200);
 
   --switch: var(--color-white);
+
+  /* Status colors */
+  --status-info: var(--color-blue-50);
+  --status-info-border: var(--color-blue-200);
+  --status-info-highlight: var(--color-blue-100);
+  --status-info-foreground: var(--color-blue-600);
+
+  --status-success: var(--color-emerald-50);
+  --status-success-border: var(--color-emerald-200);
+  --status-success-highlight: var(--color-emerald-100);
+  --status-success-foreground: var(--color-emerald-600);
+
+  --status-warning: var(--color-amber-50);
+  --status-warning-border: var(--color-amber-200);
+  --status-warning-highlight: var(--color-amber-100);
+  --status-warning-foreground: var(--color-amber-600);
+
+  --status-error: var(--color-red-50);
+  --status-error-border: var(--color-red-200);
+  --status-error-highlight: var(--color-red-100);
+  --status-error-foreground: var(--color-red-600);
 }
 
 /* ================================================
@@ -300,12 +404,19 @@
   --primary-active: var(--color-primary-600);
   --primary-checked: var(--color-primary-500);
 
-  --secondary: var(--color-white);
+  --secondary: var(--color-secondary-500);
   --secondary-line: transparent;
-  --secondary-foreground: var(--color-neutral-800);
-  --secondary-hover: var(--color-neutral-100);
-  --secondary-focus: var(--color-neutral-100);
-  --secondary-active: var(--color-neutral-100);
+  --secondary-foreground: var(--color-white);
+  --secondary-hover: var(--color-secondary-600);
+  --secondary-focus: var(--color-secondary-600);
+  --secondary-active: var(--color-secondary-600);
+
+  --accent: var(--color-accent-500);
+  --accent-line: transparent;
+  --accent-foreground: var(--color-white);
+  --accent-hover: var(--color-accent-600);
+  --accent-focus: var(--color-accent-600);
+  --accent-active: var(--color-accent-600);
 
   --layer: var(--color-neutral-800);
   --layer-line: var(--color-neutral-700);
@@ -384,37 +495,72 @@
   --table-line: var(--color-neutral-700);
 
   --switch: var(--color-white);
+
+  /* Status colors */
+  --status-info: var(--color-blue-900);
+  --status-info-border: var(--color-blue-700);
+  --status-info-highlight: var(--color-blue-800);
+  --status-info-foreground: var(--color-blue-400);
+
+  --status-success: var(--color-emerald-900);
+  --status-success-border: var(--color-emerald-700);
+  --status-success-highlight: var(--color-emerald-800);
+  --status-success-foreground: var(--color-emerald-400);
+
+  --status-warning: var(--color-amber-900);
+  --status-warning-border: var(--color-amber-700);
+  --status-warning-highlight: var(--color-amber-800);
+  --status-warning-foreground: var(--color-amber-400);
+
+  --status-error: var(--color-red-900);
+  --status-error-border: var(--color-red-700);
+  --status-error-highlight: var(--color-red-800);
+  --status-error-foreground: var(--color-red-400);
+}
+
+/* ================================================
+   GlassUI Theme Palette
+   3 semantic colors per theme. Glass accents/glows derive from these.
+   Themes override these to change the entire glass color system.
+   ================================================ */
+
+:root {
+  --theme-primary: var(--color-blue-500);
+  --theme-secondary: var(--color-cyan-500);
+  --theme-accent: var(--color-purple-500);
 }
 
 /* ================================================
    GlassUI Glass Tokens
-   Independent from Preline -- used by glass/glow/blur system
+   Derived from theme palette -- no manual RGBA per theme needed.
    ================================================ */
 
 :root {
-  /* Glass surface */
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-bg-hover: rgba(255, 255, 255, 0.2);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --glass-border-hover: rgba(255, 255, 255, 0.4);
+  /* Glass surface -- light mode defaults */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-bg-hover: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-border-hover: rgba(255, 255, 255, 0.7);
   --glass-blur: 24px;
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-  --glass-highlight: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --glass-highlight: rgba(255, 255, 255, 0.4);
 
-  /* Accent gradient colors */
-  --glass-accent-1: rgba(6, 182, 212, 0.8);
-  --glass-accent-2: rgba(59, 130, 246, 0.8);
-  --glass-accent-3: rgba(168, 85, 247, 0.8);
+  /* Accent gradient colors -- derived from theme palette */
+  --glass-accent-1: oklch(from var(--theme-primary) l c h / 0.8);
+  --glass-accent-2: oklch(from var(--theme-secondary) l c h / 0.8);
+  --glass-accent-3: oklch(from var(--theme-accent) l c h / 0.8);
 
-  /* Glow colors (lower opacity for backgrounds) */
-  --glass-glow-1: rgba(6, 182, 212, 0.3);
-  --glass-glow-2: rgba(59, 130, 246, 0.3);
-  --glass-glow-3: rgba(168, 85, 247, 0.3);
+  /* Glow colors -- derived from theme palette at lower opacity */
+  --glass-glow-1: oklch(from var(--theme-primary) l c h / 0.3);
+  --glass-glow-2: oklch(from var(--theme-secondary) l c h / 0.3);
+  --glass-glow-3: oklch(from var(--theme-accent) l c h / 0.3);
 
-  /* Text colors (glass variants) */
-  --glass-text: white;
-  --glass-text-muted: rgba(255, 255, 255, 0.6);
-  --glass-text-faint: rgba(255, 255, 255, 0.4);
+  /* Text colors -- semi-transparent for etched glass effect.
+     Pure black + alpha (light) / pure white + alpha (dark).
+     Never grey: grey doesn't interact correctly with glass surfaces. */
+  --glass-text: rgba(0, 0, 0, 0.88);
+  --glass-text-muted: rgba(0, 0, 0, 0.55);
+  --glass-text-faint: rgba(0, 0, 0, 0.35);
 
   /* Status colors (glass variants) */
   --glass-info: rgba(59, 130, 246, 0.8);
@@ -430,23 +576,23 @@
   --glass-radius-full: 9999px;
 
   /* Background */
-  --glass-page-bg: #0a0a0f;
-  --glass-page-bg-gradient: linear-gradient(135deg, #0a0a0f 0%, #0f0f1a 50%, #0a0a0f 100%);
-}
-
-/* Light mode glass overrides */
-.light {
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --glass-bg-hover: rgba(255, 255, 255, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.5);
-  --glass-border-hover: rgba(255, 255, 255, 0.7);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  --glass-highlight: rgba(255, 255, 255, 0.4);
-  --glass-text: #1a1a2e;
-  --glass-text-muted: rgba(26, 26, 46, 0.6);
-  --glass-text-faint: rgba(26, 26, 46, 0.4);
   --glass-page-bg: #e8e8f0;
   --glass-page-bg-gradient: linear-gradient(135deg, #e8e8f0 0%, #d8d8e8 50%, #e8e8f0 100%);
+}
+
+/* Dark mode glass overrides */
+.dark {
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-bg-hover: rgba(255, 255, 255, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-border-hover: rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  --glass-highlight: rgba(255, 255, 255, 0.2);
+  --glass-text: rgba(255, 255, 255, 0.9);
+  --glass-text-muted: rgba(255, 255, 255, 0.55);
+  --glass-text-faint: rgba(255, 255, 255, 0.35);
+  --glass-page-bg: #0a0a0f;
+  --glass-page-bg-gradient: linear-gradient(135deg, #0a0a0f 0%, #0f0f1a 50%, #0a0a0f 100%);
 }
 
 /* ================================================
@@ -455,89 +601,52 @@
    ================================================ */
 
 [data-theme="ocean"] {
-  /* Glass accents */
-  --glass-accent-1: rgba(6, 182, 212, 0.8);
-  --glass-accent-2: rgba(14, 165, 233, 0.8);
-  --glass-accent-3: rgba(56, 189, 248, 0.8);
-  --glass-glow-1: rgba(6, 182, 212, 0.3);
-  --glass-glow-2: rgba(14, 165, 233, 0.3);
-  --glass-glow-3: rgba(56, 189, 248, 0.3);
-  /* Preline primary -> cyan/sky */
-  --primary-50: var(--color-cyan-50);
-  --primary-100: var(--color-cyan-100);
-  --primary-200: var(--color-cyan-200);
-  --primary-300: var(--color-cyan-300);
-  --primary-400: var(--color-cyan-400);
-  --primary-500: var(--color-cyan-500);
-  --primary-600: var(--color-cyan-600);
-  --primary-700: var(--color-cyan-700);
-  --primary-800: var(--color-cyan-800);
-  --primary-900: var(--color-cyan-900);
-  --primary-950: var(--color-cyan-950);
+  --theme-primary: var(--color-cyan-500);
+  --theme-secondary: var(--color-sky-500);
+  --theme-accent: var(--color-blue-400);
+  --primary-50: var(--color-cyan-50); --primary-100: var(--color-cyan-100); --primary-200: var(--color-cyan-200); --primary-300: var(--color-cyan-300); --primary-400: var(--color-cyan-400); --primary-500: var(--color-cyan-500); --primary-600: var(--color-cyan-600); --primary-700: var(--color-cyan-700); --primary-800: var(--color-cyan-800); --primary-900: var(--color-cyan-900); --primary-950: var(--color-cyan-950);
+  --secondary-50: var(--color-sky-50); --secondary-100: var(--color-sky-100); --secondary-200: var(--color-sky-200); --secondary-300: var(--color-sky-300); --secondary-400: var(--color-sky-400); --secondary-500: var(--color-sky-500); --secondary-600: var(--color-sky-600); --secondary-700: var(--color-sky-700); --secondary-800: var(--color-sky-800); --secondary-900: var(--color-sky-900); --secondary-950: var(--color-sky-950);
+  --accent-50: var(--color-blue-50); --accent-100: var(--color-blue-100); --accent-200: var(--color-blue-200); --accent-300: var(--color-blue-300); --accent-400: var(--color-blue-400); --accent-500: var(--color-blue-500); --accent-600: var(--color-blue-600); --accent-700: var(--color-blue-700); --accent-800: var(--color-blue-800); --accent-900: var(--color-blue-900); --accent-950: var(--color-blue-950);
 }
 
 [data-theme="ember"] {
-  /* Glass accents */
-  --glass-accent-1: rgba(239, 68, 68, 0.8);
-  --glass-accent-2: rgba(249, 115, 22, 0.8);
-  --glass-accent-3: rgba(234, 179, 8, 0.8);
-  --glass-glow-1: rgba(239, 68, 68, 0.3);
-  --glass-glow-2: rgba(249, 115, 22, 0.3);
-  --glass-glow-3: rgba(234, 179, 8, 0.3);
-  /* Preline primary -> orange */
-  --primary-50: var(--color-orange-50);
-  --primary-100: var(--color-orange-100);
-  --primary-200: var(--color-orange-200);
-  --primary-300: var(--color-orange-300);
-  --primary-400: var(--color-orange-400);
-  --primary-500: var(--color-orange-500);
-  --primary-600: var(--color-orange-600);
-  --primary-700: var(--color-orange-700);
-  --primary-800: var(--color-orange-800);
-  --primary-900: var(--color-orange-900);
-  --primary-950: var(--color-orange-950);
+  --theme-primary: var(--color-red-500);
+  --theme-secondary: var(--color-orange-500);
+  --theme-accent: var(--color-amber-500);
+  --primary-50: var(--color-red-50); --primary-100: var(--color-red-100); --primary-200: var(--color-red-200); --primary-300: var(--color-red-300); --primary-400: var(--color-red-400); --primary-500: var(--color-red-500); --primary-600: var(--color-red-600); --primary-700: var(--color-red-700); --primary-800: var(--color-red-800); --primary-900: var(--color-red-900); --primary-950: var(--color-red-950);
+  --secondary-50: var(--color-orange-50); --secondary-100: var(--color-orange-100); --secondary-200: var(--color-orange-200); --secondary-300: var(--color-orange-300); --secondary-400: var(--color-orange-400); --secondary-500: var(--color-orange-500); --secondary-600: var(--color-orange-600); --secondary-700: var(--color-orange-700); --secondary-800: var(--color-orange-800); --secondary-900: var(--color-orange-900); --secondary-950: var(--color-orange-950);
+  --accent-50: var(--color-amber-50); --accent-100: var(--color-amber-100); --accent-200: var(--color-amber-200); --accent-300: var(--color-amber-300); --accent-400: var(--color-amber-400); --accent-500: var(--color-amber-500); --accent-600: var(--color-amber-600); --accent-700: var(--color-amber-700); --accent-800: var(--color-amber-800); --accent-900: var(--color-amber-900); --accent-950: var(--color-amber-950);
 }
 
 [data-theme="violet"] {
-  /* Glass accents */
-  --glass-accent-1: rgba(168, 85, 247, 0.8);
-  --glass-accent-2: rgba(139, 92, 246, 0.8);
-  --glass-accent-3: rgba(236, 72, 153, 0.8);
-  --glass-glow-1: rgba(168, 85, 247, 0.3);
-  --glass-glow-2: rgba(139, 92, 246, 0.3);
-  --glass-glow-3: rgba(236, 72, 153, 0.3);
-  /* Preline primary -> purple */
-  --primary-50: var(--color-purple-50);
-  --primary-100: var(--color-purple-100);
-  --primary-200: var(--color-purple-200);
-  --primary-300: var(--color-purple-300);
-  --primary-400: var(--color-purple-400);
-  --primary-500: var(--color-purple-500);
-  --primary-600: var(--color-purple-600);
-  --primary-700: var(--color-purple-700);
-  --primary-800: var(--color-purple-800);
-  --primary-900: var(--color-purple-900);
-  --primary-950: var(--color-purple-950);
+  --theme-primary: var(--color-purple-500);
+  --theme-secondary: var(--color-indigo-500);
+  --theme-accent: var(--color-pink-500);
+  --primary-50: var(--color-purple-50); --primary-100: var(--color-purple-100); --primary-200: var(--color-purple-200); --primary-300: var(--color-purple-300); --primary-400: var(--color-purple-400); --primary-500: var(--color-purple-500); --primary-600: var(--color-purple-600); --primary-700: var(--color-purple-700); --primary-800: var(--color-purple-800); --primary-900: var(--color-purple-900); --primary-950: var(--color-purple-950);
+  --secondary-50: var(--color-indigo-50); --secondary-100: var(--color-indigo-100); --secondary-200: var(--color-indigo-200); --secondary-300: var(--color-indigo-300); --secondary-400: var(--color-indigo-400); --secondary-500: var(--color-indigo-500); --secondary-600: var(--color-indigo-600); --secondary-700: var(--color-indigo-700); --secondary-800: var(--color-indigo-800); --secondary-900: var(--color-indigo-900); --secondary-950: var(--color-indigo-950);
+  --accent-50: var(--color-pink-50); --accent-100: var(--color-pink-100); --accent-200: var(--color-pink-200); --accent-300: var(--color-pink-300); --accent-400: var(--color-pink-400); --accent-500: var(--color-pink-500); --accent-600: var(--color-pink-600); --accent-700: var(--color-pink-700); --accent-800: var(--color-pink-800); --accent-900: var(--color-pink-900); --accent-950: var(--color-pink-950);
 }
 
 [data-theme="mono"] {
-  /* Glass accents */
-  --glass-accent-1: rgba(255, 255, 255, 0.8);
-  --glass-accent-2: rgba(200, 200, 200, 0.8);
-  --glass-accent-3: rgba(160, 160, 160, 0.8);
-  --glass-glow-1: rgba(255, 255, 255, 0.2);
-  --glass-glow-2: rgba(200, 200, 200, 0.2);
-  --glass-glow-3: rgba(160, 160, 160, 0.2);
-  /* Preline primary -> gray */
-  --primary-50: var(--color-gray-50);
-  --primary-100: var(--color-gray-100);
-  --primary-200: var(--color-gray-200);
-  --primary-300: var(--color-gray-300);
-  --primary-400: var(--color-gray-400);
-  --primary-500: var(--color-gray-500);
-  --primary-600: var(--color-gray-600);
-  --primary-700: var(--color-gray-700);
-  --primary-800: var(--color-gray-800);
-  --primary-900: var(--color-gray-900);
-  --primary-950: var(--color-gray-950);
+  --theme-primary: var(--color-gray-400);
+  --theme-secondary: var(--color-gray-500);
+  --theme-accent: var(--color-gray-600);
+  --primary-50: var(--color-gray-50); --primary-100: var(--color-gray-100); --primary-200: var(--color-gray-200); --primary-300: var(--color-gray-300); --primary-400: var(--color-gray-400); --primary-500: var(--color-gray-500); --primary-600: var(--color-gray-600); --primary-700: var(--color-gray-700); --primary-800: var(--color-gray-800); --primary-900: var(--color-gray-900); --primary-950: var(--color-gray-950);
+  --secondary-50: var(--color-gray-50); --secondary-100: var(--color-gray-100); --secondary-200: var(--color-gray-200); --secondary-300: var(--color-gray-300); --secondary-400: var(--color-gray-400); --secondary-500: var(--color-gray-500); --secondary-600: var(--color-gray-600); --secondary-700: var(--color-gray-700); --secondary-800: var(--color-gray-800); --secondary-900: var(--color-gray-900); --secondary-950: var(--color-gray-950);
+  --accent-50: var(--color-gray-50); --accent-100: var(--color-gray-100); --accent-200: var(--color-gray-200); --accent-300: var(--color-gray-300); --accent-400: var(--color-gray-400); --accent-500: var(--color-gray-500); --accent-600: var(--color-gray-600); --accent-700: var(--color-gray-700); --accent-800: var(--color-gray-800); --accent-900: var(--color-gray-900); --accent-950: var(--color-gray-950);
+}
+
+/* ================================================
+   Reduced Motion
+   Suppress animations for users who prefer reduced motion
+   ================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

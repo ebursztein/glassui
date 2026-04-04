@@ -1,15 +1,13 @@
 import { z } from 'zod/v4';
-import { Variant, Size } from '$lib/types/enums';
+import { ThemeColor, RenderStyle, Size } from '$lib/types/enums';
+import { BaseUIPropsSchema } from '$lib/types/base';
 import type { ComponentMeta } from '$lib/theme/types';
 
-export const ButtonSchema = z.object({
-  variant: Variant.default('default'),
+export const ButtonSchema = BaseUIPropsSchema.extend({
+  color: ThemeColor.default('primary'),
+  style: RenderStyle.default('solid'),
   size: Size.default('md'),
-  glass: z.union([z.enum(['subtle', 'frosted', 'heavy']), z.boolean()]).default(false),
-  glassbg: z.boolean().default(false),
-  glow: z.union([z.enum(['sm', 'md', 'lg']), z.boolean()]).default(false),
   loading: z.boolean().default(false),
-  disabled: z.boolean().default(false),
 });
 
 export type ButtonProps = z.infer<typeof ButtonSchema>;
@@ -17,26 +15,28 @@ export type ButtonProps = z.infer<typeof ButtonSchema>;
 export const meta: ComponentMeta = {
   name: 'Button',
   category: 'button',
-  description: 'Button with 6 variants, 5 sizes. Optional glass surface and glow effect.',
+  description: 'Button with theme colors, render styles, and composable visual effects.',
   since: '0.1.0',
   props: [
-    { name: 'variant', type: "default | primary | secondary | outline | ghost | destructive", default: 'default', description: 'Visual style variant', options: ['default', 'primary', 'secondary', 'outline', 'ghost', 'destructive'] },
+    { name: 'color', type: "primary | secondary | accent | destructive | neutral", default: 'primary', description: 'Theme color', options: ['primary', 'secondary', 'accent', 'destructive', 'neutral'] },
+    { name: 'style', type: "solid | outline | ghost", default: 'solid', description: 'Render style', options: ['solid', 'outline', 'ghost'] },
     { name: 'size', type: "xs | sm | md | lg | xl", default: 'md', description: 'Button size', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
-    { name: 'glass', type: 'subtle | frosted | heavy', default: 'false', description: 'Glass translucency level', options: ['false', 'subtle', 'frosted', 'heavy'] },
-    { name: 'glassbg', type: 'boolean', default: 'false', description: 'Themed gradient backdrop' },
-    { name: 'glow', type: 'sm | md | lg', default: 'false', description: 'Glow intensity', options: ['false', 'sm', 'md', 'lg'] },
+    { name: 'glass', type: 'ultra-thin | thin | normal | thick | ultra-thick', default: 'false', description: 'Glass surface density', options: ['false', 'ultra-thin', 'thin', 'true', 'thick', 'ultra-thick'] },
+    { name: 'frosted', type: 'light | medium | heavy', default: 'false', description: 'Backdrop blur intensity', options: ['false', 'light', 'true', 'heavy'] },
+    { name: 'colored', type: 'boolean', default: 'false', description: 'Colored glass accent orbs behind content' },
+    { name: 'raised', type: 'boolean', default: 'false', description: 'Elevated with shadow' },
+    { name: 'reactive', type: 'boolean', default: 'false', description: 'Cursor-tracking proximity glow (requires glass)' },
+    { name: 'glow', type: 'sm | md | lg', default: 'false', description: 'Glow intensity', options: ['false', 'sm', 'true', 'lg'] },
     { name: 'loading', type: 'boolean', default: 'false', description: 'Loading state with spinner' },
     { name: 'disabled', type: 'boolean', default: 'false', description: 'Disabled state' },
   ],
   examples: [
-    { title: 'Default', code: '<Button>Click me</Button>' },
-    { title: 'Primary', code: '<Button variant="primary">Save</Button>' },
-    { title: 'Glass', code: '<Button glass>Glass</Button>' },
-    { title: 'Glass + glow', code: '<Button variant="primary" glass glow>Save</Button>' },
-    { title: 'Outline', code: '<Button variant="outline">Cancel</Button>' },
-    { title: 'Ghost', code: '<Button variant="ghost">More info</Button>' },
-    { title: 'Destructive', code: '<Button variant="destructive">Delete</Button>' },
-    { title: 'With icon', code: '<Button variant="primary"><Icon icon={FloppyDisk} size={16} weight="bold" /> Save</Button>' },
+    { title: 'Primary', code: '<Button>Save</Button>' },
+    { title: 'Secondary', code: '<Button color="secondary">Details</Button>' },
+    { title: 'Outline', code: '<Button style="outline">Cancel</Button>' },
+    { title: 'Ghost', code: '<Button style="ghost">More info</Button>' },
+    { title: 'Destructive', code: '<Button color="destructive">Delete</Button>' },
+    { title: 'Glass', code: '<Button glass glow>Glass</Button>' },
   ],
   import: "import { Button } from 'glassui';",
 };

@@ -4,6 +4,14 @@ import { z } from 'zod/v4';
 export const Variant = z.enum(['default', 'primary', 'secondary', 'outline', 'ghost', 'destructive']);
 export type Variant = z.infer<typeof Variant>;
 
+/** Theme color — which color from the theme palette. 'theme' uses all three palette colors. */
+export const ThemeColor = z.enum(['primary', 'secondary', 'accent', 'destructive', 'neutral', 'theme']);
+export type ThemeColor = z.infer<typeof ThemeColor>;
+
+/** Component render style — how the color is applied */
+export const RenderStyle = z.enum(['solid', 'outline', 'ghost']);
+export type RenderStyle = z.infer<typeof RenderStyle>;
+
 /** Component size */
 export const Size = z.enum(['xs', 'sm', 'md', 'lg', 'xl']);
 export type Size = z.infer<typeof Size>;

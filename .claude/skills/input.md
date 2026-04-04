@@ -17,8 +17,10 @@ import { Input } from 'glassui';
 | label | `string` | — | Label text above input |
 | error | `string` | — | Error message (sets status to error) |
 | helperText | `string` | — | Helper text below input |
-| glass | `subtle | frosted | heavy` | `false` | Glass translucency level |
-| glassbg | `boolean` | `false` | Themed gradient backdrop |
+| glass | `ultra-thin | thin | normal | thick | ultra-thick` | `false` | Glass surface density |
+| frosted | `light | medium | heavy` | `false` | Backdrop blur intensity |
+| raised | `boolean` | `false` | Elevated with shadow |
+| colored | `boolean` | `false` | Colored glass accent orbs behind content |
 | glow | `sm | md | lg` | `false` | Glow intensity |
 | disabled | `boolean` | `false` | Disabled state |
 
@@ -53,10 +55,11 @@ import { Input } from 'glassui';
 ```svelte
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
-  import { getGlassClasses, resolveGlass, bumpGlass, getParentGlass, type GlassEffect } from '$lib/interactions/glass';
-  import { getGlowClass, type GlowIntensity } from '$lib/interactions/glow';
+  import { useUI } from '$lib/interactions/useUI.svelte';
   import { GlassBackdrop } from '$lib/components/glass';
   import type { HTMLInputAttributes } from 'svelte/elements';
+  import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
+  import type { GlowIntensity } from '$lib/interactions/glow';
   import type { Size, Status } from '$lib/types/enums';
 
   let inputCounter = 0;
@@ -67,8 +70,10 @@ import { Input } from 'glassui';
     label?: string;
     error?: string;
     helperText?: string;
-    glass?: GlassEffect | boolean;
-    glassbg?: boolean;
+    glass?: GlassDensity | boolean;
+    frosted?: FrostedLevel | boolean;
+    raised?: boolean;
+    colored?: boolean;
     glow?: GlowIntensity | boolean;
     class?: string;
   }
@@ -81,7 +86,9 @@ import { Input } from 'glassui';
     error,
     helperText,
     glass = false,
-    glassbg = false,
+    frosted = false,
+    raised = false,
+    colored = false,
     glow = false,
     disabled = false,
     class: className,
@@ -92,11 +99,10 @@ import { Input } from 'glassui';
 
   const inputId = id || `glass-input-${inputCounter++}`;
 
-  const parentGlass = getParentGlass();
-  const inherited = $derived(parentGlass());
-  const effectiveGlass = $derived(resolveGlass(glass) || (inherited ? bumpGlass(inherited) : false));
-  const allGlassClasses = $derived(getGlassClasses(effectiveGlass, 'field'));
-  const glowClass = $derived(getGlowClass(glow));
+  const ui = useUI({
+    props: () => ({ size, status: effectiveStatus, glass, frosted, raised, colored, glow, disabled }),
+    role: 'field',
+  });
 
   const sizeClasses: Record<Size, string> = {
     xs: 'h-7 px-2 text-xs rounded-lg',
@@ -106,47 +112,33 @@ import { Input } from 'glassui';
     xl: 'h-14 px-6 text-lg rounded-2xl',
   };
 
-  const solidClasses = cn(
-    'bg-layer border border-line-2 text-foreground',
-    'placeholder:text-muted-foreground',
-    'focus:border-primary focus:ring-2 focus:ring-primary/20',
-  );
-
-  const statusBorders: Record<Status, string> = {
-    info: 'border-cyan-500 focus:border-cyan-400 focus:ring-cyan-400/20',
-    success: 'border-emerald-500 focus:border-emerald-400 focus:ring-emerald-400/20',
-    warning: 'border-amber-500 focus:border-amber-400 focus:ring-amber-400/20',
-    error: 'border-red-500 focus:border-red-400 focus:ring-red-400/20',
-  };
-
   const inputClasses = $derived(cn(
     'relative flex w-full transition-all duration-300',
     'focus:outline-none',
     'disabled:cursor-not-allowed disabled:opacity-50',
-    allGlassClasses || solidClasses,
-    effectiveStatus ? statusBorders[effectiveStatus] : '',
-    sizeClasses[size],
+    ui.className,
+    sizeClasses[ui.size],
     className,
   ));
 </script>
 
-<div class="w-full">
+<div class="w-full" style={ui.styles}>
   {#if label}
-    <label for={inputId} class="block text-sm font-medium text-foreground mb-2">{label}</label>
+    <label for={inputId} class="block text-sm font-medium mb-2 text-[var(--comp-text)]">{label}</label>
   {/if}
-  <div class="relative group {glassbg ? 'glass-bg rounded-xl' : ''}">
-    {#if glassbg}
+  <div class="relative group {colored ? 'overflow-hidden rounded-xl' : ''}">
+    {#if ui.showBackdrop}
       <GlassBackdrop />
     {/if}
-    {#if glowClass}
-      <div class={glowClass}></div>
+    {#if ui.glowClass}
+      <div class={ui.glowClass}></div>
     {/if}
-    <input id={inputId} class={inputClasses} {disabled} aria-describedby={error || helperText ? `${inputId}-hint` : undefined} aria-invalid={error ? true : undefined} {...rest} />
+    <input id={inputId} class={inputClasses} disabled={ui.disabled} aria-describedby={error || helperText ? `${inputId}-hint` : undefined} aria-invalid={error ? true : undefined} {...rest} />
   </div>
   {#if error}
     <p id="{inputId}-hint" class="mt-1.5 text-xs text-status-error-foreground">{error}</p>
   {:else if helperText}
-    <p id="{inputId}-hint" class="mt-1.5 text-xs text-muted-foreground">{helperText}</p>
+    <p id="{inputId}-hint" class="mt-1.5 text-xs text-[var(--comp-text)]/60">{helperText}</p>
   {/if}
 </div>
 ```

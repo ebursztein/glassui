@@ -60,6 +60,7 @@ const path = Astro.url.pathname;
           <div>
             <h3 class="px-2 mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Foundation</h3>
             <ul class="space-y-0.5">
+              <li><a href="/components/glass" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/glass') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Glass</a></li>
               <li><a href="/components/theme" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/theme') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Theme</a></li>
             </ul>
           </div>

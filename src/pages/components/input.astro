@@ -1,16 +1,20 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import InputDemo from '../../components/InputDemo.svelte';
-import { meta } from '../../lib/components/input/schema';
 ---
 
-<Layout title={`${meta.name} — GlassUI`}>
+<Layout title="Input - GlassUI">
   <div class="space-y-6">
     <div>
-      <h1 class="text-3xl font-bold text-white">{meta.name}</h1>
-      <p class="text-white/60 mt-2">{meta.description}</p>
-      <pre class="mt-3 text-sm text-cyan-300 bg-black/30 rounded-xl px-4 py-2 inline-block"><code>{meta.import}</code></pre>
+      <p class="text-sm font-medium text-primary mb-1">Components</p>
+      <h1 class="text-3xl font-bold text-foreground tracking-tight">Input</h1>
+      <p class="mt-2 text-muted-foreground-2">
+        Text input with size variants, status colors, label, helper text, error messages, and optional glass surface with glow on focus.
+      </p>
     </div>
+
+    <hr class="border-border" />
+
     <InputDemo client:load />
   </div>
 </Layout>

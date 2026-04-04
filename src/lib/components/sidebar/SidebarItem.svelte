@@ -1,6 +1,7 @@
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
   import { Icon } from '$lib/components/icon';
+  import { getParentUI } from '$lib/interactions/useUI.svelte';
   import type { Snippet } from 'svelte';
 
   interface Props {
@@ -20,22 +21,28 @@
     children,
     ...rest
   }: Props = $props();
+
+  const parentCtx = getParentUI();
+  const insideGlass = $derived(parentCtx().active);
 </script>
 
-<a
-  {href}
-  class={cn(
-    'relative flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors',
-    active
-      ? 'text-white bg-white/10 font-medium before:absolute before:inset-y-1 before:-start-1 before:w-1 before:rounded-full before:bg-[var(--glass-accent-2)]'
-      : 'text-white/60 hover:text-white hover:bg-white/10',
-    className,
-  )}
-  aria-current={active ? 'page' : undefined}
-  {...rest}
->
-  {#if icon}
-    <Icon name={icon} size={16} class="shrink-0" />
-  {/if}
-  {@render children()}
-</a>
+<li>
+  <a
+    {href}
+    class={cn(
+      'w-full flex items-center gap-x-2 py-2 px-2.5 text-sm rounded-lg transition-colors',
+      'focus:outline-hidden focus:bg-sidebar-nav-focus',
+      active
+        ? cn(insideGlass ? 'font-medium' : 'bg-sidebar-nav-active text-foreground font-medium')
+        : cn(insideGlass ? 'text-[var(--glass-text-muted)] hover:text-[var(--glass-text)]' : 'text-sidebar-nav-foreground hover:bg-sidebar-nav-hover'),
+      className,
+    )}
+    aria-current={active ? 'page' : undefined}
+    {...rest}
+  >
+    {#if icon}
+      <Icon name={icon} size={16} class="shrink-0" />
+    {/if}
+    {@render children()}
+  </a>
+</li>

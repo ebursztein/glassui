@@ -1,98 +1,151 @@
 /*
- * Glass & Glow CSS Mixins
+ * Glass & Glow CSS
  *
- * Glass = translucent frosted surface (3 intensities)
- * Glow  = outer gradient shine (3 intensities)
- * GlassBg = themed gradient orb backdrop
+ * Glass = translucent surface with density-driven opacity.
+ *   .glass-pane    -- border + inset highlight, scaled by --glass-density
+ *   .glass-surface -- background via color-mix, scaled by --glass-density
  *
- * Glass and Glow are independent concerns.
+ * Frost = backdrop blur (independent of density).
+ *   .frost-light   -- 8px blur
+ *   .frost-medium  -- 24px blur
+ *   .frost-heavy   -- 40px blur
+ *
+ * Glow = outer gradient shine (unchanged).
+ *   .glow-sm/md/lg
+ *
+ * Density is set per-component via inline style: --glass-density: 0..1
  * Colors come from theme presets via --glass-accent-* and --glass-glow-* vars.
  */
 
 /* ================================================
-   Glass Frost Effect (light mode defaults)
-   Additive: blur + border + shadow.
-   Adapts to light/dark via .dark selector.
+   Glass Pane -- border + multi-layer optical shadows
+   Scales with --glass-density custom property.
+
+   Shadow stack (inside-out):
+     1. Fresnel top highlight -- bright inset simulating light on top bevel
+     2. Bottom crease         -- dark inset for depth before drop shadow
+     3. Internal diffusion    -- inner glow for thick glass (density > 0.35)
+     4. Ambient elevation     -- density-graduated drop shadow
    ================================================ */
 
-.glass-subtle {
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+.glass-pane {
+  border: 1px solid rgba(0, 0, 0, calc(0.06 + var(--glass-density) * 0.15));
+  box-shadow:
+    /* Fresnel top highlight */
+    inset 0 1px 0 rgba(255, 255, 255, calc(0.65 - var(--glass-density) * 0.4)),
+    /* Bottom crease -- simulates thickness before shadow */
+    inset 0 -1px 1px rgba(0, 0, 0, calc(var(--glass-density) * 0.08)),
+    /* Internal diffusion -- light scattering for thick glass (activates > 0.35) */
+    inset 0 0 calc(max(0px, (var(--glass-density) - 0.35) * 80px)) rgba(255, 255, 255, calc(max(0, (var(--glass-density) - 0.35) * 0.3))),
+    /* Density-graduated drop shadow (elevation) */
+    0 calc(2px + var(--glass-density) * 22px) calc(8px + var(--glass-density) * 56px) rgba(0, 0, 0, calc(0.05 + var(--glass-density) * 0.25));
 }
 
-.glass-frosted {
-  backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+.dark .glass-pane {
+  border-color: rgba(255, 255, 255, calc(0.08 + var(--glass-density) * 0.35));
+  box-shadow:
+    /* Fresnel top highlight (subtler in dark) */
+    inset 0 1px 0 rgba(255, 255, 255, calc(0.05 + var(--glass-density) * 0.25)),
+    /* Bottom crease */
+    inset 0 -1px 1px rgba(0, 0, 0, calc(var(--glass-density) * 0.15)),
+    /* Internal diffusion */
+    inset 0 0 calc(max(0px, (var(--glass-density) - 0.35) * 80px)) rgba(255, 255, 255, calc(max(0, (var(--glass-density) - 0.35) * 0.15))),
+    /* Density-graduated drop shadow */
+    0 calc(2px + var(--glass-density) * 22px) calc(8px + var(--glass-density) * 56px) rgba(0, 0, 0, calc(0.10 + var(--glass-density) * 0.30));
 }
-
-.glass-heavy {
-  backdrop-filter: blur(40px);
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-/* Dark mode frost */
-.dark .glass-subtle {
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.dark .glass-frosted {
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-}
-
-.dark .glass-heavy {
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-/* Neutral glass surface -- for elements with no color of their own.
-   Light: cool gray tint so glass is visible on white pages.
-   Dark: translucent white shimmer on dark backgrounds. */
-.glass-bg-subtle { background: rgba(180, 195, 220, 0.2); }
-.glass-bg-frosted { background: rgba(180, 195, 220, 0.3); }
-.glass-bg-heavy { background: rgba(180, 195, 220, 0.4); }
-
-.dark .glass-bg-subtle { background: rgba(255, 255, 255, 0.08); }
-.dark .glass-bg-frosted { background: rgba(255, 255, 255, 0.12); }
-.dark .glass-bg-heavy { background: rgba(255, 255, 255, 0.22); }
 
 /* ================================================
-   Glass Background
-   Themed gradient backdrop using accent colors.
-   Apply to a container -- glass children become visible.
+   Glass Surface -- variant-aware translucent background
+   Component sets --comp-bg via style attribute.
+   color-mix() makes the variant color translucent,
+   scaled by --glass-density.
    ================================================ */
 
-.glass-bg {
-  position: relative;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-  overflow: hidden;
-  /*
-   * Force dark semantic tokens so all children render correctly
-   * on the dark gradient. This is the glass context cascade.
-   */
-  --foreground: var(--color-neutral-200);
-  --foreground-inverse: var(--color-neutral-800);
-  --muted-foreground: var(--color-neutral-400);
-  --muted-foreground-1: var(--color-neutral-400);
-  --muted-foreground-2: var(--color-neutral-300);
-  --background: var(--color-neutral-800);
-  --border: var(--color-neutral-700);
-  --border-line-1: var(--color-neutral-800);
-  --border-line-2: var(--color-neutral-700);
-  --border-line-3: var(--color-neutral-600);
-  --surface: var(--color-neutral-700);
-  --surface-line: transparent;
-  --surface-foreground: var(--color-neutral-200);
-  --surface-hover: var(--color-neutral-600);
-  --layer: var(--color-neutral-800);
-  --layer-hover: var(--color-neutral-700);
-  --card: var(--color-neutral-800);
-  --card-line: var(--color-neutral-700);
-  color: var(--color-neutral-200);
+.glass-surface {
+  background: color-mix(in oklch, var(--comp-bg) calc(var(--glass-density) * var(--glass-tint, 1) * 100%), transparent);
+}
+
+/* Neutral variant -- cool gray / white shimmer (intentionally theme-independent).
+   Use the `color` prop on components for theme-responsive glass. */
+.glass-surface.glass-neutral {
+  background: rgba(180, 195, 220, var(--glass-density));
+}
+
+.dark .glass-surface.glass-neutral {
+  background: rgba(255, 255, 255, calc(var(--glass-density) * 0.55));
+}
+
+/* Theme variant -- gradient surface using all three theme palette colors.
+   Uses oklch color space for vibrant interpolation (no grey dead zone). */
+.glass-surface.glass-theme {
+  background: linear-gradient(
+    135deg,
+    oklch(from var(--theme-primary) l c h / calc(var(--glass-density) * var(--glass-tint, 1))) 0%,
+    oklch(from var(--theme-secondary) l c h / calc(var(--glass-density) * var(--glass-tint, 1))) 50%,
+    oklch(from var(--theme-accent) l c h / calc(var(--glass-density) * var(--glass-tint, 1))) 100%
+  );
+}
+
+/* ================================================
+   Glass Action -- minimal treatment for buttons/badges inside glass.
+   No border, no frost, no surface pane. Just a subtle translucent
+   overlay so the action is distinguishable from the glass surface
+   without looking like a separate card.
+   ================================================ */
+
+.glass-action {
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+}
+
+.dark .glass-action {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ================================================
+   Glass Inset -- carved/depressed field treatment
+   Inverted shadow stack: dark on top (shadow falling
+   into the recess), bright on bottom (light catching
+   the bottom lip). Creates a physically recessed look
+   as if the field is carved into the glass surface.
+   ================================================ */
+
+.glass-inset {
+  box-shadow:
+    /* Dark top edge -- shadow falling into the recess */
+    inset 0 2px 4px rgba(0, 0, 0, calc(0.12 + var(--glass-density) * 0.15)),
+    /* Subtle inner depth */
+    inset 0 1px 2px rgba(0, 0, 0, calc(0.08 + var(--glass-density) * 0.10)),
+    /* Bright bottom lip -- light catching the carved edge */
+    inset 0 -1px 0 rgba(255, 255, 255, calc(0.3 + var(--glass-density) * 0.2));
+  border: 1px solid rgba(0, 0, 0, calc(0.08 + var(--glass-density) * 0.12));
+}
+
+.dark .glass-inset {
+  box-shadow:
+    /* Dark top edge */
+    inset 0 2px 4px rgba(0, 0, 0, calc(0.25 + var(--glass-density) * 0.20)),
+    /* Inner depth */
+    inset 0 1px 2px rgba(0, 0, 0, calc(0.15 + var(--glass-density) * 0.15)),
+    /* Bright bottom lip */
+    inset 0 -1px 0 rgba(255, 255, 255, calc(0.08 + var(--glass-density) * 0.15));
+  border-color: rgba(255, 255, 255, calc(0.06 + var(--glass-density) * 0.10));
+}
+
+/* ================================================
+   Frost -- backdrop blur (independent of density)
+   ================================================ */
+
+.frost-light {
+  backdrop-filter: blur(8px);
+}
+
+.frost-medium {
+  backdrop-filter: blur(24px);
+}
+
+.frost-heavy {
+  backdrop-filter: blur(40px);
 }
 
 /* ================================================
@@ -144,4 +197,61 @@
   filter: blur(24px);
   opacity: 0.8;
   pointer-events: none;
+}
+
+/* ================================================
+   Reactive Proximity Glow
+   Cursor-tracking radial light on glass surfaces.
+   Driven by --mouse-x / --mouse-y CSS vars set by
+   the proximityGlow Svelte action.
+   ================================================ */
+
+/* Surface glow -- radial light following cursor */
+.glass-reactive::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(255, 255, 255, 0.20),
+    transparent 70%
+  );
+  opacity: var(--glow-opacity, 0);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.dark .glass-reactive::before {
+  background: radial-gradient(
+    400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(255, 255, 255, 0.25),
+    transparent 70%
+  );
+}
+
+/* Border glow -- radial light behind card, visible at edges */
+.glass-reactive-border::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    250px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(255, 255, 255, 0.6),
+    transparent 60%
+  );
+  opacity: var(--glow-opacity, 0);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.dark .glass-reactive-border::after {
+  background: radial-gradient(
+    250px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(255, 255, 255, 0.7),
+    transparent 60%
+  );
 }

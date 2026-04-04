@@ -12,7 +12,11 @@ import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarFooter } fr
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| glass | `boolean` | `false` | Enable glass surface on sidebar |
+| glass | `ultra-thin | thin | normal | thick | ultra-thick` | `false` | Glass surface density |
+| frosted | `light | medium | heavy` | `false` | Backdrop blur intensity |
+| colored | `boolean` | `false` | Colored glass accent orbs behind content |
+| raised | `boolean` | `false` | Elevated with shadow |
+| glow | `sm | md | lg` | `false` | Glow intensity |
 
 ## Examples
 
@@ -34,37 +38,61 @@ import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarFooter } fr
 <SidebarItem href="/current" active>Current Page</SidebarItem>
 ```
 
+### Glass
+
+```svelte
+<Sidebar glass><SidebarSection label="Nav"><SidebarItem href="/home">Home</SidebarItem></SidebarSection></Sidebar>
+```
+
 ## Full Source
 
 ```svelte
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
+  import { useUI } from '$lib/interactions/useUI.svelte';
   import type { Snippet } from 'svelte';
+  import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
+  import type { GlowIntensity } from '$lib/interactions/glow';
 
   interface Props {
-    glass?: boolean;
+    glass?: GlassDensity | boolean;
+    frosted?: FrostedLevel | boolean;
+    colored?: boolean;
+    raised?: boolean;
+    glow?: GlowIntensity | boolean;
     class?: string;
     children: Snippet;
     [key: string]: unknown;
   }
 
   let {
-    glass: isGlass = false,
+    glass = false,
+    frosted = false,
+    colored = false,
+    raised = false,
+    glow = false,
     class: className,
     children,
     ...rest
   }: Props = $props();
+
+  const ui = useUI({
+    props: () => ({ glass, frosted, colored, raised, glow }),
+    role: 'container',
+  });
+
+  // Sidebar uses sidebar semantic tokens for solid mode, not generic container
+  const sidebarSolid = 'bg-sidebar';
 </script>
 
 <aside
   class={cn(
     'hidden md:flex w-60 flex-col fixed inset-y-0 start-0 z-40',
     'border-r border-sidebar-line',
-    isGlass
-      ? 'bg-white/5 backdrop-blur-xl'
-      : 'bg-sidebar',
+    ui.glass ? ui.className : sidebarSolid,
     className,
   )}
+  style={ui.styles}
   role="navigation"
   aria-label="Sidebar"
   {...rest}
@@ -97,6 +125,7 @@ import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarFooter } fr
 
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
+  import { getParentUI } from '$lib/interactions/useUI.svelte';
   import type { Snippet } from 'svelte';
 
   interface Props {
@@ -112,10 +141,13 @@ import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarFooter } fr
     children,
     ...rest
   }: Props = $props();
+
+  const parentCtx = getParentUI();
+  const insideGlass = $derived(parentCtx().active);
 </script>
 
 <div class={cn('mb-3 px-2.5', className)} {...rest}>
-  <a href={href} class="text-base font-semibold text-foreground flex items-center gap-2">
+  <a href={href} class={cn('text-base font-semibold flex items-center gap-2', !insideGlass && 'text-foreground')}>
     {@render children()}
   </a>
 </div>
@@ -123,6 +155,7 @@ import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarFooter } fr
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
   import { Icon } from '$lib/components/icon';
+  import { getParentUI } from '$lib/interactions/useUI.svelte';
   import type { Snippet } from 'svelte';
 
   interface Props {
@@ -142,6 +175,9 @@ import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarFooter } fr
     children,
     ...rest
   }: Props = $props();
+
+  const parentCtx = getParentUI();
+  const insideGlass = $derived(parentCtx().active);
 </script>
 
 <li>
@@ -151,8 +187,8 @@ import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarFooter } fr
       'w-full flex items-center gap-x-2 py-2 px-2.5 text-sm rounded-lg transition-colors',
       'focus:outline-hidden focus:bg-sidebar-nav-focus',
       active
-        ? 'bg-sidebar-nav-active text-foreground font-medium'
-        : 'text-sidebar-nav-foreground hover:bg-sidebar-nav-hover',
+        ? cn(insideGlass ? 'font-medium' : 'bg-sidebar-nav-active text-foreground font-medium')
+        : cn(insideGlass ? 'text-[var(--glass-text-muted)] hover:text-[var(--glass-text)]' : 'text-sidebar-nav-foreground hover:bg-sidebar-nav-hover'),
       className,
     )}
     aria-current={active ? 'page' : undefined}
@@ -167,6 +203,7 @@ import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarFooter } fr
 
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
+  import { getParentUI } from '$lib/interactions/useUI.svelte';
   import type { Snippet } from 'svelte';
 
   interface Props {
@@ -182,11 +219,14 @@ import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarFooter } fr
     children,
     ...rest
   }: Props = $props();
+
+  const parentCtx = getParentUI();
+  const insideGlass = $derived(parentCtx().active);
 </script>
 
 <div class={cn('pt-3 mt-3 flex flex-col border-t border-sidebar-divider first:border-t-0 first:pt-0 first:mt-0', className)} {...rest}>
   {#if label}
-    <span class="block ps-2.5 mb-2 font-medium text-xs uppercase text-muted-foreground-1">
+    <span class={cn('block ps-2.5 mb-2 font-medium text-xs uppercase', insideGlass ? 'text-[var(--glass-text-faint)]' : 'text-muted-foreground-1')}>
       {label}
     </span>
   {/if}

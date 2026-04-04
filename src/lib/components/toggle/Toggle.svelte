@@ -1,9 +1,11 @@
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
   import { focus } from '$lib/interactions/tokens';
-  import { getGlassClasses, type GlassEffect } from '$lib/interactions/glass';
-  import { getGlowClass, type GlowIntensity } from '$lib/interactions/glow';
+  import { computeDensity } from '$lib/interactions/glass';
+  import { useUI } from '$lib/interactions/useUI.svelte';
   import { GlassBackdrop } from '$lib/components/glass';
+  import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
+  import type { GlowIntensity } from '$lib/interactions/glow';
   import type { Size } from '$lib/types/enums';
 
   interface Props {
@@ -11,8 +13,10 @@
     checked?: boolean;
     disabled?: boolean;
     label?: string;
-    glass?: GlassEffect | boolean;
-    glassbg?: boolean;
+    glass?: GlassDensity | boolean;
+    frosted?: FrostedLevel | boolean;
+    raised?: boolean;
+    colored?: boolean;
     glow?: GlowIntensity | boolean;
     class?: string;
     onchange?: (checked: boolean) => void;
@@ -25,12 +29,19 @@
     disabled = false,
     label,
     glass = false,
-    glassbg = false,
+    frosted = false,
+    raised = false,
+    colored = false,
     glow = false,
     class: className,
     onchange,
     ...rest
   }: Props = $props();
+
+  const ui = useUI({
+    props: () => ({ size, glass, frosted, raised, colored, glow, disabled }),
+    role: 'field',
+  });
 
   const sizeConfig: Record<string, { track: string; thumb: string; translate: string }> = {
     xs: { track: 'h-4 w-7', thumb: 'h-3 w-3', translate: 'translate-x-3' },
@@ -40,16 +51,12 @@
     xl: { track: 'h-8 w-[60px]', thumb: 'h-7 w-7', translate: 'translate-x-7' },
   };
 
-  const config = $derived(sizeConfig[size] || sizeConfig.md);
+  const config = $derived(sizeConfig[ui.size] || sizeConfig.md);
 
-  const glowClass = $derived(getGlowClass(glow));
-
-  const solidUnchecked = 'bg-surface border-surface-line';
+  // Checked state: accent gradient + optional glass pane overlay (component-specific)
   const solidChecked = 'bg-gradient-to-r from-[var(--glass-accent-1)] to-[var(--glass-accent-2)] border-[var(--glass-accent-2)]';
-
-  // Checked: frost only (gradient shows through). Unchecked: frost + neutral bg.
-  const glassFrost = $derived(getGlassClasses(glass, 'inline'));
-  const glassWithBg = $derived(getGlassClasses(glass, 'inline', { neutralBg: true }));
+  const checkedGlassClass = $derived(ui.glass ? 'glass-pane' : '');
+  const checkedGlassStyle = $derived(ui.glass ? `--glass-density: ${computeDensity(ui.glass, ui.depth).toFixed(3)}` : '');
 
   const trackClasses = $derived(cn(
     'relative inline-flex items-center rounded-full border cursor-pointer transition-all duration-300',
@@ -57,8 +64,8 @@
     focus.ring,
     config.track,
     checked
-      ? cn(solidChecked, glassFrost)
-      : (glassWithBg || solidUnchecked),
+      ? cn(solidChecked, checkedGlassClass)
+      : ui.className,
     className,
   ));
 
@@ -69,25 +76,26 @@
   ));
 
   function toggle() {
-    if (disabled) return;
+    if (ui.disabled) return;
     checked = !checked;
     onchange?.(checked);
   }
 </script>
 
-<div class="relative inline-flex items-center gap-3 {glassbg ? 'glass-bg rounded-full' : ''}">
-  {#if glassbg}
+<div class="relative inline-flex items-center gap-3 {colored ? 'overflow-hidden rounded-full' : ''}">
+  {#if ui.showBackdrop}
     <GlassBackdrop />
   {/if}
-  {#if glowClass}
-    <div class={glowClass}></div>
+  {#if ui.glowClass}
+    <div class={ui.glowClass}></div>
   {/if}
   <button
     type="button"
     role="switch"
     aria-checked={checked}
-    {disabled}
+    disabled={ui.disabled}
     class={trackClasses}
+    style={checked ? checkedGlassStyle : ui.styles}
     onclick={toggle}
     onkeydown={(e) => { if (e.key === 'Enter') toggle(); }}
     {...rest}
@@ -95,6 +103,6 @@
     <span class={thumbClasses}></span>
   </button>
   {#if label}
-    <span class="text-sm text-foreground">{label}</span>
+    <span class={cn('text-sm', ui.glass ? 'text-[var(--glass-text)]' : 'text-foreground')}>{label}</span>
   {/if}
 </div>

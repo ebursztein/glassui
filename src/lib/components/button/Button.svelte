@@ -1,18 +1,26 @@
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
   import { focus } from '$lib/interactions/tokens';
-  import { getGlassClasses, getGlassBgClass, resolveGlass, getParentGlass, type GlassEffect } from '$lib/interactions/glass';
-  import { getGlowClass, type GlowIntensity } from '$lib/interactions/glow';
+  import { useUI } from '$lib/interactions/useUI.svelte';
+  import { proximityGlow } from '$lib/interactions/proximity-glow';
   import { GlassBackdrop } from '$lib/components/glass';
   import type { Snippet } from 'svelte';
   import type { HTMLButtonAttributes } from 'svelte/elements';
-  import type { Variant, Size } from '$lib/types/enums';
+  import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
+  import type { GlowIntensity } from '$lib/interactions/glow';
+  import type { ThemeColor, RenderStyle, Variant, Size } from '$lib/types/enums';
 
   interface Props extends HTMLButtonAttributes {
+    color?: ThemeColor;
+    style?: RenderStyle;
+    /** @deprecated Use color + style instead. */
     variant?: Variant;
     size?: Size;
-    glass?: GlassEffect | boolean;
-    glassbg?: boolean;
+    glass?: GlassDensity | boolean;
+    frosted?: FrostedLevel | boolean;
+    colored?: boolean;
+    raised?: boolean;
+    reactive?: boolean;
     glow?: GlowIntensity | boolean;
     loading?: boolean;
     children: Snippet;
@@ -20,10 +28,15 @@
   }
 
   let {
-    variant = 'default',
+    color,
+    style: renderStyle = 'solid',
+    variant,
     size = 'md',
     glass = false,
-    glassbg = false,
+    frosted = false,
+    colored = false,
+    raised = false,
+    reactive = false,
     glow = false,
     loading = false,
     disabled = false,
@@ -32,20 +45,12 @@
     ...rest
   }: Props = $props();
 
-  const isDisabled = $derived(disabled || loading);
-  const parentGlass = getParentGlass();
-  const effectiveGlass = $derived(resolveGlass(glass) || parentGlass());
-  const allGlassClasses = $derived(getGlassClasses(effectiveGlass, 'action'));
-  const glowClass = $derived(getGlowClass(glow));
+  const ui = useUI({
+    props: () => ({ color, style: renderStyle, variant, size, glass, frosted, colored, raised, reactive, glow, disabled }),
+    role: 'action',
+  });
 
-  const solidVariants: Record<Variant, string> = {
-    default: cn('bg-surface border border-line-2 text-foreground shadow-sm', 'hover:bg-surface-hover'),
-    primary: cn('bg-primary border border-primary-line text-primary-foreground shadow-sm', 'hover:bg-primary-hover'),
-    secondary: cn('bg-secondary border border-secondary-line text-secondary-foreground shadow-sm', 'hover:bg-secondary-hover'),
-    outline: cn('bg-transparent border-2 border-line-3 text-foreground', 'hover:bg-layer-hover hover:border-line-4'),
-    ghost: cn('bg-transparent text-muted-foreground', 'hover:bg-layer-hover hover:text-foreground'),
-    destructive: cn('bg-destructive border border-transparent text-destructive-foreground shadow-sm', 'hover:bg-destructive-hover'),
-  };
+  const isDisabled = $derived(ui.disabled || loading);
 
   const sizeClasses: Record<Size, string> = {
     xs: 'h-7 px-2 text-xs rounded-md',
@@ -63,41 +68,19 @@
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
   );
 
-  // Glass buttons with color keep their color; neutral ones get translucent bg
-  const glassVariants: Record<Variant, string> = {
-    default: getGlassBgClass(true),
-    primary: 'bg-primary/60 text-primary-foreground',
-    secondary: 'bg-secondary/60 text-secondary-foreground',
-    outline: getGlassBgClass(true),
-    ghost: '',
-    destructive: 'bg-destructive/60 text-destructive-foreground',
-  };
-
   const classes = $derived(cn(
     baseClasses,
-    allGlassClasses ? cn(allGlassClasses, glassVariants[variant]) : solidVariants[variant],
-    sizeClasses[size],
+    ui.className,
+    ui.reactive && 'glass-reactive glass-reactive-border',
+    sizeClasses[ui.size],
     className,
   ));
 </script>
 
-{#if glowClass}
-<div class="relative inline-block">
-  <div class={glowClass}></div>
-  <button class={classes} disabled={isDisabled} aria-busy={loading} {...rest}>
-    <span class="relative z-10 flex items-center gap-2">
-      {#if loading}
-        <svg class="animate-spin h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-      {/if}
-      {@render children()}
-    </span>
-  </button>
-</div>
-{:else}
-<button class={classes} disabled={isDisabled} aria-busy={loading} {...rest}>
+{#snippet buttonInner()}
+  {#if ui.showBackdrop}
+    <GlassBackdrop />
+  {/if}
   <span class="relative z-10 flex items-center gap-2">
     {#if loading}
       <svg class="animate-spin h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
@@ -107,5 +90,25 @@
     {/if}
     {@render children()}
   </span>
-</button>
+{/snippet}
+
+{#snippet buttonContent()}
+  {#if ui.reactive}
+    <button class={cn(classes, colored && 'overflow-hidden')} style={ui.styles} disabled={isDisabled} aria-busy={loading} use:proximityGlow {...rest}>
+      {@render buttonInner()}
+    </button>
+  {:else}
+    <button class={cn(classes, colored && 'overflow-hidden')} style={ui.styles} disabled={isDisabled} aria-busy={loading} {...rest}>
+      {@render buttonInner()}
+    </button>
+  {/if}
+{/snippet}
+
+{#if ui.glowClass}
+  <div class="relative inline-block">
+    <div class={ui.glowClass}></div>
+    {@render buttonContent()}
+  </div>
+{:else}
+  {@render buttonContent()}
 {/if}

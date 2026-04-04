@@ -3,6 +3,7 @@ import type { ComponentMeta } from '$lib/theme/types';
 
 export const BackgroundPresetEnum = z.enum([
   'dark', 'black', 'white', 'blue', 'gradient-blue', 'iridescent', 'forest', 'sunset', 'mesh',
+  'light-blue', 'light-warm',
 ]);
 
 export const BackgroundSchema = z.object({});

@@ -12,9 +12,13 @@ export type FocusEffect = z.infer<typeof FocusEffect>;
 export const GradientPreset = z.enum(['accent', 'glow', 'highlight']);
 export type GradientPreset = z.infer<typeof GradientPreset>;
 
-/** Glass effect intensity -- translucency + blur bundled */
-export const GlassEffect = z.enum(['subtle', 'frosted', 'heavy']);
-export type GlassEffect = z.infer<typeof GlassEffect>;
+/** Glass surface density */
+export const GlassDensity = z.enum(['ultra-thin', 'thin', 'normal', 'thick', 'ultra-thick']);
+export type GlassDensity = z.infer<typeof GlassDensity>;
+
+/** Frosted blur intensity */
+export const FrostedLevel = z.enum(['light', 'medium', 'heavy']);
+export type FrostedLevel = z.infer<typeof FrostedLevel>;
 
 /** Glow intensity */
 export const GlowIntensity = z.enum(['sm', 'md', 'lg']);

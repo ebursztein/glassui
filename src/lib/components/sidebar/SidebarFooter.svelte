@@ -15,6 +15,6 @@
   }: Props = $props();
 </script>
 
-<div class={cn('mt-auto pt-4 border-t border-white/10 space-y-3', className)} {...rest}>
+<div class={cn('mt-auto p-3 flex flex-col gap-y-3', className)} {...rest}>
   {@render children()}
 </div>

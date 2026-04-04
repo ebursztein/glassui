@@ -24,7 +24,9 @@ export type BackgroundPreset =
   | 'iridescent'
   | 'forest'
   | 'sunset'
-  | 'mesh';
+  | 'mesh'
+  | 'light-blue'
+  | 'light-warm';
 
 export const backgroundPresets: Record<BackgroundPreset, BackgroundPresetConfig> = {
   dark: {
@@ -107,10 +109,32 @@ export const backgroundPresets: Record<BackgroundPreset, BackgroundPresetConfig>
     ],
     swatch: 'bg-gradient-to-br from-cyan-800 via-blue-900 to-purple-900',
   },
+  'light-blue': {
+    label: 'Light Blue',
+    base: 'background:#eef4fb;',
+    gradient: 'background:linear-gradient(135deg,#eef4fb 0%,#dbeafe 50%,#eef4fb 100%);',
+    orbs: [
+      { x: '20%', y: '25%', size: '24rem', color: 'rgba(59,130,246,0.12)' },
+      { x: '65%', y: '50%', size: '20rem', color: 'rgba(99,102,241,0.1)' },
+      { x: '45%', y: '75%', size: '18rem', color: 'rgba(6,182,212,0.08)' },
+    ],
+    swatch: 'bg-gradient-to-br from-blue-100 to-indigo-100',
+  },
+  'light-warm': {
+    label: 'Light Warm',
+    base: 'background:#faf5f0;',
+    gradient: 'background:linear-gradient(135deg,#faf5f0 0%,#fef3c7 50%,#faf5f0 100%);',
+    orbs: [
+      { x: '25%', y: '30%', size: '22rem', color: 'rgba(251,191,36,0.1)' },
+      { x: '60%', y: '20%', size: '20rem', color: 'rgba(249,115,22,0.08)' },
+      { x: '45%', y: '70%', size: '18rem', color: 'rgba(236,72,153,0.06)' },
+    ],
+    swatch: 'bg-gradient-to-br from-amber-100 to-orange-100',
+  },
 };
 
 class ThemeState {
-  mode = $state<'light' | 'dark'>('dark');
+  mode = $state<'light' | 'dark'>('light');
   preset = $state<string>('default');
   background = $state<BackgroundPreset>('mesh');
 

@@ -8,10 +8,12 @@
 
   const sections = [
     { id: 'playground', label: 'Playground' },
+    { id: 'colors', label: 'Colors' },
+    { id: 'styles', label: 'Styles' },
     { id: 'with-icons', label: 'With Icons' },
     { id: 'loading', label: 'Loading' },
-    { id: 'glass', label: 'Glass Variants' },
-    { id: 'glow', label: 'Glow' },
+    { id: 'glass', label: 'Glass' },
+    { id: 'effects', label: 'Effects' },
   ];
 </script>
 
@@ -24,44 +26,60 @@
       {/snippet}
     </Playground>
 
+    <!-- Colors -->
+    <DemoSection id="colors" title="Colors" description="Theme colors. These follow the active theme preset.">
+      <Button color="primary">{#snippet children()}Primary{/snippet}</Button>
+      <Button color="secondary">{#snippet children()}Secondary{/snippet}</Button>
+      <Button color="accent">{#snippet children()}Accent{/snippet}</Button>
+      <Button color="destructive">{#snippet children()}Destructive{/snippet}</Button>
+      <Button color="neutral">{#snippet children()}Neutral{/snippet}</Button>
+    </DemoSection>
+
+    <!-- Styles -->
+    <DemoSection id="styles" title="Styles" description="Render styles applied to each color.">
+      <Button color="primary" style="solid">{#snippet children()}Solid{/snippet}</Button>
+      <Button color="primary" style="outline">{#snippet children()}Outline{/snippet}</Button>
+      <Button color="primary" style="ghost">{#snippet children()}Ghost{/snippet}</Button>
+    </DemoSection>
+
     <!-- With Icons -->
     <DemoSection id="with-icons" title="With Icons" description="Buttons with leading or trailing Phosphor icons.">
-      <Button variant="primary">
+      <Button color="primary">
         {#snippet children()}<Icon name="floppy-disk" size={16} weight="bold" /> Save{/snippet}
       </Button>
-      <Button variant="destructive">
+      <Button color="destructive">
         {#snippet children()}<Icon name="trash" size={16} /> Delete{/snippet}
       </Button>
-      <Button variant="outline">
+      <Button color="neutral" style="outline">
         {#snippet children()}Next <Icon name="arrow-right" size={16} />{/snippet}
       </Button>
-      <Button variant="ghost">
+      <Button color="neutral" style="ghost">
         {#snippet children()}<Icon name="plus" size={16} /> Add{/snippet}
       </Button>
     </DemoSection>
 
     <!-- Loading -->
     <DemoSection id="loading" title="Loading" description="Loading state with a spinner. The button is automatically disabled.">
-      <Button variant="primary" loading>{#snippet children()}Saving...{/snippet}</Button>
-      <Button variant="secondary" loading>{#snippet children()}Loading{/snippet}</Button>
-      <Button variant="outline" loading>{#snippet children()}Please wait{/snippet}</Button>
+      <Button color="primary" loading>{#snippet children()}Saving...{/snippet}</Button>
+      <Button color="secondary" loading>{#snippet children()}Loading{/snippet}</Button>
+      <Button color="neutral" style="outline" loading>{#snippet children()}Please wait{/snippet}</Button>
     </DemoSection>
 
     <!-- Glass -->
-    <DemoSection id="glass" title="Glass Variants" description="Frosted glass surface with themed gradient backdrop. Toggle glassbg to reveal the effect." glass>
-      <Button variant="default" glass glassbg>{#snippet children()}Default{/snippet}</Button>
-      <Button variant="primary" glass glassbg>{#snippet children()}Primary{/snippet}</Button>
-      <Button variant="secondary" glass glassbg>{#snippet children()}Secondary{/snippet}</Button>
-      <Button variant="outline" glass glassbg>{#snippet children()}Outline{/snippet}</Button>
-      <Button variant="ghost" glass glassbg>{#snippet children()}Ghost{/snippet}</Button>
-      <Button variant="destructive" glass glassbg>{#snippet children()}Destructive{/snippet}</Button>
+    <DemoSection id="glass" title="Glass" description="Frosted glass surface. Theme color shows through as translucent tint." glass>
+      <Button color="primary" glass frosted>{#snippet children()}Primary{/snippet}</Button>
+      <Button color="secondary" glass frosted>{#snippet children()}Secondary{/snippet}</Button>
+      <Button color="accent" glass frosted>{#snippet children()}Accent{/snippet}</Button>
+      <Button color="neutral" glass frosted>{#snippet children()}Neutral{/snippet}</Button>
+      <Button color="neutral" style="outline" glass frosted>{#snippet children()}Outline{/snippet}</Button>
+      <Button color="neutral" style="ghost" glass frosted>{#snippet children()}Ghost{/snippet}</Button>
     </DemoSection>
 
-    <!-- Glow -->
-    <DemoSection id="glow" title="Glow" description="Gradient glow behind the button. Colors follow the active theme preset." glass>
-      <Button variant="default" glow>{#snippet children()}Solid Glow{/snippet}</Button>
-      <Button variant="primary" glow>{#snippet children()}Primary Glow{/snippet}</Button>
-      <Button variant="primary" glass glassbg glow>{#snippet children()}Glass + Glow{/snippet}</Button>
+    <!-- Effects -->
+    <DemoSection id="effects" title="Effects" description="Composable visual effects: raised, glow, colored." glass>
+      <Button color="primary" raised>{#snippet children()}Raised{/snippet}</Button>
+      <Button color="primary" glow>{#snippet children()}Glow{/snippet}</Button>
+      <Button color="primary" glass frosted raised glow>{#snippet children()}Glass + Raised + Glow{/snippet}</Button>
     </DemoSection>
 
   </div>

@@ -1,0 +1,72 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-01T16:06:40.643Z",
+  "components": [
+    {
+      "name": "Alert",
+      "dir": "alert",
+      "description": "Status-based alert with icon, title, body, and optional dismiss. Glass and glow support.",
+      "path": "src/lib/components/alert"
+    },
+    {
+      "name": "Background",
+      "dir": "background",
+      "description": "Full-page background layer with switchable presets (dark, gradient, iridescent, etc.). Use BackgroundSwitcher to let users pick a background.",
+      "path": "src/lib/components/background"
+    },
+    {
+      "name": "Badge",
+      "dir": "badge",
+      "description": "Inline label with variant colors or status colors. Optional glass surface.",
+      "path": "src/lib/components/badge"
+    },
+    {
+      "name": "Button",
+      "dir": "button",
+      "description": "Button with 6 variants, 5 sizes. Optional glass surface and glow effect.",
+      "path": "src/lib/components/button"
+    },
+    {
+      "name": "Card",
+      "dir": "card",
+      "description": "Container with optional glass surface, glow, and hover effects. Compose with CardHeader, CardTitle, CardDescription, CardContent, CardFooter.",
+      "path": "src/lib/components/card"
+    },
+    {
+      "name": "Icon",
+      "dir": "icon",
+      "description": "Renders icons by name. Uses Phosphor icons by default -- pass any icon name like ",
+      "path": "src/lib/components/icon"
+    },
+    {
+      "name": "Input",
+      "dir": "input",
+      "description": "Text input with size variants, status colors, label, helper text, error messages, and optional glass surface with glow on focus.",
+      "path": "src/lib/components/input"
+    },
+    {
+      "name": "Sidebar",
+      "dir": "sidebar",
+      "description": "Navigation sidebar with sections, items, header, and footer. Preline-inspired with active state indicators and glass support.",
+      "path": "src/lib/components/sidebar"
+    },
+    {
+      "name": "Textarea",
+      "dir": "textarea",
+      "description": "Multi-line text input with size, status, label, and optional glass surface with glow on focus.",
+      "path": "src/lib/components/textarea"
+    },
+    {
+      "name": "ThemeSwitcher",
+      "dir": "theme-switcher",
+      "description": "Compact theme control with preset dots and dark/light mode toggle. Uses global theme state.",
+      "path": "src/lib/components/theme-switcher"
+    },
+    {
+      "name": "Toggle",
+      "dir": "toggle",
+      "description": "Switch toggle with size variants, label, and optional glass surface. Keyboard accessible.",
+      "path": "src/lib/components/toggle"
+    }
+  ]
+}

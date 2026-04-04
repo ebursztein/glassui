@@ -57,10 +57,10 @@
     <!-- Glass -->
     <DemoSection id="glass" title="Glass" description="Frosted glass alerts with backdrop blur. Shown on a dark background." glass>
       <div class="w-full space-y-3">
-        <Alert status="info" glass title="Information">{#snippet children()}Frosted glass info alert.{/snippet}</Alert>
-        <Alert status="success" glass title="Success">{#snippet children()}Glass success alert.{/snippet}</Alert>
-        <Alert status="warning" glass title="Warning">{#snippet children()}Glass warning alert.{/snippet}</Alert>
-        <Alert status="error" glass title="Error">{#snippet children()}Glass error alert.{/snippet}</Alert>
+        <Alert status="info" glass frosted title="Information">{#snippet children()}Frosted glass info alert.{/snippet}</Alert>
+        <Alert status="success" glass frosted title="Success">{#snippet children()}Glass success alert.{/snippet}</Alert>
+        <Alert status="warning" glass frosted title="Warning">{#snippet children()}Glass warning alert.{/snippet}</Alert>
+        <Alert status="error" glass frosted title="Error">{#snippet children()}Glass error alert.{/snippet}</Alert>
       </div>
     </DemoSection>
 
@@ -68,8 +68,8 @@
     <DemoSection id="glow" title="Glow" description="Gradient glow effect behind the alert. Combine with glass for the full effect." glass>
       <div class="w-full space-y-3">
         <Alert status="info" glow title="Info Glow">{#snippet children()}Glow effect on info alert.{/snippet}</Alert>
-        <Alert status="success" glass glow title="Glass + Glow">{#snippet children()}Glass and glow combined.{/snippet}</Alert>
-        <Alert status="error" glass glow title="Error Glass + Glow">{#snippet children()}Glass glow on error alert.{/snippet}</Alert>
+        <Alert status="success" glass frosted glow title="Glass + Glow">{#snippet children()}Glass and glow combined.{/snippet}</Alert>
+        <Alert status="error" glass frosted glow title="Error Glass + Glow">{#snippet children()}Glass glow on error alert.{/snippet}</Alert>
       </div>
     </DemoSection>
 

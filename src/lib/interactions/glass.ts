@@ -1,98 +1,96 @@
 /**
- * Glass Mixin
+ * Glass System -- Pure Functions
  *
- * Glass = translucent frosted surface. Three intensities.
- * GlassBg = themed gradient orb backdrop that makes glass visible.
- * Glass cascades via Svelte context -- children inherit parent's glass.
+ * Two independent visual properties:
+ *   glass   = surface density/opacity (how see-through the pane is)
+ *   frosted = backdrop blur intensity (independent of density)
  *
- * CSS classes: .glass-subtle, .glass-frosted, .glass-heavy, .glass-bg
- * Colors: --glass-accent-1/2/3 (from theme presets)
+ * Depth stacking: components track their depth in the glass tree via
+ * useUI context. Each layer auto-compounds density on a diminishing
+ * curve so arbitrary nesting never hits a wall.
+ *
+ * Role offsets:
+ *   container/action/inline = +1 (raised above surface)
+ *   field                   = -1 (recessed into surface)
+ *
+ * CSS output: --glass-density custom property drives .glass-pane and
+ * .glass-surface classes. Blur uses .frost-light/medium/heavy.
  */
 
-import { getContext } from 'svelte';
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
 
-export type GlassEffect = 'subtle' | 'frosted' | 'heavy';
+export type GlassDensity = 'ultra-thin' | 'thin' | 'normal' | 'thick' | 'ultra-thick';
+export type FrostedLevel = 'light' | 'medium' | 'heavy';
+export type GlassRole = 'container' | 'field' | 'action' | 'inline';
 
-export interface GlassProps {
-  glass?: GlassEffect | boolean;
-  glassbg?: boolean;
-}
+// ---------------------------------------------------------------------------
+// Resolvers
+// ---------------------------------------------------------------------------
 
-export const GLASS_CONTEXT_KEY = 'glassui-glass';
-
-/** Resolve a glass prop to a concrete effect or false. */
-export function resolveGlass(glass: GlassEffect | boolean | undefined): GlassEffect | false {
+/** Resolve a glass prop to a concrete density or false. */
+export function resolveGlass(glass: GlassDensity | boolean | undefined): GlassDensity | false {
   if (!glass) return false;
-  if (glass === true) return 'frosted';
+  if (glass === true) return 'normal';
   return glass;
 }
 
-/** Bump glass intensity up one level (for child inputs that need more contrast). */
-export function bumpGlass(effect: GlassEffect): GlassEffect {
-  if (effect === 'subtle') return 'frosted';
-  return 'heavy';
+/** Resolve a frosted prop to a concrete level or false. */
+export function resolveFrosted(frosted: FrostedLevel | boolean | undefined): FrostedLevel | false {
+  if (!frosted) return false;
+  if (frosted === true) return 'medium';
+  return frosted;
 }
 
-/**
- * Read the parent glass context. Call at component init time (top-level script).
- * Returns a getter that resolves the parent's current glass effect, or false.
- */
-export function getParentGlass(): () => GlassEffect | false {
-  try {
-    const ctx = getContext<() => GlassEffect | false>(GLASS_CONTEXT_KEY);
-    return ctx ?? (() => false);
-  } catch {
-    return () => false;
-  }
-}
+// ---------------------------------------------------------------------------
+// Density computation
+// ---------------------------------------------------------------------------
 
-/** Map glass effect to frost CSS class (blur + border + shadow, no background). */
-export function getGlassClass(glass: GlassEffect | boolean | undefined): string {
-  const effect = resolveGlass(glass);
-  if (!effect) return '';
-  return `glass-${effect}`;
-}
-
-/** Neutral translucent white background for glass elements with no color of their own. */
-export function getGlassBgClass(glass: GlassEffect | boolean | undefined): string {
-  const effect = resolveGlass(glass);
-  if (!effect) return '';
-  return `glass-bg-${effect}`;
-}
-
-/* ================================================
-   Centralized glass class composition
-   One call replaces the 3-function dance per component.
-   ================================================ */
-
-export type GlassRole = 'container' | 'field' | 'action' | 'inline';
-
-/** Role-specific interaction classes, defined once. */
-export const glassInteractions: Record<string, string> = {
-  field: 'placeholder:text-foreground/40 focus:border-primary/40 focus:ring-2 focus:ring-primary/20',
-  action: 'hover:brightness-125 active:brightness-90 transition-all duration-200',
+const densityBase: Record<GlassDensity, number> = {
+  'ultra-thin': 0.08,
+  'thin':       0.15,
+  'normal':     0.25,
+  'thick':      0.40,
+  'ultra-thick': 0.55,
 };
 
 /**
- * Get the full glass class string for a component.
- * Returns frost + neutral bg (when applicable) + role interaction.
- * Returns '' when glass is off.
+ * Compute the effective density (0..1) for a glass component at a given depth.
+ *
+ * Positive depth: exponential curve adds ~15-20% per level, diminishing.
+ * Negative depth (recessed fields): halves density per level, floor at 5%.
+ * Cap at 0.85 so glass never becomes fully opaque.
  */
-export function getGlassClasses(
-  glass: GlassEffect | boolean | undefined,
-  role: GlassRole,
-  options?: { neutralBg?: boolean },
-): string {
-  const effect = resolveGlass(glass);
-  if (!effect) return '';
-
-  const frost = `glass-${effect}`;
-  const includeNeutralBg = options?.neutralBg ?? (role === 'container' || role === 'field');
-  const bg = includeNeutralBg ? `glass-bg-${effect}` : '';
-  const interaction = glassInteractions[role] ?? '';
-
-  return [frost, bg, interaction].filter(Boolean).join(' ');
+export function computeDensity(baseDensity: GlassDensity, depth: number): number {
+  const base = densityBase[baseDensity];
+  if (depth < 0) {
+    const scale = Math.pow(0.5, Math.abs(depth));
+    return Math.max(base * scale, 0.05);
+  }
+  const increment = 0.50;
+  const compounded = base + increment * (1 - Math.exp(-depth * 0.5));
+  return Math.min(compounded, 0.85);
 }
+
+// ---------------------------------------------------------------------------
+// Auto-frost: derive blur level from density when not explicitly set
+// ---------------------------------------------------------------------------
+
+/** Map a glass density to a default frosted level for auto-coupling. */
+export function densityToFrost(density: GlassDensity): FrostedLevel {
+  switch (density) {
+    case 'ultra-thin': return 'light';
+    case 'thin':       return 'light';
+    case 'normal':     return 'medium';
+    case 'thick':      return 'medium';
+    case 'ultra-thick': return 'heavy';
+  }
+}
+
+// ---------------------------------------------------------------------------
+// GlassBackdrop orbs
+// ---------------------------------------------------------------------------
 
 /** Gradient orb definitions for GlassBackdrop. Uses CSS var references so they follow the theme. */
 export const glassBgOrbs = [

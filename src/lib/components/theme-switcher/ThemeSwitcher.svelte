@@ -36,7 +36,7 @@
             'w-5 h-5 rounded-full bg-gradient-to-r transition-all duration-200',
             presetGradients[preset.name] || presetGradients.default,
             theme.preset === preset.name
-              ? 'ring-2 ring-white/60 ring-offset-2 ring-offset-transparent scale-110'
+              ? 'ring-2 ring-foreground/60 ring-offset-2 ring-offset-transparent scale-110'
               : 'opacity-60 hover:opacity-100 hover:scale-105',
           )}
           title={preset.label}
@@ -48,7 +48,7 @@
   {/if}
   {#if showMode}
     <button
-      class="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+      class="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-layer-hover transition-colors"
       onclick={() => theme.toggle()}
       aria-label={theme.isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >

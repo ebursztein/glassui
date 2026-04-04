@@ -19,6 +19,8 @@ export { events } from './events/bus.svelte';
 
 // Types
 export * from './types/enums';
+export type { BaseUIProps } from './types/base';
+export { BaseUIPropsSchema, GlassField, FrostedField, GlowField } from './types/base';
 
 // Utils
 export { cn } from './utils/cn';

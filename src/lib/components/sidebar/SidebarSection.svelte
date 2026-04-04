@@ -1,5 +1,6 @@
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
+  import { getParentUI } from '$lib/interactions/useUI.svelte';
   import type { Snippet } from 'svelte';
 
   interface Props {
@@ -15,13 +16,18 @@
     children,
     ...rest
   }: Props = $props();
+
+  const parentCtx = getParentUI();
+  const insideGlass = $derived(parentCtx().active);
 </script>
 
-<div class={cn('mt-4 first:mt-0 flex flex-col gap-1', className)} {...rest}>
+<div class={cn('pt-3 mt-3 flex flex-col border-t border-sidebar-divider first:border-t-0 first:pt-0 first:mt-0', className)} {...rest}>
   {#if label}
-    <span class="px-2 mb-1 text-xs font-semibold uppercase tracking-wider text-white/40">
+    <span class={cn('block ps-2.5 mb-2 font-medium text-xs uppercase', insideGlass ? 'text-[var(--glass-text-faint)]' : 'text-muted-foreground-1')}>
       {label}
     </span>
   {/if}
-  {@render children()}
+  <ul class="flex flex-col gap-y-1">
+    {@render children()}
+  </ul>
 </div>

@@ -1,6 +1,6 @@
 # Badge
 
-Inline label with variant colors or status colors. Optional glass surface.
+Inline label with theme colors or status colors.
 
 ## Import
 
@@ -12,11 +12,16 @@ import { Badge } from 'glassui';
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| variant | `default | primary | secondary | outline | ghost | destructive` | `default` | Visual style |
+| color | `primary | secondary | accent | destructive | neutral` | `neutral` | Theme color |
+| style | `solid | outline | ghost` | `solid` | Render style |
 | size | `xs | sm | md | lg | xl` | `sm` | Badge size |
-| status | `info | success | warning | error` | — | Status color (overrides variant) |
+| status | `info | success | warning | error` | — | Status color (overrides color) |
 | dot | `boolean` | `false` | Show dot indicator before text |
-| glass | `subtle | frosted | heavy` | `false` | Glass translucency level |
+| glass | `ultra-thin | thin | normal | thick | ultra-thick` | `false` | Glass surface density |
+| frosted | `light | medium | heavy` | `false` | Backdrop blur intensity |
+| colored | `boolean` | `false` | Colored glass accent orbs behind content |
+| raised | `boolean` | `false` | Elevated with shadow |
+| glow | `sm | md | lg` | `false` | Glow intensity |
 
 ## Examples
 
@@ -29,7 +34,7 @@ import { Badge } from 'glassui';
 ### Primary
 
 ```svelte
-<Badge variant="primary">New</Badge>
+<Badge color="primary">New</Badge>
 ```
 
 ### Status
@@ -49,50 +54,52 @@ import { Badge } from 'glassui';
 ```svelte
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
-  import { getGlassClasses, type GlassEffect } from '$lib/interactions/glass';
+  import { useUI } from '$lib/interactions/useUI.svelte';
+  import { GlassBackdrop } from '$lib/components/glass';
   import type { Snippet } from 'svelte';
-  import type { Variant, Size, Status } from '$lib/types/enums';
+  import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
+  import type { GlowIntensity } from '$lib/interactions/glow';
+  import type { ThemeColor, RenderStyle, Variant, Size, Status } from '$lib/types/enums';
 
   interface Props {
+    color?: ThemeColor;
+    style?: RenderStyle;
+    /** @deprecated Use color + style instead. */
     variant?: Variant;
     size?: Size;
     status?: Status;
     dot?: boolean;
-    glass?: GlassEffect | boolean;
+    glass?: GlassDensity | boolean;
+    frosted?: FrostedLevel | boolean;
+    colored?: boolean;
+    raised?: boolean;
+    glow?: GlowIntensity | boolean;
     children: Snippet;
     class?: string;
     [key: string]: unknown;
   }
 
   let {
-    variant = 'default',
+    color,
+    style: renderStyle = 'solid',
+    variant,
     size = 'sm',
     status,
     dot = false,
     glass = false,
+    frosted = false,
+    colored = false,
+    raised = false,
+    glow = false,
     children,
     class: className,
     ...rest
   }: Props = $props();
 
-  const neutralVariant = !status && (variant === 'default' || variant === 'outline' || variant === 'ghost');
-  const allGlassClasses = $derived(getGlassClasses(glass, 'inline', { neutralBg: neutralVariant }));
-
-  const solidVariants: Record<Variant, string> = {
-    default: 'bg-surface border-surface-line text-surface-foreground',
-    primary: 'bg-primary border-primary-line text-primary-foreground',
-    secondary: 'bg-secondary border-secondary-line text-secondary-foreground',
-    outline: 'bg-transparent border-line-3 text-foreground',
-    ghost: 'bg-transparent border-transparent text-muted-foreground',
-    destructive: 'bg-destructive border-transparent text-destructive-foreground',
-  };
-
-  const solidStatus: Record<Status, string> = {
-    info: 'bg-status-info-highlight border-status-info-border text-status-info-foreground',
-    success: 'bg-status-success-highlight border-status-success-border text-status-success-foreground',
-    warning: 'bg-status-warning-highlight border-status-warning-border text-status-warning-foreground',
-    error: 'bg-status-error-highlight border-status-error-border text-status-error-foreground',
-  };
+  const ui = useUI({
+    props: () => ({ color, style: renderStyle, variant, size, status, glass, frosted, colored, raised, glow }),
+    role: 'inline',
+  });
 
   const sizeClasses: Record<Size, string> = {
     xs: 'px-1.5 py-0.5 text-[10px]',
@@ -101,13 +108,6 @@ import { Badge } from 'glassui';
     lg: 'px-4 py-1.5 text-sm',
     xl: 'px-5 py-2 text-base',
   };
-
-  // Glass is additive: keep variant/status color, layer frost on top
-  const variantClass = $derived(() => {
-    const base = status ? solidStatus[status] : solidVariants[variant];
-    if (allGlassClasses) return cn(base, allGlassClasses);
-    return base;
-  });
 
   const dotColors: Record<Status, string> = {
     info: 'bg-status-info-foreground',
@@ -118,16 +118,30 @@ import { Badge } from 'glassui';
 
   const classes = $derived(cn(
     'inline-flex items-center gap-1.5 rounded-full border font-medium transition-all duration-200',
-    variantClass(),
-    sizeClasses[size],
+    ui.className,
+    sizeClasses[ui.size],
     className,
   ));
 </script>
 
-<span class={classes} {...rest}>
-  {#if dot}
-    <span class={cn('inline-block w-1.5 h-1.5 rounded-full shrink-0', status ? dotColors[status] : 'bg-current')}></span>
-  {/if}
-  {@render children()}
-</span>
+{#snippet badgeContent()}
+  <span class={cn(classes, colored && 'overflow-hidden')} style={ui.styles} {...rest}>
+    {#if ui.showBackdrop}
+      <GlassBackdrop />
+    {/if}
+    {#if dot}
+      <span class={cn('relative z-10 inline-block w-1.5 h-1.5 rounded-full shrink-0', status ? dotColors[status] : 'bg-current')}></span>
+    {/if}
+    <span class="relative z-10">{@render children()}</span>
+  </span>
+{/snippet}
+
+{#if ui.glowClass}
+  <div class="relative inline-block">
+    <div class={ui.glowClass}></div>
+    {@render badgeContent()}
+  </div>
+{:else}
+  {@render badgeContent()}
+{/if}
 ```

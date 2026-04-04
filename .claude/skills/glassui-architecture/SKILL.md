@@ -130,30 +130,40 @@ Single file tracking all changes across sprints. Each sprint appends a section:
 5. **Both modes** -- every component must work in light AND dark mode
 6. **master_plan.md is the source of truth** -- if scope changes, update it first
 
-## Glass Props System
+## Visual Effect Props
 
-Every visual component supports these optional props. They are NOT global theme settings -- they are per-component, per-instance decisions:
+Every visual component supports 4 independent, composable effect props. They are per-instance, not global:
 
 ```svelte
-<!-- Solid by default -->
-<Card>solid card</Card>
-
-<!-- Opt into glass -->
-<Card glass>frosted glass</Card>
-<Card glass blur="xl" glow>heavy glass + glow</Card>
-
-<!-- Mix on the same page -->
-<Button variant="primary">Solid</Button>
-<Button variant="primary" glass glow>Glass</Button>
-<Input label="Email" glass glow />
-<Input label="Name" />
+<Card>solid</Card>
+<Card glass>frosted translucent</Card>
+<Card raised>elevated with shadow</Card>
+<Card glow>outer gradient shine</Card>
+<Card colored>accent orbs behind</Card>
+<Card glass raised glow colored>all four</Card>
+<Button variant="primary" glass raised glow>Glass Button</Button>
 ```
 
 | Prop | Type | What it does |
 |------|------|-------------|
-| `glass` | `boolean` | Enables glass surface: backdrop-blur + translucent bg + white/opacity border |
-| `blur` | `'sm' \| 'md' \| 'lg' \| 'xl'` | Controls backdrop-blur amount. Only applies when `glass` is true |
-| `glow` | `boolean` | Gradient glow effect. Context-aware: persistent on Button/Card, on-focus for Input/Textarea |
+| `glass` | `'subtle' \| 'frosted' \| 'heavy' \| boolean` | Frosted translucent surface (backdrop-blur + border + inset highlight). Internal only, no bleed. |
+| `raised` | `boolean` | Elevated with box-shadow (depth/3D effect) |
+| `glow` | `'sm' \| 'md' \| 'lg' \| boolean` | Outer gradient shine using theme accent colors |
+| `colored` | `boolean` | Themed accent orbs behind content (GlassBackdrop) |
+
+**All 4 props must exist on every visual component.** Tests in `src/lib/components/props.test.ts` enforce this.
+
+### Centralized styling: `getComponentStyles()`
+
+All components use `getComponentStyles()` from `src/lib/interactions/styles.ts`. No per-component variant maps. The function handles solid mode (Tailwind semantic classes) and glass mode (frost + `color-mix()` translucent background via `--comp-bg` CSS custom property).
+
+### Glass context inheritance
+
+Components inside a `<Card glass>` auto-inherit the glass effect via Svelte context. All child components must call `getParentGlass()` at init time. Tests enforce this.
+
+### Template pattern
+
+Use `{#snippet}` to DRY up glow wrapper branches. See Button/Card/Badge for reference.
 
 ## File Structure
 
@@ -341,6 +351,28 @@ In `src/lib/state/`:
 ## MCP Server
 
 At `tools/mcp/` -- auto-discovers components. Tools: `list_components`, `get_component`, `search_components`, `search_icons`.
+
+## Testing
+
+Tests run with `npm test` (vitest). TDD: write/update tests before implementing.
+
+### Test files
+
+- `src/lib/interactions/styles.test.ts` -- tests `getComponentStyles()`, `getAlertStyles()`, `getFieldStatusOverrides()` for all variant/glass/role/raised combinations
+- `src/lib/components/props.test.ts` -- enforces prop consistency across all visual components:
+  - Every component has all 4 effect props (glass, raised, glow, colored) in Props interface, $props destructuring, Zod schema, and meta
+  - Every component uses `getComponentStyles` or `getAlertStyles`
+  - Every component passes `raised` to the style function
+  - No hardcoded color classes (cyan/emerald/amber)
+  - All child components inherit parent glass via `getParentGlass`
+  - Components with `colored` prop import `GlassBackdrop`
+
+### When to run tests
+
+- **Before implementing**: write the test that enforces the behavior
+- **After any component change**: `npm test` must pass
+- **After adding a new component**: add it to `VISUAL_COMPONENTS` list in `props.test.ts`
+- **After adding a new effect prop**: add it to `REQUIRED_EFFECT_PROPS` in `props.test.ts`
 
 ## Key Principles
 

@@ -41,15 +41,15 @@
 
     <!-- Glass Variants -->
     <DemoSection id="glass-variants" title="Glass Variants" description="Frosted glass badges with backdrop blur. Best on dark or gradient backgrounds." glass>
-      <Badge variant="default" glass>{#snippet children()}Default{/snippet}</Badge>
-      <Badge variant="primary" glass>{#snippet children()}Primary{/snippet}</Badge>
-      <Badge variant="secondary" glass>{#snippet children()}Secondary{/snippet}</Badge>
-      <Badge variant="outline" glass>{#snippet children()}Outline{/snippet}</Badge>
-      <Badge variant="destructive" glass>{#snippet children()}Destructive{/snippet}</Badge>
-      <Badge status="info" glass>{#snippet children()}Info{/snippet}</Badge>
-      <Badge status="success" glass>{#snippet children()}Success{/snippet}</Badge>
-      <Badge status="warning" glass>{#snippet children()}Warning{/snippet}</Badge>
-      <Badge status="error" glass>{#snippet children()}Error{/snippet}</Badge>
+      <Badge variant="default" glass frosted>{#snippet children()}Default{/snippet}</Badge>
+      <Badge variant="primary" glass frosted>{#snippet children()}Primary{/snippet}</Badge>
+      <Badge variant="secondary" glass frosted>{#snippet children()}Secondary{/snippet}</Badge>
+      <Badge variant="outline" glass frosted>{#snippet children()}Outline{/snippet}</Badge>
+      <Badge variant="destructive" glass frosted>{#snippet children()}Destructive{/snippet}</Badge>
+      <Badge status="info" glass frosted>{#snippet children()}Info{/snippet}</Badge>
+      <Badge status="success" glass frosted>{#snippet children()}Success{/snippet}</Badge>
+      <Badge status="warning" glass frosted>{#snippet children()}Warning{/snippet}</Badge>
+      <Badge status="error" glass frosted>{#snippet children()}Error{/snippet}</Badge>
     </DemoSection>
 
   </div>

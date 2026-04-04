@@ -24,6 +24,8 @@
   function coerceValue(prop: PropMeta, value: any): any {
     // Select with 'false' option: string 'false' -> boolean false
     if (prop.options?.includes('false') && (value === 'false' || value === false)) return false;
+    // Select with 'true' option: string 'true' -> boolean true (shorthand default)
+    if (value === 'true') return true;
     if (prop.type === 'boolean') return Boolean(value);
     return value;
   }
@@ -88,7 +90,7 @@
                 onchange={(e) => handleChange(prop.name, (e.target as HTMLSelectElement).value)}
               >
                 {#each prop.options as option}
-                  <option value={option}>{option === 'false' ? 'off' : option}</option>
+                  <option value={option}>{option === 'false' ? 'off' : option === 'true' ? 'default' : option}</option>
                 {/each}
               </select>
             {:else if prop.type === 'boolean'}

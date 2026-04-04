@@ -1,6 +1,6 @@
 # Button
 
-Button with 6 variants, 5 sizes. Optional glass surface and glow effect.
+Button with theme colors, render styles, and composable visual effects.
 
 ## Import
 
@@ -12,62 +12,54 @@ import { Button } from 'glassui';
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| variant | `default | primary | secondary | outline | ghost | destructive` | `default` | Visual style variant |
+| color | `primary | secondary | accent | destructive | neutral` | `primary` | Theme color |
+| style | `solid | outline | ghost` | `solid` | Render style |
 | size | `xs | sm | md | lg | xl` | `md` | Button size |
-| glass | `subtle | frosted | heavy` | `false` | Glass translucency level |
-| glassbg | `boolean` | `false` | Themed gradient backdrop |
+| glass | `ultra-thin | thin | normal | thick | ultra-thick` | `false` | Glass surface density |
+| frosted | `light | medium | heavy` | `false` | Backdrop blur intensity |
+| colored | `boolean` | `false` | Colored glass accent orbs behind content |
+| raised | `boolean` | `false` | Elevated with shadow |
+| reactive | `boolean` | `false` | Cursor-tracking proximity glow (requires glass) |
 | glow | `sm | md | lg` | `false` | Glow intensity |
 | loading | `boolean` | `false` | Loading state with spinner |
 | disabled | `boolean` | `false` | Disabled state |
 
 ## Examples
 
-### Default
-
-```svelte
-<Button>Click me</Button>
-```
-
 ### Primary
 
 ```svelte
-<Button variant="primary">Save</Button>
+<Button>Save</Button>
 ```
 
-### Glass
+### Secondary
 
 ```svelte
-<Button glass>Glass</Button>
-```
-
-### Glass + glow
-
-```svelte
-<Button variant="primary" glass glow>Save</Button>
+<Button color="secondary">Details</Button>
 ```
 
 ### Outline
 
 ```svelte
-<Button variant="outline">Cancel</Button>
+<Button style="outline">Cancel</Button>
 ```
 
 ### Ghost
 
 ```svelte
-<Button variant="ghost">More info</Button>
+<Button style="ghost">More info</Button>
 ```
 
 ### Destructive
 
 ```svelte
-<Button variant="destructive">Delete</Button>
+<Button color="destructive">Delete</Button>
 ```
 
-### With icon
+### Glass
 
 ```svelte
-<Button variant="primary"><Icon icon={FloppyDisk} size={16} weight="bold" /> Save</Button>
+<Button glass glow>Glass</Button>
 ```
 
 ## Full Source
@@ -76,18 +68,26 @@ import { Button } from 'glassui';
 <script lang="ts">
   import { cn } from '$lib/utils/cn';
   import { focus } from '$lib/interactions/tokens';
-  import { getGlassClasses, getGlassBgClass, resolveGlass, getParentGlass, type GlassEffect } from '$lib/interactions/glass';
-  import { getGlowClass, type GlowIntensity } from '$lib/interactions/glow';
+  import { useUI } from '$lib/interactions/useUI.svelte';
+  import { proximityGlow } from '$lib/interactions/proximity-glow';
   import { GlassBackdrop } from '$lib/components/glass';
   import type { Snippet } from 'svelte';
   import type { HTMLButtonAttributes } from 'svelte/elements';
-  import type { Variant, Size } from '$lib/types/enums';
+  import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
+  import type { GlowIntensity } from '$lib/interactions/glow';
+  import type { ThemeColor, RenderStyle, Variant, Size } from '$lib/types/enums';
 
   interface Props extends HTMLButtonAttributes {
+    color?: ThemeColor;
+    style?: RenderStyle;
+    /** @deprecated Use color + style instead. */
     variant?: Variant;
     size?: Size;
-    glass?: GlassEffect | boolean;
-    glassbg?: boolean;
+    glass?: GlassDensity | boolean;
+    frosted?: FrostedLevel | boolean;
+    colored?: boolean;
+    raised?: boolean;
+    reactive?: boolean;
     glow?: GlowIntensity | boolean;
     loading?: boolean;
     children: Snippet;
@@ -95,10 +95,15 @@ import { Button } from 'glassui';
   }
 
   let {
-    variant = 'default',
+    color,
+    style: renderStyle = 'solid',
+    variant,
     size = 'md',
     glass = false,
-    glassbg = false,
+    frosted = false,
+    colored = false,
+    raised = false,
+    reactive = false,
     glow = false,
     loading = false,
     disabled = false,
@@ -107,20 +112,12 @@ import { Button } from 'glassui';
     ...rest
   }: Props = $props();
 
-  const isDisabled = $derived(disabled || loading);
-  const parentGlass = getParentGlass();
-  const effectiveGlass = $derived(resolveGlass(glass) || parentGlass());
-  const allGlassClasses = $derived(getGlassClasses(effectiveGlass, 'action'));
-  const glowClass = $derived(getGlowClass(glow));
+  const ui = useUI({
+    props: () => ({ color, style: renderStyle, variant, size, glass, frosted, colored, raised, reactive, glow, disabled }),
+    role: 'action',
+  });
 
-  const solidVariants: Record<Variant, string> = {
-    default: cn('bg-surface border border-line-2 text-foreground shadow-sm', 'hover:bg-surface-hover'),
-    primary: cn('bg-primary border border-primary-line text-primary-foreground shadow-sm', 'hover:bg-primary-hover'),
-    secondary: cn('bg-secondary border border-secondary-line text-secondary-foreground shadow-sm', 'hover:bg-secondary-hover'),
-    outline: cn('bg-transparent border-2 border-line-3 text-foreground', 'hover:bg-layer-hover hover:border-line-4'),
-    ghost: cn('bg-transparent text-muted-foreground', 'hover:bg-layer-hover hover:text-foreground'),
-    destructive: cn('bg-destructive border border-transparent text-destructive-foreground shadow-sm', 'hover:bg-destructive-hover'),
-  };
+  const isDisabled = $derived(ui.disabled || loading);
 
   const sizeClasses: Record<Size, string> = {
     xs: 'h-7 px-2 text-xs rounded-md',
@@ -138,41 +135,19 @@ import { Button } from 'glassui';
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
   );
 
-  // Glass buttons with color keep their color; neutral ones get translucent bg
-  const glassVariants: Record<Variant, string> = {
-    default: getGlassBgClass(true),
-    primary: 'bg-primary/60 text-primary-foreground',
-    secondary: 'bg-secondary/60 text-secondary-foreground',
-    outline: getGlassBgClass(true),
-    ghost: '',
-    destructive: 'bg-destructive/60 text-destructive-foreground',
-  };
-
   const classes = $derived(cn(
     baseClasses,
-    allGlassClasses ? cn(allGlassClasses, glassVariants[variant]) : solidVariants[variant],
-    sizeClasses[size],
+    ui.className,
+    ui.reactive && 'glass-reactive glass-reactive-border',
+    sizeClasses[ui.size],
     className,
   ));
 </script>
 
-{#if glowClass}
-<div class="relative inline-block">
-  <div class={glowClass}></div>
-  <button class={classes} disabled={isDisabled} aria-busy={loading} {...rest}>
-    <span class="relative z-10 flex items-center gap-2">
-      {#if loading}
-        <svg class="animate-spin h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-      {/if}
-      {@render children()}
-    </span>
-  </button>
-</div>
-{:else}
-<button class={classes} disabled={isDisabled} aria-busy={loading} {...rest}>
+{#snippet buttonInner()}
+  {#if ui.showBackdrop}
+    <GlassBackdrop />
+  {/if}
   <span class="relative z-10 flex items-center gap-2">
     {#if loading}
       <svg class="animate-spin h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
@@ -182,6 +157,26 @@ import { Button } from 'glassui';
     {/if}
     {@render children()}
   </span>
-</button>
+{/snippet}
+
+{#snippet buttonContent()}
+  {#if ui.reactive}
+    <button class={cn(classes, colored && 'overflow-hidden')} style={ui.styles} disabled={isDisabled} aria-busy={loading} use:proximityGlow {...rest}>
+      {@render buttonInner()}
+    </button>
+  {:else}
+    <button class={cn(classes, colored && 'overflow-hidden')} style={ui.styles} disabled={isDisabled} aria-busy={loading} {...rest}>
+      {@render buttonInner()}
+    </button>
+  {/if}
+{/snippet}
+
+{#if ui.glowClass}
+  <div class="relative inline-block">
+    <div class={ui.glowClass}></div>
+    {@render buttonContent()}
+  </div>
+{:else}
+  {@render buttonContent()}
 {/if}
 ```

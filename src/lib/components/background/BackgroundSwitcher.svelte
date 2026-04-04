@@ -20,8 +20,8 @@
         'w-6 h-6 rounded-md border transition-all duration-200',
         preset.swatch,
         theme.background === name
-          ? 'ring-2 ring-white/60 ring-offset-1 ring-offset-transparent scale-110 border-white/40'
-          : 'border-white/20 opacity-60 hover:opacity-100 hover:scale-105',
+          ? 'ring-2 ring-foreground/60 ring-offset-1 ring-offset-transparent scale-110 border-foreground/40'
+          : 'border-line-2 opacity-60 hover:opacity-100 hover:scale-105',
       )}
       title={preset.label}
       onclick={() => theme.setBackground(name)}

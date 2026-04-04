@@ -64,8 +64,8 @@
     <!-- Glass -->
     <DemoSection id="glass" title="Glass" description="Optional glass surface with backdrop blur and glow on focus. Shown on a dark background." glass>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
-        <Input label="Glass" placeholder="Frosted input" glass />
-        <Input label="Glass + Glow" placeholder="Focus to see glow" glass glow />
+        <Input label="Glass" placeholder="Frosted input" glass frosted />
+        <Input label="Glass + Glow" placeholder="Focus to see glow" glass frosted glow />
       </div>
     </DemoSection>
 

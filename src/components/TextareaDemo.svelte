@@ -64,8 +64,8 @@
     <!-- Glass -->
     <DemoSection id="glass" title="Glass" description="Optional glass surface with backdrop blur and glow on focus. Shown on a dark background." glass>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
-        <Textarea label="Glass" placeholder="Frosted textarea" glass rows={3} />
-        <Textarea label="Glass + Glow" placeholder="Focus to see glow" glass glow rows={3} />
+        <Textarea label="Glass" placeholder="Frosted textarea" glass frosted rows={3} />
+        <Textarea label="Glass + Glow" placeholder="Focus to see glow" glass frosted glow rows={3} />
       </div>
     </DemoSection>
 

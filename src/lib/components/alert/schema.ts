@@ -1,14 +1,13 @@
 import { z } from 'zod/v4';
 import { Status } from '$lib/types/enums';
+import { BaseUIPropsSchema } from '$lib/types/base';
 import type { ComponentMeta } from '$lib/theme/types';
 
-export const AlertSchema = z.object({
+export const AlertSchema = BaseUIPropsSchema.extend({
   status: Status.default('info'),
   title: z.string().optional(),
   dismissible: z.boolean().default(false),
   icon: z.boolean().default(true),
-  glass: z.boolean().default(false),
-  glow: z.boolean().default(false),
 });
 
 export type AlertProps = z.infer<typeof AlertSchema>;
@@ -23,8 +22,11 @@ export const meta: ComponentMeta = {
     { name: 'title', type: 'string', description: 'Alert title' },
     { name: 'dismissible', type: 'boolean', default: 'false', description: 'Show dismiss button' },
     { name: 'icon', type: 'boolean', default: 'true', description: 'Show status icon' },
-    { name: 'glass', type: 'boolean', default: 'false', description: 'Enable glass surface' },
-    { name: 'glow', type: 'boolean', default: 'false', description: 'Gradient glow effect' },
+    { name: 'glass', type: 'ultra-thin | thin | normal | thick | ultra-thick', default: 'false', description: 'Glass surface density', options: ['false', 'ultra-thin', 'thin', 'true', 'thick', 'ultra-thick'] },
+    { name: 'frosted', type: 'light | medium | heavy', default: 'false', description: 'Backdrop blur intensity', options: ['false', 'light', 'true', 'heavy'] },
+    { name: 'raised', type: 'boolean', default: 'false', description: 'Elevated with shadow' },
+    { name: 'colored', type: 'boolean', default: 'false', description: 'Colored glass accent orbs behind content' },
+    { name: 'glow', type: 'sm | md | lg', default: 'false', description: 'Glow intensity', options: ['false', 'sm', 'true', 'lg'] },
   ],
   examples: [
     { title: 'Info', code: '<Alert status="info" title="Note">Something to know.</Alert>' },

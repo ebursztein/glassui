@@ -18,25 +18,30 @@ Development follows `docs/master_plan.md` (10 sprints, 36 components). Each spri
 npm install
 npm run dev       # Start Astro dev server
 npm run build     # Production build
+npm test          # Run vitest (TDD -- tests must pass before and after changes)
 ```
 
-## Glass Props
+## Visual Effect Props
 
-Every visual component supports these optional props:
+Every visual component supports 4 independent, composable effect props:
 
 ```svelte
 <Card>solid</Card>
-<Card glass>frosted</Card>
-<Card glass blur="xl" glow>heavy glass + glow</Card>
-<Button variant="primary" glass glow>Glass Button</Button>
-<Input label="Email" glass glow />
+<Card glass>frosted translucent</Card>
+<Card raised>elevated with shadow</Card>
+<Card glow>outer gradient shine</Card>
+<Card colored>accent orbs behind</Card>
+<Card glass raised glow colored>all four</Card>
 ```
 
 | Prop | Type | Effect |
 |------|------|--------|
-| `glass` | boolean | Enables glass surface (backdrop-blur + translucent bg + white border) |
-| `blur` | sm/md/lg/xl | Backdrop-blur amount (requires `glass`) |
-| `glow` | boolean | Gradient glow. Context-aware: persistent on Card/Button, on-focus for Input |
+| `glass` | `subtle \| frosted \| heavy \| boolean` | Frosted translucent surface (internal only, no bleed) |
+| `raised` | `boolean` | Elevated with box-shadow |
+| `glow` | `sm \| md \| lg \| boolean` | Outer gradient shine using theme colors |
+| `colored` | `boolean` | Themed accent orbs behind content |
+
+All styling flows through `getComponentStyles()` in `src/lib/interactions/styles.ts`. Tests in `src/lib/components/props.test.ts` enforce that all components support all 4 props consistently.
 
 ## Architecture
 

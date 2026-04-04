@@ -1,17 +1,34 @@
-<script lang="ts">
-  import { glassBgOrbs } from '$lib/interactions/glass';
-</script>
-
 <!--
-  Themed gradient orb backdrop.
-  Uses --glass-accent-1/2/3 CSS vars so colors follow the active theme preset.
-  Place inside a relative container. Glass components on top become visible.
+  Themed diffusion backdrop for glass components.
+
+  Uses multiple radial-gradient layers on a single div for smooth color diffusion.
+  No blur filter needed -- radial gradients are mathematically smooth (no banding).
+
+  Colors derive from --comp-bg (set by glass parent) with oklch hue shifts.
+  Falls back to theme accent colors when outside a glass context.
+
+  Orb positions shift with --glass-density so nested glass layers
+  produce unique patterns instead of overlapping identically.
 -->
-<div class="absolute inset-0 rounded-[inherit] overflow-hidden pointer-events-none">
-  {#each glassBgOrbs as orb}
-    <div
-      class="absolute rounded-full blur-3xl"
-      style="left: {orb.x}; top: {orb.y}; width: {orb.size}; height: {orb.size}; background: {orb.color}; opacity: 0.5;"
-    ></div>
-  {/each}
-</div>
+<div
+  class="absolute inset-0 rounded-[inherit] overflow-hidden pointer-events-none"
+  style="
+    mix-blend-mode: soft-light;
+    background:
+      radial-gradient(
+        ellipse at calc(25% + var(--glass-density, 0) * 40%) calc(25% + var(--glass-density, 0) * 30%),
+        oklch(from var(--comp-bg, var(--glass-accent-1)) l c h / 0.5) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse at calc(70% - var(--glass-density, 0) * 35%) calc(20% + var(--glass-density, 0) * 45%),
+        oklch(from var(--comp-bg, var(--glass-accent-3)) l c calc(h + 30) / 0.35) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse at calc(45% + var(--glass-density, 0) * 20%) calc(70% - var(--glass-density, 0) * 40%),
+        oklch(from var(--comp-bg, var(--glass-accent-2)) l c calc(h - 30) / 0.4) 0%,
+        transparent 65%
+      );
+  "
+></div>

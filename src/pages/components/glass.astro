@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import GlassDemo from '../../components/GlassDemo.svelte';
+---
+
+<Layout title="Glass - GlassUI">
+  <div class="space-y-6">
+    <div>
+      <p class="text-sm font-medium text-primary mb-1">Foundation</p>
+      <h1 class="text-3xl font-bold text-foreground tracking-tight">Glass</h1>
+      <p class="mt-2 text-muted-foreground-2">
+        Physics-based glass surface system. Five density levels control opacity, edge highlights, graduated shadows, and internal diffusion. Inputs are carved into the surface. The <code class="text-xs bg-layer px-1 py-0.5 rounded">reactive</code> prop adds cursor-tracking proximity glow.
+      </p>
+    </div>
+
+    <hr class="border-border" />
+
+    <GlassDemo client:load />
+  </div>
+</Layout>

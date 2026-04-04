@@ -1,13 +1,12 @@
 import { z } from 'zod/v4';
 import { Size } from '$lib/types/enums';
+import { BaseUIPropsSchema } from '$lib/types/base';
 import type { ComponentMeta } from '$lib/theme/types';
 
-export const ToggleSchema = z.object({
+export const ToggleSchema = BaseUIPropsSchema.extend({
   size: Size.default('md'),
   checked: z.boolean().default(false),
-  disabled: z.boolean().default(false),
   label: z.string().optional(),
-  glass: z.boolean().default(false),
 });
 
 export type ToggleProps = z.infer<typeof ToggleSchema>;
@@ -22,7 +21,11 @@ export const meta: ComponentMeta = {
     { name: 'checked', type: 'boolean', default: 'false', description: 'Toggle state (bindable)' },
     { name: 'disabled', type: 'boolean', default: 'false', description: 'Disabled state' },
     { name: 'label', type: 'string', description: 'Label text beside toggle' },
-    { name: 'glass', type: 'boolean', default: 'false', description: 'Enable glass surface' },
+    { name: 'glass', type: 'ultra-thin | thin | normal | thick | ultra-thick', default: 'false', description: 'Glass surface density', options: ['false', 'ultra-thin', 'thin', 'true', 'thick', 'ultra-thick'] },
+    { name: 'frosted', type: 'light | medium | heavy', default: 'false', description: 'Backdrop blur intensity', options: ['false', 'light', 'true', 'heavy'] },
+    { name: 'raised', type: 'boolean', default: 'false', description: 'Elevated with shadow' },
+    { name: 'colored', type: 'boolean', default: 'false', description: 'Colored glass accent orbs behind content' },
+    { name: 'glow', type: 'sm | md | lg', default: 'false', description: 'Glow intensity', options: ['false', 'sm', 'true', 'lg'] },
   ],
   examples: [
     { title: 'Default', code: '<Toggle />' },
