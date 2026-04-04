@@ -80,7 +80,8 @@ describe('Component prop consistency', () => {
         });
 
         it(`has ${prop} in destructured props`, () => {
-          const pattern = new RegExp(`${prop}\\s*=`);
+          // Match "prop = default" or "prop," (no default, inherits via useUI)
+          const pattern = new RegExp(`${prop}\\s*[=,]`);
           expect(source, `${name} missing ${prop} in $props()`).toMatch(pattern);
         });
       }

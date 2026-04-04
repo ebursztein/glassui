@@ -17,8 +17,8 @@
   }
 
   let {
-    glass = false,
-    frosted = false,
+    glass,
+    frosted,
     colored = false,
     raised = false,
     glow = false,

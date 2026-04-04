@@ -29,8 +29,8 @@
   let {
     color,
     tint,
-    glass = false,
-    frosted = false,
+    glass,
+    frosted,
     colored = false,
     raised = false,
     reactive = false,
