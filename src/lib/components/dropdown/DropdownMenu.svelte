@@ -70,7 +70,7 @@
     className
   ));
 
-  let menuEl: HTMLDivElement;
+  let menuEl = $state<HTMLDivElement>();
 
   const handleMenuKeydown = (e: KeyboardEvent) => {
     const items = Array.from(menuEl?.querySelectorAll('[role="menuitem"]:not([disabled])') ?? []) as HTMLElement[];

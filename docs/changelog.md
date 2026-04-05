@@ -16,6 +16,14 @@
 - **DropdownItem**: `tabindex="-1"` for roving focus, `aria-disabled` on disabled items
 - Removed 8 `svelte-ignore a11y_*` suppression comments across 5 components
 
+## Component Rendering Tests (2026-04-05)
+
+### Added
+- 13 rendering tests using `@testing-library/svelte` + jsdom: Button (render, disabled, click), Accordion (render, collapsed state, toggle, single mode), Tooltip (render, aria-describedby), Dropdown (render, ARIA attrs, closed state, click-to-open)
+- Test wrapper components for Svelte 5 snippet children pattern
+- `@testing-library/svelte`, `@testing-library/jest-dom`, `jsdom` dev dependencies
+- Svelte vite plugin + browser resolve conditions in vitest config
+
 ## CI Gate + Pre-commit Hook (2026-04-05)
 
 ### Added
