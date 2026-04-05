@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CollapseDemo from '../../components/CollapseDemo.svelte';
+import { meta } from '$lib/components/collapse/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <CollapseDemo client:load />
+</Layout>

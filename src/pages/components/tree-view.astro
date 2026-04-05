@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TreeViewDemo from '../../components/TreeViewDemo.svelte';
+import { meta } from '$lib/components/tree-view/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <TreeViewDemo client:load />
+</Layout>

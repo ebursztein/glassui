@@ -1,6 +1,6 @@
 # Preline Component Interfaces & Patterns
 
-Source: `preline/src/plugins/`
+Source: `tmp/pkg/preline/src/plugins/`
 
 ## Table of Contents
 1. [Accordion](#accordion)
@@ -35,7 +35,7 @@ Source: `preline/src/plugins/`
 
 ## Accordion
 
-**Source:** `preline/src/plugins/accordion/`
+**Source:** `tmp/pkg/preline/src/plugins/accordion/`
 
 **Interface:**
 ```typescript
@@ -69,7 +69,7 @@ interface IAccordion {
 
 ## Carousel
 
-**Source:** `preline/src/plugins/carousel/`
+**Source:** `tmp/pkg/preline/src/plugins/carousel/`
 
 **Interface:**
 ```typescript
@@ -105,7 +105,7 @@ interface ICarousel {
 
 ## Collapse
 
-**Source:** `preline/src/plugins/collapse/`
+**Source:** `tmp/pkg/preline/src/plugins/collapse/`
 
 **Interface:**
 ```typescript
@@ -132,7 +132,7 @@ interface ICollapse {
 
 ## ComboBox
 
-**Source:** `preline/src/plugins/combobox/`
+**Source:** `tmp/pkg/preline/src/plugins/combobox/`
 
 **Interface:**
 ```typescript
@@ -163,7 +163,7 @@ interface IComboBox {
 
 ## Copy Markup
 
-**Source:** `preline/src/plugins/copy-markup/`
+**Source:** `tmp/pkg/preline/src/plugins/copy-markup/`
 
 **Interface:**
 ```typescript
@@ -178,7 +178,7 @@ interface ICopyMarkupOptions {
 
 ## DataTable
 
-**Source:** `preline/src/plugins/datatable/`
+**Source:** `tmp/pkg/preline/src/plugins/datatable/`
 
 **Interface:**
 ```typescript
@@ -199,7 +199,7 @@ interface IDataTableOptions extends DataTables.Config {
 
 ## Datepicker
 
-**Source:** `preline/src/plugins/datepicker/`
+**Source:** `tmp/pkg/preline/src/plugins/datepicker/`
 
 **Interface:**
 ```typescript
@@ -228,7 +228,7 @@ interface ICustomDatepickerOptions extends VanillaCalendarProOptions {
 
 ## Dropdown
 
-**Source:** `preline/src/plugins/dropdown/`
+**Source:** `tmp/pkg/preline/src/plugins/dropdown/`
 
 **Interface:**
 ```typescript
@@ -262,7 +262,7 @@ interface IDropdown {
 
 ## File Upload
 
-**Source:** `preline/src/plugins/file-upload/`
+**Source:** `tmp/pkg/preline/src/plugins/file-upload/`
 
 **Interface:**
 ```typescript
@@ -279,7 +279,7 @@ interface IFileUploadOptions extends DropzoneOptions {
 
 ## Input Number
 
-**Source:** `preline/src/plugins/input-number/`
+**Source:** `tmp/pkg/preline/src/plugins/input-number/`
 
 **Interface:**
 ```typescript
@@ -298,7 +298,7 @@ interface IInputNumber {
 
 ## Layout Splitter
 
-**Source:** `preline/src/plugins/layout-splitter/`
+**Source:** `tmp/pkg/preline/src/plugins/layout-splitter/`
 
 **Interface:**
 ```typescript
@@ -315,7 +315,7 @@ interface ILayoutSplitterOptions {
 
 ## Overlay (Modal)
 
-**Source:** `preline/src/plugins/overlay/`
+**Source:** `tmp/pkg/preline/src/plugins/overlay/`
 
 **Interface:**
 ```typescript
@@ -356,7 +356,7 @@ interface IOverlay {
 
 ## PIN Input
 
-**Source:** `preline/src/plugins/pin-input/`
+**Source:** `tmp/pkg/preline/src/plugins/pin-input/`
 
 **Interface:**
 ```typescript
@@ -372,7 +372,7 @@ interface IPinInput {
 
 ## Range Slider
 
-**Source:** `preline/src/plugins/range-slider/`
+**Source:** `tmp/pkg/preline/src/plugins/range-slider/`
 
 **Interface:**
 ```typescript
@@ -395,7 +395,7 @@ interface IRangeSliderOptions extends nouislider.Options {
 
 ## Remove Element
 
-**Source:** `preline/src/plugins/remove-element/`
+**Source:** `tmp/pkg/preline/src/plugins/remove-element/`
 
 **Interface:**
 ```typescript
@@ -408,7 +408,7 @@ interface IRemoveElementOptions {
 
 ## Scroll Nav
 
-**Source:** `preline/src/plugins/scroll-nav/`
+**Source:** `tmp/pkg/preline/src/plugins/scroll-nav/`
 
 Smooth scrolling navigation with auto-centering active item.
 
@@ -416,7 +416,7 @@ Smooth scrolling navigation with auto-centering active item.
 
 ## Scrollspy
 
-**Source:** `preline/src/plugins/scrollspy/`
+**Source:** `tmp/pkg/preline/src/plugins/scrollspy/`
 
 **Interface:**
 ```typescript
@@ -429,7 +429,7 @@ interface IScrollspyOptions {
 
 ## Select
 
-**Source:** `preline/src/plugins/select/`
+**Source:** `tmp/pkg/preline/src/plugins/select/`
 
 **Interface:**
 ```typescript
@@ -482,7 +482,7 @@ interface ISelect {
 
 ## Stepper
 
-**Source:** `preline/src/plugins/stepper/`
+**Source:** `tmp/pkg/preline/src/plugins/stepper/`
 
 **Interface:**
 ```typescript
@@ -517,7 +517,7 @@ interface IStepperItem {
 
 ## Strong Password
 
-**Source:** `preline/src/plugins/strong-password/`
+**Source:** `tmp/pkg/preline/src/plugins/strong-password/`
 
 **Interface:**
 ```typescript
@@ -537,7 +537,7 @@ interface IStrongPasswordOptions {
 
 ## Tabs
 
-**Source:** `preline/src/plugins/tabs/`
+**Source:** `tmp/pkg/preline/src/plugins/tabs/`
 
 **Interface:**
 ```typescript
@@ -567,7 +567,7 @@ interface ITabs {
 
 ## Textarea Auto Height
 
-**Source:** `preline/src/plugins/textarea-auto-height/`
+**Source:** `tmp/pkg/preline/src/plugins/textarea-auto-height/`
 
 Auto-growing textarea. Activated via `data-hs-textarea-auto-height` attribute.
 
@@ -575,7 +575,7 @@ Auto-growing textarea. Activated via `data-hs-textarea-auto-height` attribute.
 
 ## Theme Switch
 
-**Source:** `preline/src/plugins/theme-switch/`
+**Source:** `tmp/pkg/preline/src/plugins/theme-switch/`
 
 **Interface:**
 ```typescript
@@ -591,7 +591,7 @@ Persists to localStorage. Applies class to `<html>`.
 
 ## Toggle Count
 
-**Source:** `preline/src/plugins/toggle-count/`
+**Source:** `tmp/pkg/preline/src/plugins/toggle-count/`
 
 **Interface:**
 ```typescript
@@ -607,7 +607,7 @@ interface IToggleCountOptions {
 
 ## Toggle Password
 
-**Source:** `preline/src/plugins/toggle-password/`
+**Source:** `tmp/pkg/preline/src/plugins/toggle-password/`
 
 **Interface:**
 ```typescript
@@ -620,7 +620,7 @@ interface ITogglePasswordOptions {
 
 ## Tooltip
 
-**Source:** `preline/src/plugins/tooltip/`
+**Source:** `tmp/pkg/preline/src/plugins/tooltip/`
 
 Positioned tooltip using @floating-ui/dom. Supports click/hover trigger, smart placement with collision detection.
 
@@ -628,7 +628,7 @@ Positioned tooltip using @floating-ui/dom. Supports click/hover trigger, smart p
 
 ## Tree View
 
-**Source:** `preline/src/plugins/tree-view/`
+**Source:** `tmp/pkg/preline/src/plugins/tree-view/`
 
 **Interface:**
 ```typescript
@@ -651,7 +651,7 @@ interface ITreeViewItem {
 
 ## Shared Utilities
 
-**Source:** `preline/src/utils/index.ts`
+**Source:** `tmp/pkg/preline/src/utils/index.ts`
 
 Key functions:
 - `afterTransition(el, cb)` -- wait for CSS transition end
@@ -666,7 +666,7 @@ Key functions:
 
 ## Shared Constants
 
-**Source:** `preline/src/constants.ts`
+**Source:** `tmp/pkg/preline/src/constants.ts`
 
 ```
 BREAKPOINTS: xs=0, sm=640, md=768, lg=1024, xl=1280, 2xl=1536
@@ -681,7 +681,7 @@ Keyboard sets per component:
 
 ## Theme System
 
-**Source:** `preline/css/themes/`
+**Source:** `tmp/pkg/preline/css/themes/`
 
 9 themes, each overriding CSS variables:
 - default, ocean, moon, bubblegum, autumn, harvest, cashmere, olive, retro

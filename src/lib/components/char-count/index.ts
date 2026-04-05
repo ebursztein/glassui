@@ -1,0 +1,1 @@
+export { default as CharCount } from './CharCount.svelte';

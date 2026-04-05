@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PinInputDemo from '../../components/PinInputDemo.svelte';
+import { meta } from '$lib/components/pin-input/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <PinInputDemo client:load />
+</Layout>

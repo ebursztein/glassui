@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DatepickerDemo from '../../components/DatepickerDemo.svelte';
+import { meta } from '$lib/components/datepicker/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <DatepickerDemo client:load />
+</Layout>

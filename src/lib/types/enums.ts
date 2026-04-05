@@ -8,6 +8,10 @@ export type Variant = z.infer<typeof Variant>;
 export const ThemeColor = z.enum(['primary', 'secondary', 'accent', 'destructive', 'neutral', 'gradient', 'info', 'success', 'warning', 'error']);
 export type ThemeColor = z.infer<typeof ThemeColor>;
 
+/** Status level for notifications, alerts, and validation */
+export const Status = z.enum(['info', 'success', 'warning', 'error']);
+export type Status = z.infer<typeof Status>;
+
 /** Component render style — how the color is applied */
 export const RenderStyle = z.enum(['solid', 'outline', 'ghost']);
 export type RenderStyle = z.infer<typeof RenderStyle>;

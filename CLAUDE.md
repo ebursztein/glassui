@@ -96,7 +96,7 @@ src/layouts/Layout.astro    # Site layout
 
 - **Master plan**: `docs/master_plan.md` -- 10-sprint roadmap with component mapping
 - **Changelog**: `docs/changelog.md` -- unified log of all completed work
-- **Preline source**: `preline/` in repo root -- the original component library we port from
+- **Preline source**: `tmp/pkg/preline/` -- the original component library we port from
 - **Design plan**: `docs/PLAN.md` -- the original design system spec
 - **Skills**: `.claude/skills/glassui-architecture/` -- build conventions + sprint workflow
 - **Skills**: `.claude/skills/preline-reference/` -- Preline component inventory

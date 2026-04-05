@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ScrollspyDemo from '../../components/ScrollspyDemo.svelte';
+import { meta } from '$lib/components/scrollspy/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <ScrollspyDemo client:load />
+</Layout>

@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ModalDemo from '../../components/ModalDemo.svelte';
+import { meta } from '$lib/components/modal/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <ModalDemo client:load />
+</Layout>

@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CharCountDemo from '../../components/CharCountDemo.svelte';
+import { meta } from '$lib/components/char-count/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <CharCountDemo client:load />
+</Layout>

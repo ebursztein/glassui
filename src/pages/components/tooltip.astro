@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TooltipDemo from '../../components/TooltipDemo.svelte';
+import { meta } from '$lib/components/tooltip/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <TooltipDemo client:load />
+</Layout>

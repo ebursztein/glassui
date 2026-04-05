@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CopyButtonDemo from '../../components/CopyButtonDemo.svelte';
+import { meta } from '$lib/components/copy-button/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <CopyButtonDemo client:load />
+</Layout>

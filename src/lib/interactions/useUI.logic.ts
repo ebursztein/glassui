@@ -19,7 +19,7 @@ import { getGlowClass } from '$lib/interactions/glow';
 // Types
 // ---------------------------------------------------------------------------
 
-export type UIRole = 'container' | 'field' | 'action' | 'inline';
+export type UIRole = 'container' | 'field' | 'action' | 'inline' | 'alert';
 
 /** What a component passes into useUI. */
 export interface UIInput {
@@ -182,6 +182,7 @@ export function computeUIOutput(input: UIInput, parent: UIContext): UIOutput {
     color,
     style,
     size,
+    status: input.status,
     disabled,
     glass: effectiveGlass,
     frosted: frosted || (effectiveGlass ? densityToFrost(effectiveGlass) : false),

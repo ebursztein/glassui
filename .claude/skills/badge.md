@@ -108,7 +108,6 @@ import { Badge } from 'glassui';
 
   const classes = $derived(cn(
     'inline-flex items-center gap-1.5 rounded-full font-medium transition-all duration-200',
-    !ui.className.includes('text-') && 'text-[var(--comp-text)]',
     ui.className,
     sizeClasses[ui.size],
     className,

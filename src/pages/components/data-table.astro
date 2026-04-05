@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DataTableDemo from '../../components/DataTableDemo.svelte';
+import { meta } from '$lib/components/data-table/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <DataTableDemo client:load />
+</Layout>

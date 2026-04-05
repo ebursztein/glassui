@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LayoutSplitterDemo from '../../components/LayoutSplitterDemo.svelte';
+import { meta } from '$lib/components/layout-splitter/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <LayoutSplitterDemo client:load />
+</Layout>

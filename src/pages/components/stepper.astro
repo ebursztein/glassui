@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import StepperDemo from '../../components/StepperDemo.svelte';
+import { meta } from '$lib/components/stepper/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <StepperDemo client:load />
+</Layout>

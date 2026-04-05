@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CarouselDemo from '../../components/CarouselDemo.svelte';
+import { meta } from '$lib/components/carousel/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <CarouselDemo client:load />
+</Layout>

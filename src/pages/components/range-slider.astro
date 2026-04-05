@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RangeSliderDemo from '../../components/RangeSliderDemo.svelte';
+import { meta } from '$lib/components/range-slider/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <RangeSliderDemo client:load />
+</Layout>

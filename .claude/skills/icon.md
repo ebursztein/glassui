@@ -75,7 +75,7 @@ import { Icon } from 'glassui';
   }: Props = $props();
 
   // If color is a known ThemeColor, pass it to useUI. Otherwise undefined (raw pass-through).
-  const isThemeColor = $derived(color && ['primary', 'secondary', 'accent', 'destructive', 'neutral', 'theme'].includes(color));
+  const isThemeColor = $derived(color && ['primary', 'secondary', 'accent', 'destructive', 'neutral', 'gradient', 'info', 'success', 'warning', 'error'].includes(color));
   const themeColor = $derived(isThemeColor ? (color as ThemeColor) : undefined);
   
   // If size is a known Size enum, pass to useUI. Otherwise undefined.

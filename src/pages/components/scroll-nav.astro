@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ScrollNavDemo from '../../components/ScrollNavDemo.svelte';
+import { meta } from '$lib/components/scroll-nav/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <ScrollNavDemo client:load />
+</Layout>

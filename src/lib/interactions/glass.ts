@@ -23,7 +23,7 @@
 
 export type GlassDensity = 'ultra-thin' | 'thin' | 'normal' | 'thick' | 'ultra-thick';
 export type FrostedLevel = 'light' | 'medium' | 'heavy';
-export type GlassRole = 'container' | 'field' | 'action' | 'inline';
+export type GlassRole = 'container' | 'field' | 'action' | 'inline' | 'alert';
 
 // ---------------------------------------------------------------------------
 // Resolvers

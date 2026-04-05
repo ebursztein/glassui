@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SelectDemo from '../../components/SelectDemo.svelte';
+import { meta } from '$lib/components/select/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <SelectDemo client:load />
+</Layout>

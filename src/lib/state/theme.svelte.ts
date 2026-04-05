@@ -1,5 +1,3 @@
-import type { Status } from '$lib/types/enums';
-
 interface BackgroundOrb {
   x: string;
   y: string;

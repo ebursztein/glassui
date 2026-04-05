@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import InputNumberDemo from '../../components/InputNumberDemo.svelte';
+import { meta } from '$lib/components/input-number/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <InputNumberDemo client:load />
+</Layout>

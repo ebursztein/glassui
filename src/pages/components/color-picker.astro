@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ColorPickerDemo from '../../components/ColorPickerDemo.svelte';
+import { meta } from '$lib/components/color-picker/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <ColorPickerDemo client:load />
+</Layout>

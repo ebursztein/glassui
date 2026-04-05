@@ -50,9 +50,48 @@ const path = Astro.url.pathname;
             </ul>
           </div>
           <div>
+            <h3 class="px-2 mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Data Display</h3>
+            <ul class="space-y-0.5">
+              <li><a href="/components/carousel" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/carousel') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Carousel</a></li>
+              <li><a href="/components/data-table" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/data-table') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Data Table</a></li>
+              <li><a href="/components/layout-splitter" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/layout-splitter') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Layout Splitter</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="px-2 mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Disclosure</h3>
+            <ul class="space-y-0.5">
+              <li><a href="/components/accordion" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/accordion') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Accordion</a></li>
+              <li><a href="/components/collapse" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/collapse') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Collapse</a></li>
+              <li><a href="/components/tabs" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/tabs') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Tabs</a></li>
+              <li><a href="/components/scroll-nav" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/scroll-nav') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Scroll Nav</a></li>
+              <li><a href="/components/scrollspy" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/scrollspy') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Scrollspy</a></li>
+              <li><a href="/components/stepper" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/stepper') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Stepper</a></li>
+              <li><a href="/components/tree-view" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/tree-view') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Tree View</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="px-2 mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Overlays</h3>
+            <ul class="space-y-0.5">
+              <li><a href="/components/dropdown" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/dropdown') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Dropdown</a></li>
+              <li><a href="/components/modal" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/modal') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Modal</a></li>
+              <li><a href="/components/tooltip" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/tooltip') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Tooltip</a></li>
+            </ul>
+          </div>
+          <div>
             <h3 class="px-2 mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Form</h3>
             <ul class="space-y-0.5">
+              <li><a href="/components/copy-button" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/copy-button') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Copy Button</a></li>
+              <li><a href="/components/datepicker" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/datepicker') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Datepicker</a></li>
+              <li><a href="/components/file-upload" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/file-upload') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >File Upload</a></li>
               <li><a href="/components/input" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/input') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Input</a></li>
+              <li><a href="/components/char-count" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/char-count') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Character Count</a></li>
+              <li><a href="/components/color-picker" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/color-picker') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Color Picker</a></li>
+              <li><a href="/components/combobox" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/combobox') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >ComboBox</a></li>
+              <li><a href="/components/input-number" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/input-number') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Input Number</a></li>
+              <li><a href="/components/password-input" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/password-input') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Password Input</a></li>
+              <li><a href="/components/pin-input" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/pin-input') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >PIN Input</a></li>
+              <li><a href="/components/range-slider" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/range-slider') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Range Slider</a></li>
+              <li><a href="/components/select" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/select') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Select</a></li>
               <li><a href="/components/toggle" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/toggle') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Toggle</a></li>
               <li><a href="/components/textarea" class:list={["block px-3 py-1.5 text-sm rounded-lg transition-colors", path.startsWith('/components/textarea') ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground-2 hover:text-foreground hover:bg-layer-hover']} >Textarea</a></li>
             </ul>

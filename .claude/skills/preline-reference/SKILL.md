@@ -7,7 +7,7 @@ description: Complete reference of Preline's 27 components -- their interfaces, 
 
 Preline v4.1.3 is a Tailwind CSS component library with 27 headless plugins. GlassUI draws from Preline's component designs, accessibility patterns, and API conventions -- but builds natively in Svelte 5.
 
-The source lives at `preline/` in the repo root. For the full component inventory with interfaces, HTML structure, and accessibility details, read `references/preline-components.md`.
+The source lives at `tmp/pkg/preline/` in the repo. For the full component inventory with interfaces, HTML structure, and accessibility details, read `references/preline-components.md`.
 
 ## Architecture Overview
 

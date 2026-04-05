@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ComboBoxDemo from '../../components/ComboBoxDemo.svelte';
+import { meta } from '$lib/components/combobox/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <ComboBoxDemo client:load />
+</Layout>

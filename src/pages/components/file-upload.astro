@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import FileUploadDemo from '../../components/FileUploadDemo.svelte';
+import { meta } from '$lib/components/file-upload/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <FileUploadDemo client:load />
+</Layout>

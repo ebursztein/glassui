@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AccordionDemo from '../../components/AccordionDemo.svelte';
+import { meta } from '$lib/components/accordion/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <AccordionDemo client:load />
+</Layout>

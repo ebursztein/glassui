@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TabsDemo from '../../components/TabsDemo.svelte';
+import { meta } from '$lib/components/tabs/schema';
+---
+
+<Layout title={`${meta.name} Component | GlassUI`} description={meta.description}>
+  <TabsDemo client:load />
+</Layout>
