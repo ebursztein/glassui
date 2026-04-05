@@ -1,5 +1,21 @@
 # GlassUI Changelog
 
+## Accessibility Fixes for 7 Components (2026-04-05)
+
+### Keyboard Navigation
+- **LayoutSplitter**: Arrow keys resize panels (5% steps), Home/End jump to min/max. Added `role="separator"` with full ARIA value attributes
+- **TreeViewItem**: Arrow keys navigate between items, Left/Right expand/collapse or move to parent/child, Home/End jump to first/last. Added `aria-level`
+- **Dropdown**: Arrow keys on trigger open and focus first/last item. Roving focus in menu with ArrowUp/Down, Home/End, Escape to close + refocus trigger
+- **ComboBox**: Arrow keys highlight options with visual indicator, Enter selects, Home/End jump. Added `aria-activedescendant` and option IDs
+- **Datepicker**: Enter/Space on input opens calendar
+- **ColorPicker**: Enter/Space triggers color picker. Added `role="group"` and `tabindex`
+
+### ARIA Improvements
+- **Tooltip**: `aria-describedby` links trigger to content via unique tooltip ID
+- **DropdownTrigger**: `aria-haspopup="menu"`, `aria-expanded` reflects open state
+- **DropdownItem**: `tabindex="-1"` for roving focus, `aria-disabled` on disabled items
+- Removed 8 `svelte-ignore a11y_*` suppression comments across 5 components
+
 ## Unified Color System + Glass CSS Overhaul (2026-04-04)
 
 ### Unified ThemeColor enum
