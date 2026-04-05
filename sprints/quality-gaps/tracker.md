@@ -12,10 +12,14 @@
 - [ ] Commit: Phase A
 
 ## Phase B: CI Gate
-- [ ] B1. Add `check` script to package.json
-- [ ] B2. GitHub Actions CI workflow
-- [ ] B3. Lefthook pre-commit
+- [x] B1. Add `check` script to package.json
+- [x] B2. GitHub Actions CI workflow
+- [x] B3. Lefthook pre-commit
 - [ ] Commit: Phase B
+
+### Notes
+- Added `@types/node` to fix pre-existing tsc errors (test files use __dirname, fs, path)
+- Added `exclude: ["tools", "tmp", "node_modules", "dist"]` to tsconfig.json
 
 ## Phase C: Rendering Tests
 - [ ] C1. Install @testing-library/svelte + jsdom

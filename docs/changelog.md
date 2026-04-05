@@ -16,6 +16,17 @@
 - **DropdownItem**: `tabindex="-1"` for roving focus, `aria-disabled` on disabled items
 - Removed 8 `svelte-ignore a11y_*` suppression comments across 5 components
 
+## CI Gate + Pre-commit Hook (2026-04-05)
+
+### Added
+- `npm run check` script: runs `tsc --noEmit && vitest run` in one command
+- GitHub Actions CI workflow (`.github/workflows/ci.yml`): runs check + build on push/PR to main
+- Lefthook pre-commit hook: runs `npm run check` before each commit
+- `@types/node` dev dependency for Node.js type support in test files
+
+### Changed
+- `tsconfig.json`: added `exclude` for `tools/`, `tmp/`, `node_modules/`, `dist/` to avoid false tsc errors
+
 ## Unified Color System + Glass CSS Overhaul (2026-04-04)
 
 ### Unified ThemeColor enum
