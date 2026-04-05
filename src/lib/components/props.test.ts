@@ -123,6 +123,39 @@ describe('Component schema consistency', () => {
 });
 
 // ---------------------------------------------------------------------------
+// useUI adoption for container components (Tooltip, Dropdown)
+// ---------------------------------------------------------------------------
+
+const CONTAINER_COMPONENTS = [
+  'tooltip/Tooltip.svelte',
+  'dropdown/Dropdown.svelte',
+];
+
+describe('Container component useUI adoption', () => {
+  for (const comp of CONTAINER_COMPONENTS) {
+    const name = comp.split('/')[0];
+    const source = readComponent(comp);
+
+    it(`${name} imports useUI`, () => {
+      expect(source, `${name} must use useUI`).toContain('useUI');
+    });
+
+    it(`${name} has glass prop`, () => {
+      expect(source).toMatch(/glass\??[\s]*[=:,]/);
+    });
+
+    it(`${name} has frosted prop`, () => {
+      expect(source).toMatch(/frosted\??[\s]*[=:,]/);
+    });
+
+    it(`${name} does not use old glass wiring`, () => {
+      expect(source.includes('getParentGlass')).toBe(false);
+      expect(source.includes('GLASS_CONTEXT_KEY')).toBe(false);
+    });
+  }
+});
+
+// ---------------------------------------------------------------------------
 // GlassBackdrop consistency
 // ---------------------------------------------------------------------------
 

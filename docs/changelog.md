@@ -16,6 +16,15 @@
 - **DropdownItem**: `tabindex="-1"` for roving focus, `aria-disabled` on disabled items
 - Removed 8 `svelte-ignore a11y_*` suppression comments across 5 components
 
+## useUI Adoption for Tooltip + Dropdown (2026-04-05)
+
+### Changed
+- **Tooltip**: now uses `useUI` composable for glass context propagation to child components
+- **Dropdown**: now uses `useUI` composable for glass context propagation to child components
+
+### Tests
+- Added container component validation to `props.test.ts` (8 tests): verifies useUI import, glass/frosted props, no old wiring
+
 ## Component Rendering Tests (2026-04-05)
 
 ### Added

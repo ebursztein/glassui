@@ -36,10 +36,10 @@
 - Fixed menuEl in DropdownMenu to use $state to clear compiler warning
 
 ## Phase D: useUI Adoption
-- [ ] D1. Tooltip.svelte -- add useUI
-- [ ] D2. Dropdown.svelte -- add useUI
-- [ ] D3. Update props.test.ts
-- [ ] Testing gate (Phase D)
-- [ ] Commit: Phase D
+- [x] D1. Tooltip.svelte -- add useUI
+- [x] D2. Dropdown.svelte -- add useUI
+- [x] D3. Update props.test.ts -- added container component validation section
+- [x] Testing gate (Phase D) -- 371 tests pass, build passes
+- [x] Commit: Phase D
 
 ## Notes

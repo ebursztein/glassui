@@ -1,8 +1,10 @@
 <script lang="ts">
   import { setContext } from 'svelte';
   import { cn } from '$lib/utils/cn';
+  import { useUI } from '$lib/interactions/useUI.svelte';
   import type { Snippet } from 'svelte';
   import type { ThemeColor, RenderStyle } from '$lib/types/enums';
+  import type { GlassDensity, FrostedLevel } from '$lib/interactions/glass';
 
   interface Props {
     placement?: 'top' | 'bottom' | 'left' | 'right';
@@ -27,6 +29,11 @@
     children,
     ...rest
   }: Props = $props();
+
+  const ui = useUI({
+    props: () => ({ color, style, glass: glass as GlassDensity | boolean, frosted: frosted as FrostedLevel | boolean }),
+    role: 'container',
+  });
 
   let isHovered = $state(false);
   let hasFocus = $state(false);
